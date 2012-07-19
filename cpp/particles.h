@@ -2,11 +2,14 @@
 #define PARTICLES_H
 
 #include <boost/numeric/ublas/vector.hpp> 
+#include <boost/numeric/ublas/matrix.hpp>
+
+namespace ublas = boost::numeric::ublas;
 
 struct Particle{
 	float w;
-	vector<double>* xv;
-	float* Pv;
+	ublas::vector<float> xv;
+	ublas::matrix<float> Pv;
 	float* xf;
 	float* Pf;
 	float* da;
@@ -15,10 +18,9 @@ struct Particle{
 class Particles
 {
 public:
-	Particles(int numParticles);
+	Particles(unsigned numParticles);
 	~Particles();	
-
-	Particle GetParticle(int index);
+	Particle GetParticle(unsigned index);
 private:	
 	Particle *_particles;
 };
