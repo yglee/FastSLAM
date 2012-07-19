@@ -13,8 +13,8 @@ ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
 	INCLUDE := -I./include/ -I/usr/X11/include
 	LIBRARY := -L./lib/mac/ \
     	-L"/System/Library/Frameworks/OpenGL.framework/Libraries" \
-    	-lGL -lGLU -lm -lstdc++ -lfreeimage
-	FRAMEWORK := -framework GLUT -framework OpenGL
+    	-lGL -lGLU -lm -lstdc++ -lfreeimage -llapack -lblas
+	FRAMEWORK := -framework GLUT -framework OpenGL 
 	MACROS := -DOSX
 	PLATFORM := Mac
 else
@@ -22,7 +22,7 @@ else
 	INCLUDE := -I./include/ -I/usr/X11R6/include -I/sw/include \
 		-I/usr/sww/include -I/usr/sww/pkg/Mesa/include
 	LIBRARY := -L./lib/nix -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib \
-		-L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib -lglut -lGLU -lGL -lX11 -lfreeimage
+		-L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib -lglut -lGLU -lGL -lX11 -lfreeimage -llapack -lblas
 	FRAMEWORK := 
 	MACROS := 
 	PLATFORM := *Nix
