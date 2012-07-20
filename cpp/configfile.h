@@ -1,61 +1,47 @@
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/vector.hpp>
+#ifndef CONFIGFILE_H
+#define CONFIGFILE_H
 
-#define pi 3.14159265
+#include <eigen3/Eigen/Dense>
 
-using namespace boost::numeric::ublas;
+//******************
+// Global Variables
+//******************
 
-// Configuration file
-//Permits various adjustments to parameters of the FastSLAM algorithm.
-// See fastslam_sim.h for more information
+namespace config {
+		extern int V;
+		extern float MAXG;
+		extern float RATEG;
+		extern int WHEELBASE;
+		extern float DT_CONTROLS;
 
-// control parameters
-int V= 3; // m/s
-float MAXG= 30*pi/180; // radians, maximum steering angle (-MAXG < g < MAXG)
-float RATEG= 20*pi/180; // rad/s, maximum rate of change in steer angle
-int WHEELBASE= 4; // metres, vehicle wheel-base
-float DT_CONTROLS= 0.025; // seconds, time interval between control signals
+		extern float sigmaV;
+		extern float sigmaG;
 
-// control noises
-float sigmaV= 0.3; // m/s
-float sigmaG= (3.0*pi/180); // radians
+		extern Eigen::Matrix2d Q;
 
-matrix<float> Q;
-Q.insert_element(0,0,(float)sigmaV*sigmaV);
-Q.insert_element(0,1.0,0); 
-Q.insert_element(1.0,0,0); 
-Q.insert_element(1.0,1.0,(float)sigmaG*sigmaG);
- 
-// observation parameters
-float MAX_RANGE= 30.0; // metres
-float DT_OBSERVE= 8*DT_CONTROLS; // seconds, time interval between observations
+		extern float MAX_RANGE;
+		extern float DT_OBSERVE;
 
-// observation noises
-float sigmaR= 0.1; // metres
-float sigmaB= (1.0*pi/180); // radians
+		extern float sigmaR;
+		extern float sigmaB;
+		
+		extern Eigen::Matrix2d R;
 
-matrix<float> R; 
-R.insert_element(0,0,(float)sigmaR*sigmaR); 
-R.insert_element(0,1.0,0); 
-R.insert_element(1.0,0,0);
-R.insert_element(1.0,1.0,(float)sigmaB*sigmaB);
- 
-// waypoint proximity
-float AT_WAYPOINT= 1.0; // metres, distance from current waypoint at which to switch to next waypoint
-int NUMBER_LOOPS= 2; // number of loops through the waypoint list
+		extern float AT_WAYPOINT;
+		extern int NUMBER_LOOPS;
 
-// resampling
-unsigned int NPARTICLES= 100; 
-float NEFFECTIVE= 0.75*NPARTICLES; // minimum number of effective particles before resampling
+		extern unsigned int NPARTICLES;
+		extern float NEFFECTIVE;
 
-// switches
-int SWITCH_CONTROL_NOISE= 1;
-int SWITCH_SENSOR_NOISE = 1;
-int SWITCH_INFLATE_NOISE= 0;
-int SWITCH_PREDICT_NOISE = 0;   // sample noise from predict (usually 1 for fastslam1.0 and 0 for fastslam2.0)
-int SWITCH_SAMPLE_PROPOSAL = 1; // sample from proposal (no effect on fastslam1.0 and usually 1 for fastslam2.0)
-int SWITCH_HEADING_KNOWN= 0;
-int SWITCH_RESAMPLE= 1; 
-int SWITCH_PROFILE= 1;
-int SWITCH_SEED_RANDOM= 0; // if not 0, seed the randn() with its value at beginning of simulation (for repeatability)
+		extern int SWITCH_CONTROL_NOISE;
+		extern int SWITCH_SENSOR_NOISE;
+		extern int SWITCH_INFLATE_NOISE;
+		extern int SWITCH_PREDICT_NOISE;
 
+		extern int SWITCH_SAMPLE_PROPOSAL;
+		extern int SWITCH_HEADING_KNOWN;
+		extern int SWITCH_RESAMPLE;
+		extern int SWITCH_PROFILE;
+		extern int SWITCH_SEED_RANDOM;
+}
+#endif //CONFIGFILE_H

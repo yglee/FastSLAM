@@ -1,15 +1,13 @@
 #ifndef PARTICLES_H
 #define PARTICLES_H
 
-#include <boost/numeric/ublas/vector.hpp> 
-#include <boost/numeric/ublas/matrix.hpp>
-
-namespace ublas = boost::numeric::ublas;
+#include <eigen3/Eigen/Dense>
+using namespace Eigen;
 
 struct Particle{
 	float w;
-	ublas::vector<float> xv;
-	ublas::matrix<float> Pv;
+	Vector3f xv;
+	Matrix3f Pv;		
 	float* xf;
 	float* Pf;
 	float* da;

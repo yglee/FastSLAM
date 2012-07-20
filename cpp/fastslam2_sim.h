@@ -4,7 +4,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
+#include <eigen3/Eigen/Dense>
 
-void fastslam2_sim(float* lm,float* wp);
+#include "configfile.h"
+
+using namespace Eigen;
+
+void fastslam2_sim(MatrixXd lm, MatrixXd wp);
 
 #endif //FASTSLAM2_SIM_H
