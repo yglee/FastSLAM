@@ -12,7 +12,7 @@
 
 namespace ublas = boost::numeric::ublas;
 
-void read_input_file(const string s) 
+void read_input_file(const string s, matrix<float> *lm, matrix<float> *wp) 
 {
 	using std::ifstream;
 	using std::istringstream;
@@ -26,9 +26,6 @@ void read_input_file(const string s)
 	int lm_cols =0;
 	int wp_rows =0;
 	int wp_cols =0;
-
-	matrix<float> lm;
-	matrix<float> wp;
 
 	while(in) {
 		lineno++;
@@ -80,7 +77,6 @@ void read_input_file(const string s)
 					lm.insert_element(r,c,tokens[r].c_str(),NULL);				
 				}				
 			}
-			//TODO: double check this	
 			printf("lm rows: %f cols: %f\n", lm_rows, lm_cols);
 		}
 		else if (tokens[0] == "wp") {
@@ -128,8 +124,6 @@ void read_input_file(const string s)
 }
 
 
-void fastslam2_sim(matrix<float> lm, matrix<float> wp) 
-
 int main (int argc, char *argv[])
 {
 	ublas::vector<float> v (3);
@@ -161,8 +155,16 @@ int main (int argc, char *argv[])
 	}
 	printf("\n");
 
-	ublas::matrix<float> lm (2,35);
-	ublas::matrix<float> wp (2,17);
+	ublas::matrix<float> lm;
+	ublas::matrix<float> wp;
 
-	
+	read_input_files("example_webmap.mat", &lm, &wp);	
+
+	for (int i = 0; i< lm.size1(); i++) {
+		for (int j =0; j< lm.size2(); j++) {
+			printf("%f ", lm(i,j));	
+		}
+		printf("\n");	
+	}
+	printf("\n");
 }

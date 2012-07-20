@@ -41,6 +41,6 @@ void fastslam2_sim(ublas::matrix<float> lm, ublas::matrix<float> wp)
 		srand(SWITCH_SEED_RANDOM);
 	} 		
 
-	ublas::matrix<float> Qe = matrix(Q);
-	printMat(Qe);
+	//ublas::matrix<float> Qe = matrix(Q);
+	//printMat(Qe);
 }
