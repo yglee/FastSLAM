@@ -69,7 +69,7 @@ void read_input_file(const string s)
 				copy(istream_iterator<string>(line), 
 			 		istream_iterator<string>(), 
 			 		back_inserter<vector<string>> (tokens));
-				if(tokens.size() != 2) {
+				if(tokens.size() < lm_rows) {
 					cerr<<"invalid line for lm coordinate!"<<endl;
 					cerr<<"Error occured on line "<<lineno<<endl;
 					cerr<<"line: "<<str<<endl;
@@ -77,21 +77,45 @@ void read_input_file(const string s)
 				}
 				
 				for (int r=0; r< lm_rows; r++) {
+					lm.insert_element(r,c,tokens[r].c_str(),NULL);				
 				}				
 			}
-
-			printf("lm rows: %f cols: %f\n", lm_rows, lm_cols);	
+			//TODO: double check this	
+			printf("lm rows: %f cols: %f\n", lm_rows, lm_cols);
 		}
 		else if (tokens[0] == "wp") {
 			if(tokens.size() != 3) {
-				cerr<<"Wrong args for lm!"<<endl;
+				cerr<<"Wrong args for wp!"<<endl;
 				cerr<<"Error occured on line"<<lineno<<endl;
 				cerr<<"line:"<<str<<endl;
 				exit(EXIT_FAILURE);
 			}
 			wp_rows = strtof(tokens[1].c_str(),NULL);	
 			wp_cols = strtof(tokens[2].c_str(),NULL);
-
+			
+			for (int c =0; c<wp_cols; c++) {
+				lineno++;
+				if (!in) {
+					cerr<<"EOF after reading" << endl;
+					end(EXIT_FAILURE);
+				}	
+				getline(in,str);
+				istringstream line(str);
+				vector<string> tokens;
+				copy(istream_iterator<string>(line), 
+			 		istream_iterator<string>(), 
+			 		back_inserter<vector<string>> (tokens));
+				if(tokens.size() < wp_rows) {
+					cerr<<"invalid line for wp coordinate!"<<endl;
+					cerr<<"Error occured on line "<<lineno<<endl;
+					cerr<<"line: "<<str<<endl;
+					exit(EXIT_FAILURE);
+				}
+									
+				for (int r=0; r< lm_rows; r++) {
+					wp.insert_element(r,c,tokens[r].c_str(),NULL);				
+				}				
+			}
 			printf("wp rows: %f cols: %f\n", wp_rows, wp_cols);	
 		}
 		else {

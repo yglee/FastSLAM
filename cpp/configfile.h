@@ -21,10 +21,10 @@ float sigmaV= 0.3; // m/s
 float sigmaG= (3.0*pi/180); // radians
 
 matrix<float> Q;
-Q.insert_element(0,0,sigmaV*sigmaV);
-Q.insert_element(0,1,0); 
-Q.insert_element(1,0,0); 
-Q.insert_element(1,1,sigmaG*sigmaG);
+Q.insert_element(0,0,(float)sigmaV*sigmaV);
+Q.insert_element(0,1.0,0); 
+Q.insert_element(1.0,0,0); 
+Q.insert_element(1.0,1.0,(float)sigmaG*sigmaG);
  
 // observation parameters
 float MAX_RANGE= 30.0; // metres
@@ -35,10 +35,10 @@ float sigmaR= 0.1; // metres
 float sigmaB= (1.0*pi/180); // radians
 
 matrix<float> R; 
-R.insert_element(0,0,sigmaR*sigmaR); 
-R.insert_element(0,1,0); 
-R.insert_element(1,0,0);
-R.insert_element(1,1,sigmaB*sigmaB);
+R.insert_element(0,0,(float)sigmaR*sigmaR); 
+R.insert_element(0,1.0,0); 
+R.insert_element(1.0,0,0);
+R.insert_element(1.0,1.0,(float)sigmaB*sigmaB);
  
 // waypoint proximity
 float AT_WAYPOINT= 1.0; // metres, distance from current waypoint at which to switch to next waypoint
