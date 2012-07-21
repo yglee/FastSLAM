@@ -44,6 +44,19 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 		srand(SWITCH_SEED_RANDOM);
 	} 		
 
-	//ublas::matrix<float> Qe = ublas::matrix<float>(Q);
-	//std::cout<<"Qe "<<Qe<<std::endl;
+	MatrixXd Qe = MatrixXd(Q);
+	MatrixXd Qe = MatrixXd(R);
+
+	if (SWITCH_INFLATE_NOISE ==1) {
+		Qe = 2*Q;
+		Re = 2*R;
+	}
+
+	if (SWITCH_PROFILE) {
+		//TODO: 
+	}	
+	
+	while (iwp !=0) {
+		compute_steering()
+	}
 }

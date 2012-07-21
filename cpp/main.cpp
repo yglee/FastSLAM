@@ -132,16 +132,8 @@ int main (int argc, char *argv[])
 	MatrixXd lm;
 	MatrixXd wp;
 
-	//ublas::matrix<float> lm;
-	//ublas::matrix<float> wp;
-
 	read_input_file("example_webmap.mat", &lm, &wp);	
 	cout<<"lm is "<<lm<<endl;
 
-	Matrix2d a;
-	a << 1,2,
-		 3,4;
-		 
-	cout<<"a is "<<a<<endl;
-	//fastslam2_sim(lm,wp);
+	fastslam2_sim(lm,wp);
 }
