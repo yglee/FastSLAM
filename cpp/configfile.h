@@ -1,7 +1,7 @@
 #ifndef CONFIGFILE_H
 #define CONFIGFILE_H
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 //******************
 // Global Variables

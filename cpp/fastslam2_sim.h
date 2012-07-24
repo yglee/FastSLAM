@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 #include "configfile.h"
 

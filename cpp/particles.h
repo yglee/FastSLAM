@@ -1,7 +1,7 @@
 #ifndef PARTICLES_H
 #define PARTICLES_H
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 using namespace Eigen;
 
 struct Particle{

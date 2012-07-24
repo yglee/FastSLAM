@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 #include "fastslam2_sim.h"
 
 using namespace Eigen;

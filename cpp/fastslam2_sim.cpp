@@ -45,7 +45,7 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 	} 		
 
 	MatrixXd Qe = MatrixXd(Q);
-	MatrixXd Qe = MatrixXd(R);
+	MatrixXd Re = MatrixXd(R);
 
 	if (SWITCH_INFLATE_NOISE ==1) {
 		Qe = 2*Q;
@@ -57,6 +57,6 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 	}	
 	
 	while (iwp !=0) {
-		compute_steering()
+		//compute_steering();
 	}
 }
