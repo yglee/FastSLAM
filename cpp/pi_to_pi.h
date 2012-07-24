@@ -2,8 +2,11 @@
 #define PI_TO_PI_H
 
 #include <vector>
+#define pi 3.1416
 
-void pi_to_pi(std::vector<float> *angle); //takes in array of floats, returna array 
-void find1(std::vector<float> *input, std::vector<int> *index)
+using namespace std;
+
+void pi_to_pi(vector<float> &angle); //takes in array of floats, returna array 
+vector<int> find1(vector<float> &input);
 
 #endif //PI_TO_PI_H

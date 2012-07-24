@@ -1,8 +1,13 @@
-#include <math.h>
 #include "compute_steering.h"
 #include "pi_to_pi.h"
 
-void compute_steering(Vector3d x, MatrixXd wp, int iwp, float minD, float G, float rateG, float maxG, float dt)
+#include <math.h>
+#include <vector>
+
+using namespace std;
+
+void compute_steering(Vector3d x, MatrixXd wp, int iwp, float minD, 
+						float G, float rateG, float maxG, float dt)
 {
 /*
 % INPUTS:
@@ -32,12 +37,14 @@ void compute_steering(Vector3d x, MatrixXd wp, int iwp, float minD, float G, flo
 		cwp(0) = wp(0,iwp);
 		cwp(1) = wp(1,iwp);
 	}
-	
+		
 	//compute change in G to point towards current waypoint
-        std::vector<float> *anglesArray;
-        anglesArray->push_back(atan2(cwp[1]-x[1], cwp[0]-x[0]) - x[2] - G); 
-        pi_to_pi(anglesArray);
-        float deltaG = (*anglesArray)[0];
+    std::vector<float> anglesArray;
+    anglesArray.push_back(atan2(cwp[1]-x[1], cwp[0]-x[0]) - x[2] - G);
+
+	
+    pi_to_pi(anglesArray);
+    float deltaG = anglesArray[0];
 	
         //limit rate
 	float maxDelta = rateG*dt;

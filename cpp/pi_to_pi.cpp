@@ -1,16 +1,14 @@
 #include "pi_to_pi.h"
-#define pi 3.1416
 
-using namespace std;
-
-void pi_to_pi(vector<float> *angle)
+void pi_to_pi(vector<float> &angle)
 {	
-    vector<int> *index;
-    find1(angle, index);
+    vector<int> index;
+    index = find1(angle);
     vector<int>::iterator iter;
     
-    if (!index->empty()){
-        for (iter = index->begin(); iter != index->end(); iter++) {
+
+    if (!index.empty()){
+        for (iter = index.begin(); iter != index.end(); iter++) {
             angle[iter] = angle[iter] % (2*pi);  
         }
     }
@@ -28,10 +26,12 @@ void pi_to_pi(vector<float> *angle)
     }
 }
 
-void find1(vector<float> *input, vector<int> *index>) {
-    for (int i =0; i<input->size(); i++) {
+vector<int> find1(vector<float> &input) {
+	vector<int> index;
+    for (int i =0; i<input.size(); i++) {
         if ((input[i] > 2*pi) || (input[i] < -2*pi)){
-            index->push_back(i);
+            index.push_back(i);
         }    
-    } 
+    }
+	return index; 
 }
