@@ -63,5 +63,6 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 			NUMBER_LOOPS = NUMBER_LOOPS-1;
 		}
 		predict_true(xtrue,V,G,WHEELBASE,dt);
+		add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE);	
 	}		
 }
