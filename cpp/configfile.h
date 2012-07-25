@@ -8,7 +8,7 @@
 //******************
 
 namespace config {
-		extern int V;
+		extern float V;
 		extern float MAXG;
 		extern float RATEG;
 		extern int WHEELBASE;

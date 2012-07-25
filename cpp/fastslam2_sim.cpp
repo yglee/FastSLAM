@@ -1,5 +1,8 @@
 #include "fastslam2_sim.h"
 #include "particles.h"
+#include "add_control_noise.h"
+#include <iostream>
+#include <math.h>
 
 using namespace config;
 
@@ -12,8 +15,8 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		printf("Sampling from optimal proposal is usually ON for FastSLAM 2.0\n");
 	}
 
-	Q << sigmaV*sigmaV, 0,
-		 0 , sigmaG*sigmaG;
+	Q << pow(sigmaV,2), 0,
+		 0 , pow(sigmaG,2);
 
 	R << sigmaR*sigmaR, 0, 
 		 0, sigmaB*sigmaB;
@@ -39,7 +42,6 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	float G = 0; //initial steer angle
 	float* plines = NULL; //will later change to list of points
 
-	//TODO: double check this line
 	if (SWITCH_SEED_RANDOM !=0) {
 		srand(SWITCH_SEED_RANDOM);
 	} 		
@@ -57,12 +59,25 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	}	
 	
 	while (iwp !=0) {
+		//compute true data
 		compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
 		if (iwp ==0 && NUMBER_LOOPS > 1) {
 			iwp = 1;
 			NUMBER_LOOPS = NUMBER_LOOPS-1;
 		}
 		predict_true(xtrue,V,G,WHEELBASE,dt);
-		add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE);	
+		
+		//add process noise noise
+		//TODO: need to truly randomize function in multivariate_gauss
+		add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE);
+	
+		//predict step	
+		for (int i=0; i< NPARTICLES; i++) {
+			particles[i] = predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
+			if (SWITCH_HEADING_KNOWN ==1) {
+				particles[i].xf[2] = xtrue[2];
+			}
+		}	
 	}		
+
 }

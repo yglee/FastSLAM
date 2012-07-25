@@ -7,7 +7,7 @@
 // See fastslam_sim.h for more information
 
 // control parameters
-int config::V= 3; // m/s
+float config::V= 3.0; // m/s
 float config::MAXG= 30*pi/180; // radians, maximum steering angle (-MAXG < g < MAXG)
 float config::RATEG= 20*pi/180; // rad/s, maximum rate of change in steer angle
 int config::WHEELBASE= 4; // metres, vehicle wheel-base
