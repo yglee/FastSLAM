@@ -17,7 +17,7 @@ float config::DT_CONTROLS= 0.025; // seconds, time interval between control sign
 float config::sigmaV= 0.3; // m/s
 float config::sigmaG= (3.0*pi/180); // radians
 
-Eigen::Matrix2d config::Q;
+Eigen::Matrix2f config::Q;
 
 // observation parameters
 float config::MAX_RANGE= 30.0; // metres
@@ -27,7 +27,7 @@ float config::DT_OBSERVE= 8* config::DT_CONTROLS; // seconds, time interval betw
 float config::sigmaR= 0.1; // metres
 float config::sigmaB= (1.0*pi/180); // radians
 
-Eigen::Matrix2d config::R;
+Eigen::Matrix2f config::R;
 
 // waypoint proximity
 float config::AT_WAYPOINT= 1.0; // metres, distance from current waypoint at which to switch to next waypoint

@@ -8,9 +8,11 @@
 #include <Eigen/Dense>
 
 #include "configfile.h"
+#include "compute_steering.h"
+#include "predict_true.h"
 
 using namespace Eigen;
 
-void fastslam2_sim(MatrixXd lm, MatrixXd wp);
+void fastslam2_sim(MatrixXf lm, MatrixXf wp);
 
 #endif //FASTSLAM2_SIM_H

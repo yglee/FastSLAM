@@ -2,6 +2,7 @@
 #define PI_TO_PI_H
 
 #include <vector>
+#include <math.h>
 #define pi 3.1416
 
 using namespace std;

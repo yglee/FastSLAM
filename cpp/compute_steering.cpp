@@ -6,8 +6,8 @@
 
 using namespace std;
 
-void compute_steering(Vector3d x, MatrixXd wp, int iwp, float minD, 
-						float G, float rateG, float maxG, float dt)
+void compute_steering(VectorXf x, MatrixXf wp, int& iwp, float minD, 
+						float& G, float rateG, float maxG, float dt)
 {
 /*
 % INPUTS:
@@ -41,8 +41,6 @@ void compute_steering(Vector3d x, MatrixXd wp, int iwp, float minD,
 	//compute change in G to point towards current waypoint
     std::vector<float> anglesArray;
     anglesArray.push_back(atan2(cwp[1]-x[1], cwp[0]-x[0]) - x[2] - G);
-
-	
     pi_to_pi(anglesArray);
     float deltaG = anglesArray[0];
 	

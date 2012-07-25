@@ -3,7 +3,7 @@
 
 using namespace config;
 
-void fastslam2_sim(MatrixXd lm, MatrixXd wp) 
+void fastslam2_sim(MatrixXf lm, MatrixXf wp) 
 {
 	if (SWITCH_PREDICT_NOISE) {
 		printf("Sampling from predict noise usually OFF for FastSLAM 2.0\n");	
@@ -28,7 +28,7 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 	float dtsum = 0; //change in time since last observation
 	VectorXf ftag(lm.cols());
 
-	for (unsigned i=0; i< lm.cols(); i++) {
+	for (int i=0; i< lm.cols(); i++) {
 		ftag[i] = i+1; //ftag items are indexed from 1
 	}
  
@@ -36,7 +36,7 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 	da_table.setZero();	
 	
 	int iwp = 1; //index to first waypoint
-	int G = 0; //initial steer angle
+	float G = 0; //initial steer angle
 	float* plines = NULL; //will later change to list of points
 
 	//TODO: double check this line
@@ -44,8 +44,8 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 		srand(SWITCH_SEED_RANDOM);
 	} 		
 
-	MatrixXd Qe = MatrixXd(Q);
-	MatrixXd Re = MatrixXd(R);
+	Matrix2f Qe = Matrix2f(Q);
+	Matrix2f Re = Matrix2f(R);
 
 	if (SWITCH_INFLATE_NOISE ==1) {
 		Qe = 2*Q;
@@ -57,6 +57,11 @@ void fastslam2_sim(MatrixXd lm, MatrixXd wp)
 	}	
 	
 	while (iwp !=0) {
-		//compute_steering();
-	}
+		compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
+		if (iwp ==0 && NUMBER_LOOPS > 1) {
+			iwp = 1;
+			NUMBER_LOOPS = NUMBER_LOOPS-1;
+		}
+		predict_true(xtrue,V,G,WHEELBASE,dt);
+	}		
 }

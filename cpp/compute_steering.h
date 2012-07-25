@@ -5,7 +5,7 @@
 
 using namespace Eigen;
 
-void compute_steering(Vector3d x, MatrixXd wp, int iwp, float minD, 
-						float G, float rateG, float maxG, float dt);
+void compute_steering(VectorXf x, MatrixXf wp, int& iwp, float minD, 
+						float& G, float rateG, float maxG, float dt);
 
 #endif //COMPUTE_STEERING_H

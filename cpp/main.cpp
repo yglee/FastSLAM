@@ -12,7 +12,7 @@
 using namespace Eigen;
 using namespace std;
 
-void read_input_file(const string s, MatrixXd *lm, MatrixXd *wp) 
+void read_input_file(const string s, MatrixXf *lm, MatrixXf *wp) 
 {
 	using std::ifstream;
 	using std::istringstream;
@@ -129,8 +129,8 @@ void read_input_file(const string s, MatrixXd *lm, MatrixXd *wp)
 
 int main (int argc, char *argv[])
 {
-	MatrixXd lm;
-	MatrixXd wp;
+	MatrixXf lm;
+	MatrixXf wp;
 
 	read_input_file("example_webmap.mat", &lm, &wp);	
 	cout<<"lm is "<<lm<<endl;

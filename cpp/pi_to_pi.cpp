@@ -9,7 +9,9 @@ void pi_to_pi(vector<float> &angle)
 
     if (!index.empty()){
         for (iter = index.begin(); iter != index.end(); iter++) {
-            angle[iter] = angle[iter] % (2*pi);  
+            //remember that iterators are pointers
+			int n = floor(angle[*iter] / 2*pi);
+			angle[*iter] = angle[*iter] - n*(2*pi);//angle[*iter] % (2*pi);  
         }
     }
     
