@@ -1,8 +1,10 @@
+#include <iostream>
+#include <math.h>
+
 #include "fastslam2_sim.h"
 #include "particles.h"
 #include "add_control_noise.h"
-#include <iostream>
-#include <math.h>
+#include "predict.h"
 
 using namespace config;
 
@@ -69,8 +71,12 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		
 		//add process noise noise
 		//TODO: need to truly randomize function in multivariate_gauss
-		add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE);
+		float* VnGn = new float[2];
+		add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
+		float Vn = VnGn[0];
+		float Gn = VnGn[1];
 	
+		//TODO: can't do particles[i]. Need to use GetParticles()
 		//predict step	
 		for (int i=0; i< NPARTICLES; i++) {
 			particles[i] = predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);

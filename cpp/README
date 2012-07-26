@@ -1,0 +1,3 @@
+todo: 
+7/25/12
+fix the multivariate gauss's use of Random() (from eigen). It doesn't return diff. random numbers at each turn
