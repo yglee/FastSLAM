@@ -2,7 +2,7 @@
 #include <math.h>
 
 #include "fastslam2_sim.h"
-#include "particles.h"
+#include "particle.h"
 #include "add_control_noise.h"
 #include "predict.h"
 
@@ -84,7 +84,8 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	
 		//predict step	
 		for (int i=0; i< NPARTICLES; i++) {
-                        predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
+                    predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
+                    particles[i] = observe_heading(particles[i], xtrue(2), SWITCH_HEADING_KNOWN);
 		}	
 	}		
 
