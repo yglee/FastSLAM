@@ -98,6 +98,7 @@ void Particle::setDa(float* da)
 }
 
 
+#if 0
 /*************
 ** Particles
 *************/
@@ -129,5 +130,5 @@ void Particles::setParticle(unsigned index, Particle &p)
 {
 	_particles[index] = p; 
 }
-
+#endif
 

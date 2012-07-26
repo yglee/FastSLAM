@@ -25,8 +25,14 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
 	float veh[2][3] = {{0,-WHEELBASE,-WHEELBASE},{0,-1,1}};
 	
-	Particles* particles = new Particles(NPARTICLES);
-	VectorXf xtrue(3);
+        //TODO: not sure
+	Particle *particles = new Particle[NPARTICLES];
+        //set uniform weights
+        float uniformw = 1.0/(float)NPARTICLES;    
+        for (int p = 0; p < NPARTICLES; p++) {
+            particles[p].setW(uniformw);
+        }
+        VectorXf xtrue(3);
 	xtrue.setZero();
 	
 	float dt = DT_CONTROLS; //change in time btw predicts
@@ -78,7 +84,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	
 		//predict step	
 		for (int i=0; i< NPARTICLES; i++) {
-			//predict(particles.GetParticle(i),Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
+                        predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
 		}	
 	}		
 

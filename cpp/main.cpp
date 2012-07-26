@@ -80,7 +80,6 @@ void read_input_file(const string s, MatrixXf *lm, MatrixXf *wp)
 					(*lm)(r,c) = strtof(tokens[r].c_str(),NULL);				
 				}				
 			}
-			printf("lm rows: %f cols: %f\n", lm_rows, lm_cols);
 		}
 		else if (tokens[0] == "wp") {
 			if(tokens.size() != 3) {
@@ -115,7 +114,6 @@ void read_input_file(const string s, MatrixXf *lm, MatrixXf *wp)
 					(*wp)(r,c) = strtof(tokens[r].c_str(),NULL);				
 				}				
 			}
-			printf("wp rows: %f cols: %f\n", wp_rows, wp_cols);	
 		}
 		else {
 			std::cerr<<"Unkwown command"<<tokens[0] <<std::endl;
@@ -132,6 +130,6 @@ int main (int argc, char *argv[])
 	MatrixXf lm;
 	MatrixXf wp;
 
-	read_input_file("example_webmap.mat", &lm, &wp);	
+	read_input_file("example_webmap.mat", &lm, &wp);
 	fastslam2_sim(lm,wp);
 }

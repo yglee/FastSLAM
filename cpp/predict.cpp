@@ -6,14 +6,14 @@
 
 using namespace std;
 
-void predict(Particle &particle,float V,float G,MatrixXd Q, float WB,float dt, int addrandom)
-{	
+void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, int addrandom)
+{
 	Vector3f xv = particle.xv();
 	Matrix3f Pv = particle.Pv();
 
 	
 	//Jacobians
-	float phi = xv(3);
+	float phi = xv(2);
 	MatrixXf Gv(3,3); 
 	Gv << 1,0,-V*dt*sin(G+phi),
 		0,1,V*dt*cos(G+phi),
@@ -24,16 +24,8 @@ void predict(Particle &particle,float V,float G,MatrixXd Q, float WB,float dt, i
 		dt*sin(G)/WB, V*dt*cos(G)/WB;
 	
 	//predict covariance
-	cout<<"Gv"<<endl;
-	cout<<Gv<<endl;
-	cout<<"Pv"<<endl;
-	cout<<Pv<<endl;
-	cout<<"Gv*Pv*Gv.tranpose()"<<endl;
-	cout<<Gv*Pv*Gv.transpose()<<endl;
-	//MatrixXf newPv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();
-	//particle.setPv(newPv);		
-
-	/*
+	MatrixXf newPv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();
+	particle.setPv(newPv);		
 	//optional: add random noise to predicted state
 	if (addrandom ==1) {
 		VectorXf A(2);
@@ -51,7 +43,6 @@ void predict(Particle &particle,float V,float G,MatrixXd Q, float WB,float dt, i
 	xv_temp(1) = xv(1) + V*dt*sin(G+xv(2));	
 	xv_temp(2) = pi_to_pi(xv(2) + V*dt*sin(G/WB));				
 	particle.setXv(xv_temp);
-		*/
 }
 
 float pi_to_pi(float x) 

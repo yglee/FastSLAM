@@ -9,6 +9,7 @@ public:
 	Particle();
 	Particle(float w, Vector3f xv, Matrix3f Pv, float* xf, float* Pf, float* da);
 	~Particle();
+        
 	//getters	
 	float w() const;
 	Vector3f xv() const;
@@ -34,6 +35,7 @@ private:
 	float* _da;
 };
 
+/*
 class Particles
 {
 public:
@@ -44,5 +46,6 @@ public:
 private:	
 	Particle *_particles;
 };
+*/
 
 #endif //PARTICLES_H
