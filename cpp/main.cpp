@@ -133,7 +133,5 @@ int main (int argc, char *argv[])
 	MatrixXf wp;
 
 	read_input_file("example_webmap.mat", &lm, &wp);	
-	cout<<"lm is "<<lm<<endl;
-
 	fastslam2_sim(lm,wp);
 }

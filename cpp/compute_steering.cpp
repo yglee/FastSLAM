@@ -34,8 +34,8 @@ void compute_steering(VectorXf x, MatrixXf wp, int& iwp, float minD,
 			iwp =0;
 			return;	
 		}
-		cwp(0) = wp(0,iwp);
-		cwp(1) = wp(1,iwp);
+		cwp[0] = wp(0,iwp);
+		cwp[1] = wp(1,iwp);
 	}
 		
 	//compute change in G to point towards current waypoint

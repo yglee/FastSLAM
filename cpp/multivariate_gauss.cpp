@@ -13,8 +13,6 @@ VectorXf multivariate_gauss(VectorXf x, MatrixXf P, int n)
 	//TODO: why is random doesn't change values?
 	MatrixXf X = MatrixXf::Random(len,n);
 
-	cout<<"X"<<endl;
-	cout<<X<<endl;	
 	VectorXf ones = VectorXf::Ones(n).transpose();
 	return S*X + x*ones;
 }

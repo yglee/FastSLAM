@@ -76,13 +76,9 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		float Vn = VnGn[0];
 		float Gn = VnGn[1];
 	
-		//TODO: can't do particles[i]. Need to use GetParticles()
 		//predict step	
 		for (int i=0; i< NPARTICLES; i++) {
-			particles[i] = predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
-			if (SWITCH_HEADING_KNOWN ==1) {
-				particles[i].xf[2] = xtrue[2];
-			}
+			//predict(particles.GetParticle(i),Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
 		}	
 	}		
 

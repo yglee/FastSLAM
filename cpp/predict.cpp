@@ -1,24 +1,39 @@
 #include "predict.h"
 #include <math.h>
+#include <iostream>
 
-void predict(Particle &particle,float V,float G,MatrixXd Q, \
-			float WB,float dt, int addrandom)
+#define pi 3.14159265
+
+using namespace std;
+
+void predict(Particle &particle,float V,float G,MatrixXd Q, float WB,float dt, int addrandom)
 {	
-	Vector3f xv = particle.xv;
-	Matrix3f Pv = particle.Pv;
+	Vector3f xv = particle.xv();
+	Matrix3f Pv = particle.Pv();
 
+	
 	//Jacobians
 	float phi = xv(3);
-	MatrixXf Gv(3,3) << 1,0,-V*dt*sin(G+phi),
-						0,1,V*dt*cos(G+phi),
-						0,0,1;
-	MatrixXf Gu(3,2) <<dt*cos(G+phi), -V*dt*sin(G+phi),
-						dt*sin(G+phi), V*dt*cos(G+phi),
-						dt*sin(G)/WB, V*dt*cos(G)/WB;
-
+	MatrixXf Gv(3,3); 
+	Gv << 1,0,-V*dt*sin(G+phi),
+		0,1,V*dt*cos(G+phi),
+		0,0,1;
+	MatrixXf Gu(3,2); 
+	Gu << dt*cos(G+phi), -V*dt*sin(G+phi),
+		dt*sin(G+phi), V*dt*cos(G+phi),
+		dt*sin(G)/WB, V*dt*cos(G)/WB;
+	
 	//predict covariance
-	particle.Pv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();		
+	cout<<"Gv"<<endl;
+	cout<<Gv<<endl;
+	cout<<"Pv"<<endl;
+	cout<<Pv<<endl;
+	cout<<"Gv*Pv*Gv.tranpose()"<<endl;
+	cout<<Gv*Pv*Gv.transpose()<<endl;
+	//MatrixXf newPv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();
+	//particle.setPv(newPv);		
 
+	/*
 	//optional: add random noise to predicted state
 	if (addrandom ==1) {
 		VectorXf A(2);
@@ -31,12 +46,15 @@ void predict(Particle &particle,float V,float G,MatrixXd Q, \
 	}	
 
 	//predict state
-	particle.xv(0) = xv(0) + V*dt*cos(G+xv(2));	
-	particle.xv(1) = xv(1) + V*dt*sin(G+xv(2));	
-	particle.xv(2) = pi_to_pi(xv(2) + V*dt*sin(G/WB));				
+	VectorXf xv_temp(3);
+	xv_temp(0) = xv(0) + V*dt*cos(G+xv(2));	
+	xv_temp(1) = xv(1) + V*dt*sin(G+xv(2));	
+	xv_temp(2) = pi_to_pi(xv(2) + V*dt*sin(G/WB));				
+	particle.setXv(xv_temp);
+		*/
 }
 
-void pi_to_pi(float x) 
+float pi_to_pi(float x) 
 {
 	if (x > pi) {
 		x = x-2*pi;
