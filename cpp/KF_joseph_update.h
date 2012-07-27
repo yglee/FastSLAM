@@ -3,6 +3,9 @@
 
 #include <Eigen/Dense>
 
-void KF_joseph_update(Vector3f x,Matrix3f P,float v,float R, Vector3f H);
+using namespace Eigen;
+
+void KF_joseph_update(Vector3f &x,Matrix3f &P,float v,float R, MatrixXf H);
+MatrixXf make_symmetric(MatrixXf P);
 
 #endif

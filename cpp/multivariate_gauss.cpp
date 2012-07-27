@@ -8,7 +8,7 @@ VectorXf multivariate_gauss(VectorXf x, MatrixXf P, int n)
 {
 	int len = x.size();
 
-	//choleksy decomposition (lower tri matrix)
+	//choleksy decomposition
 	MatrixXf S = P.llt().matrixL();
 	//TODO: why is random doesn't change values?
 	MatrixXf X = MatrixXf::Random(len,n);

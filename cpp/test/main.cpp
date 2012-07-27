@@ -19,4 +19,10 @@ int main (int argc, char*argv[])
 	MatrixXf A = L.transpose();
 	cout<< A * A.transpose() << endl;
 	cout << "This should equal the matrix S" << endl;	
+
+        Vector3f vec;
+        vec << 1,2,3;
+        
+        cout<<"A is "<<endl;
+        cout<<vec<<endl;
 }
