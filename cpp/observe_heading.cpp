@@ -1,6 +1,8 @@
 #include "observe_heading.h"
+#include "pi_to_pi.h"
+#include "KF_joseph_update.h"
+
 #include <vector>
-#define pi 3.14159
 
 void observe_heading(Particle &particle, float phi, int useheading) 
 {
@@ -20,5 +22,5 @@ void observe_heading(Particle &particle, float phi, int useheading)
     
     KF_joseph_update(xv,Pv,v,pow(sigmaPhi,2),H);
     particle.setXv(xv);
-    particle.setPv(pv);
+    particle.setPv(Pv);
 }
