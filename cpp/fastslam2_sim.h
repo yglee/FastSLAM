@@ -14,5 +14,6 @@
 using namespace Eigen;
 
 void fastslam2_sim(MatrixXf lm, MatrixXf wp);
+MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv);
 
 #endif //FASTSLAM2_SIM_H

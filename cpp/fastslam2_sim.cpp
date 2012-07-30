@@ -7,6 +7,7 @@
 #include "predict.h"
 #include "observe_heading.h"
 #include "get_observations.h"
+#include "add_observation_noise.h"
 
 using namespace config;
 
@@ -27,9 +28,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
 	float veh[2][3] = {{0,-WHEELBASE,-WHEELBASE},{0,-1,1}};
 	
-        //TODO: not sure
 	Particle *particles = new Particle[NPARTICLES];
-        //set uniform weights
 	float uniformw = 1.0/(float)NPARTICLES;    
     for (unsigned int p = 0; p < NPARTICLES; p++) {
     	particles[p].setW(uniformw);
@@ -50,7 +49,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	
 	int iwp = 1; //index to first waypoint
 	float G = 0; //initial steer angle
-	float* plines = NULL; //will later change to list of points
+	MatrixXf plines = NULL; //will later change to list of points
 
 	if (SWITCH_SEED_RANDOM !=0) {
 		srand(SWITCH_SEED_RANDOM);
@@ -68,6 +67,8 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		//TODO: 
 	}	
 	
+	vector<int> ftag_visible;
+	MatrixXf z;
 	while (iwp !=0) {
 		//compute true data
 		compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
@@ -95,8 +96,20 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		if (dtsum >= DT_OBSERVE) {
 			dtsum=0;
 			//compute true data, then add noise
-			get_observations(xtrue,lm,ftag,MAX_RANGE);	
+			ftag_visible = vector<int>(ftag); //modify the copy, not the ftag	
+			z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
+			add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
+			if(!z.empty()){
+				plines = make_laser_lines(z,xtrue);
+			}		
 		}
 	}		
 
+}
+
+MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 
+{
+	if (rb.empty()) {
+		return NULL;
+	}
 }

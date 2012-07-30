@@ -34,7 +34,7 @@ void get_visible_landmarks(VectorXf x, MatrixXf &lm, vector<int> &idf, float rma
 		}
 	}
 	lm = MatrixXf(lm_new); 
-	idf = ii; 			
+	idf = vector<int>(ii); 			
 }
 
 MatrixXf compute_range_bearing(VectorXf x, MatrixXf lm) 
