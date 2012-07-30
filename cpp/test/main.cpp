@@ -15,17 +15,6 @@ void helper(MatrixXf *t) {
 
 int main (int argc, char*argv[]) 
 {
-	MatrixXf S(1,4);
-	S <<3,4,3,4;
-
-	MatrixXf A(1,4);
-	A << 2,1,2,1;
-
-	MatrixXf T;
-	T<<S.transpose();,A.transpose();		
-	T = T.transpose;
-	cout<<T<<endl;
-#if 0
 	MatrixXf L = S.llt().matrixL();
 
 	cout << "The Cholesky factor L is" << endl << L << endl;
@@ -41,5 +30,4 @@ int main (int argc, char*argv[])
         
         cout<<"A is "<<endl;
         cout<<vec<<endl;
-#endif
 }

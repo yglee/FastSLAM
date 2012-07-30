@@ -39,10 +39,10 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	
 	float dt = DT_CONTROLS; //change in time btw predicts
 	float dtsum = 0; //change in time since last observation
-	VectorXf ftag(lm.cols());
+	vector<int> ftag;
 
 	for (int i=0; i< lm.cols(); i++) {
-		ftag[i] = i+1; //ftag items are indexed from 1
+		ftag.push_back(i); //ftag items are indexed from 1
 	}
  
 	VectorXf da_table(lm.cols());
