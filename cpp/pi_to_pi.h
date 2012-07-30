@@ -8,6 +8,6 @@
 using namespace std;
 
 void pi_to_pi(vector<float> &angle); //takes in array of floats, returna array 
-vector<int> find1(vector<float> &input);
+vector<int> find1(vector<float> input);
 
 #endif //PI_TO_PI_H

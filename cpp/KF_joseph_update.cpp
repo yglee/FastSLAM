@@ -1,23 +1,12 @@
 #include "KF_joseph_update.h"
-#include <iostream>
-
-using namespace std;
 
 //TODO: check this!
 void KF_joseph_update(Vector3f &x, Matrix3f &P,float v,float R, MatrixXf H)
 {
     Vector3f PHt = P*H.transpose();
-    //TODO: should S and Si be 1x1 matrices?
     
-
-	cout<<"H"<<endl;
-	cout<<H<<endl;
-	cout<<"PHt"<<endl;
-	cout<<PHt<<endl;
-	cout<<"R"<<endl;
-	cout<<R<<endl;
-	#if 0
-	MatrixXf S = H*PHt + R;
+	MatrixXf S = H*PHt;
+	S(0,0) += R;
     MatrixXf Si = S.inverse();	
     Si = make_symmetric(Si); 
     MatrixXf PSD_check = Si.llt().matrixL(); //chol of scalar is sqrt
@@ -38,7 +27,6 @@ void KF_joseph_update(Vector3f &x, Matrix3f &P,float v,float R, MatrixXf H)
     PSD_check = P.llt().matrixL();
     PSD_check.transpose();
     PSD_check.conjugate(); //for upper tri
-	#endif
 }
 
 MatrixXf make_symmetric(MatrixXf P)

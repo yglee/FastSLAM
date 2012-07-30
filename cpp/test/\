@@ -15,16 +15,17 @@ void helper(MatrixXf *t) {
 
 int main (int argc, char*argv[]) 
 {
-	MatrixXf S(1,4);
-	S <<3,4,3,4;
+	MatrixXf S(3,3);
+	S << 4.0,-1.0,2.0, -1.0,6.0,0.0, 2.0,0.0,5.0;
 
-	MatrixXf A(1,4);
-	A << 2,1,2,1;
+	helper(&S);
 
-	MatrixXf T;
-	T<<S.transpose();,A.transpose();		
-	T = T.transpose;
-	cout<<T<<endl;
+	cout<<"S"<<endl;
+	cout<<S<<endl;
+
+
+	MatrixXf A(2,2);
+	A << 2,1,2,1;	
 #if 0
 	MatrixXf L = S.llt().matrixL();
 

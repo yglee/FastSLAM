@@ -2,7 +2,10 @@
 #include "pi_to_pi.h"
 #include "KF_joseph_update.h"
 
+#include <iostream>
 #include <vector>
+
+using namespace std;
 
 void observe_heading(Particle &particle, float phi, int useheading) 
 {

@@ -28,7 +28,8 @@ void pi_to_pi(vector<float> &angle)
     }
 }
 
-vector<int> find1(vector<float> &input) {
+vector<int> find1(vector<float> input) 
+{
 	vector<int> index;
     for (int i =0; i<input.size(); i++) {
         if ((input[i] > 2*pi) || (input[i] < -2*pi)){

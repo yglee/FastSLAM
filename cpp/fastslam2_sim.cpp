@@ -5,6 +5,8 @@
 #include "particle.h"
 #include "add_control_noise.h"
 #include "predict.h"
+#include "observe_heading.h"
+#include "get_observations.h"
 
 using namespace config;
 
@@ -28,11 +30,11 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
         //TODO: not sure
 	Particle *particles = new Particle[NPARTICLES];
         //set uniform weights
-        float uniformw = 1.0/(float)NPARTICLES;    
-        for (int p = 0; p < NPARTICLES; p++) {
-            particles[p].setW(uniformw);
-        }
-        VectorXf xtrue(3);
+	float uniformw = 1.0/(float)NPARTICLES;    
+    for (unsigned int p = 0; p < NPARTICLES; p++) {
+    	particles[p].setW(uniformw);
+    }
+	VectorXf xtrue(3);
 	xtrue.setZero();
 	
 	float dt = DT_CONTROLS; //change in time btw predicts
@@ -83,10 +85,18 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		float Gn = VnGn[1];
 	
 		//predict step	
-		for (int i=0; i< NPARTICLES; i++) {
-                    predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
-                    //particles[i] = observe_heading(particles[i], xtrue(2), SWITCH_HEADING_KNOWN);
-		}	
+		for (unsigned int i=0; i< NPARTICLES; i++) {
+        	predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
+        	observe_heading(particles[i], xtrue(2), SWITCH_HEADING_KNOWN); //if heading known, observe heading
+		}
+
+		//observe step
+		dtsum = dtsum+dt;	
+		if (dtsum >= DT_OBSERVE) {
+			dtsum=0;
+			//compute true data, then add noise
+			get_observations(xtrue,lm,ftag,MAX_RANGE);	
+		}
 	}		
 
 }
