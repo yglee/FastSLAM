@@ -28,6 +28,22 @@ void pi_to_pi(vector<float> &angle)
     }
 }
 
+void pi_to_pi(float &ang) 
+{
+	if ((ang<-2*pi) || (ang>2*pi)) {
+		int n = floor(ang / 2*pi);
+		ang = ang-n*2*pi;			
+	}
+
+	if(ang > pi) {
+		ang = ang-2*pi;
+	}
+	
+	if (ang < -pi) {
+		ang = ang+2*pi;
+	}
+}
+
 vector<int> find1(vector<float> input) 
 {
 	vector<int> index;

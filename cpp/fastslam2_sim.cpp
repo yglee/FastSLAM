@@ -8,6 +8,7 @@
 #include "observe_heading.h"
 #include "get_observations.h"
 #include "add_observation_noise.h"
+#include "TransformToGlobal.h"
 
 using namespace config;
 
@@ -49,7 +50,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	
 	int iwp = 1; //index to first waypoint
 	float G = 0; //initial steer angle
-	MatrixXf plines = NULL; //will later change to list of points
+	MatrixXf plines; //will later change to list of points
 
 	if (SWITCH_SEED_RANDOM !=0) {
 		srand(SWITCH_SEED_RANDOM);
@@ -99,7 +100,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 			ftag_visible = vector<int>(ftag); //modify the copy, not the ftag	
 			z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
 			add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
-			if(!z.empty()){
+			if(!z.isZero()){
 				plines = make_laser_lines(z,xtrue);
 			}		
 		}
@@ -109,7 +110,28 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
 MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 
 {
-	if (rb.empty()) {
-		return NULL;
+	if (rb.isZero()) {
+		return MatrixXf(0,0);
 	}
+	
+	int len = rb.cols();
+	MatrixXf lnes(4,2);
+	
+	MatrixXf globalMat(2,rb.cols());
+	int i,j;
+	for (j=0; j<globalMat.cols();j++) {
+		globalMat(0,j) = rb(0,j)*cos(rb(1,j));
+		globalMat(1,j) = rb(0,j)*sin(rb(1,j));   	
+	}
+	
+	TransformToGlobal(globalMat,xv);
+
+	for (int c=0; c<lnes.cols();c++) {
+		lnes(0,c) = xv(0);	
+		lnes(1,c) = xv(1);
+		lnes(2,c) = globalMat(1,c);
+		lnes(3,c) = globalMat(2,c);
+	}
+	return MatrixXf(0,0);
+	//return line_plot_conversion(lnes);
 }

@@ -18,10 +18,8 @@ void observe_heading(Particle &particle, float phi, int useheading)
     MatrixXf H(1,3);
     H<<0,0,1;            
 
-    std::vector<float> vecV;
-    vecV.push_back(phi-xv(2));
-    pi_to_pi(vecV);	
-    float v = vecV[0]; 
+    float v = phi-xv(2);
+    pi_to_pi(v);	
     
     KF_joseph_update(xv,Pv,v,pow(sigmaPhi,2),H);
     particle.setXv(xv);
