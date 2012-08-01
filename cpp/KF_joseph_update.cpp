@@ -1,9 +1,9 @@
 #include "KF_joseph_update.h"
 
 //TODO: check this!
-void KF_joseph_update(Vector3f &x, Matrix3f &P,float v,float R, MatrixXf H)
+void KF_joseph_update(VectorXf &x, MatrixXf &P,float v,float R, MatrixXf H)
 {
-    Vector3f PHt = P*H.transpose();
+    VectorXf PHt = P*H.transpose();
     
 	MatrixXf S = H*PHt;
 	S(0,0) += R;
@@ -13,7 +13,7 @@ void KF_joseph_update(Vector3f &x, Matrix3f &P,float v,float R, MatrixXf H)
     PSD_check.transpose();
     PSD_check.conjugate();
 
-    Vector3f W = PHt*Si;
+    VectorXf W = PHt*Si;
     x = x+W*v;
     
     //Joseph-form covariance update

@@ -5,7 +5,7 @@
 
 using namespace Eigen;
 
-void KF_joseph_update(Vector3f &x,Matrix3f &P,float v,float R, MatrixXf H);
+void KF_joseph_update(VectorXf &x,MatrixXf &P,float v,float R, MatrixXf H);
 MatrixXf make_symmetric(MatrixXf P);
 
 #endif

@@ -8,9 +8,8 @@ using namespace std;
 
 void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, int addrandom)
 {
-	Vector3f xv = particle.xv();
-	Matrix3f Pv = particle.Pv();
-
+	VectorXf xv = particle.xv();
+	MatrixXf Pv = particle.Pv();
 	
 	//Jacobians
 	float phi = xv(2);

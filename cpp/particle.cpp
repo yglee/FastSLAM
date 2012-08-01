@@ -8,14 +8,14 @@
 Particle::Particle() 
 {
 	_w = 1.0; 
-	_xv.setZero();
-	_Pv.setZero();
-	_xf = NULL;
+	_xv = VectorXf(3);
+	_Pv = MatrixXf(3,3);
+	_xf = MatrixXf(0,0);
 	_Pf = NULL;
 	_da = NULL;
 }
 
-Particle::Particle(float w, Vector3f xv, Matrix3f Pv, float* xf, float* Pf, float* da)
+Particle::Particle(float w, VectorXf xv, MatrixXf Pv, MatrixXf xf, float* Pf, float* da)
 {
 	_w = w;
 	_xv = xv;
@@ -35,17 +35,17 @@ float Particle::w() const
 	return _w;	
 }
 
-Vector3f Particle::xv() const
+VectorXf Particle::xv() const
 {
 	return _xv;	
 }
 
-Matrix3f Particle::Pv() const
+MatrixXf Particle::Pv() const
 {
 	return _Pv;	
 }
 
-float* Particle::xf() const
+MatrixXf Particle::xf() const
 {
 	return _xf;	
 }
@@ -66,14 +66,14 @@ void Particle::setW(float w)
 	_w = w;
 }
 
-void Particle::setXv(Vector3f xv)
+void Particle::setXv(VectorXf xv)
 {
 	for (int s=0; s<xv.size(); s++) {
 		_xv(s) = xv(s); //copy over the values
 	}
 }
 
-void Particle::setPv(Matrix3f Pv)
+void Particle::setPv(MatrixXf Pv)
 {
 	for (int r=0; r<Pv.rows(); r++){
 		for (int j=0; j<Pv.cols(); j++){
@@ -82,7 +82,7 @@ void Particle::setPv(Matrix3f Pv)
 	}
 }
 
-void Particle::setXf(float* xf)
+void Particle::setXf(MatrixXf xf)
 {
 	_xf = xf;
 }

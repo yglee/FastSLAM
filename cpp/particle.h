@@ -7,30 +7,30 @@ using namespace Eigen;
 class Particle{
 public:
 	Particle();
-	Particle(float w, Vector3f xv, Matrix3f Pv, float* xf, float* Pf, float* da);
+	Particle(float w, VectorXf xv, MatrixXf Pv, MatrixXf xf, float* Pf, float* da);
 	~Particle();
         
 	//getters	
 	float w() const;
-	Vector3f xv() const;
-	Matrix3f Pv() const;
-	float* xf() const;
+	VectorXf xv() const;
+	MatrixXf Pv() const;
+	MatrixXf xf() const;
 	float* Pf() const;
 	float* da() const;
 
 	//setters
 	void setW(float w);
-	void setXv(Vector3f xv);
-	void setPv(Matrix3f Pv);
-	void setXf(float* xf);
+	void setXv(VectorXf xv);
+	void setPv(MatrixXf Pv);
+	void setXf(MatrixXf xf);
 	void setPf(float* Pf);
 	void setDa(float* da);
 	
 private:
 	float _w;
-	Vector3f _xv;
-	Matrix3f _Pv;		
-	float* _xf;
+	VectorXf _xv;
+	MatrixXf _Pv;		
+	MatrixXf _xf;
 	float* _Pf;
 	float* _da;
 };

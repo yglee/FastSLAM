@@ -9,6 +9,8 @@
 #include "get_observations.h"
 #include "add_observation_noise.h"
 #include "TransformToGlobal.h"
+#include "line_plot_conversion.h"
+#include "data_associate_known.h"
 
 using namespace config;
 
@@ -20,7 +22,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 	if (SWITCH_SAMPLE_PROPOSAL == 0) {
 		printf("Sampling from optimal proposal is usually ON for FastSLAM 2.0\n");
 	}
-
+	
 	Q << pow(sigmaV,2), 0,
 		 0 , pow(sigmaG,2);
 
@@ -56,8 +58,8 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		srand(SWITCH_SEED_RANDOM);
 	} 		
 
-	Matrix2f Qe = Matrix2f(Q);
-	Matrix2f Re = Matrix2f(R);
+	MatrixXf Qe = MatrixXf(Q);
+	MatrixXf Re = MatrixXf(R);
 
 	if (SWITCH_INFLATE_NOISE ==1) {
 		Qe = 2*Q;
@@ -96,16 +98,34 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 		dtsum = dtsum+dt;	
 		if (dtsum >= DT_OBSERVE) {
 			dtsum=0;
+
 			//compute true data, then add noise
 			ftag_visible = vector<int>(ftag); //modify the copy, not the ftag	
 			z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
 			add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
 			if(!z.isZero()){
 				plines = make_laser_lines(z,xtrue);
-			}		
+			}
+			
+			//compute (known) data associations
+			MatrixXf xfvar = particles[0].xf();
+			int Nf = xfvar.cols();
+			
+			MatrixXf zf(z.rows(),z.cols());
+			vector<int> idf;
+			MatrixXf zn(z.rows(),z.cols());
+			data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
+
+			//observe map features
+			if (!zf.isZero()) {
+				
+				//sample from 'optimal' proposal distribution, then update map
+				for (int i=0; i<NPARTICLES; i++) {
+					//sample_proposal(particles[i], zf, idf, Re);
+				}	
+			}			
 		}
 	}		
-
 }
 
 MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 
@@ -115,7 +135,7 @@ MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv)
 	}
 	
 	int len = rb.cols();
-	MatrixXf lnes(4,2);
+	MatrixXf lnes(4,len);
 	
 	MatrixXf globalMat(2,rb.cols());
 	int i,j;
@@ -127,11 +147,11 @@ MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv)
 	TransformToGlobal(globalMat,xv);
 
 	for (int c=0; c<lnes.cols();c++) {
-		lnes(0,c) = xv(0);	
+		lnes(0,c) = xv(0);
 		lnes(1,c) = xv(1);
-		lnes(2,c) = globalMat(1,c);
-		lnes(3,c) = globalMat(2,c);
+		lnes(2,c) = globalMat(0,c);
+		lnes(3,c) = globalMat(1,c);
 	}
-	return MatrixXf(0,0);
-	//return line_plot_conversion(lnes);
+	
+	return line_plot_conversion(lnes);
 }

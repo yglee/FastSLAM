@@ -12,8 +12,8 @@ void observe_heading(Particle &particle, float phi, int useheading)
     if (useheading ==0)
             return;
     float sigmaPhi = 0.01*pi/180.0; 	
-    Vector3f xv = particle.xv();		
-    Matrix3f Pv = particle.Pv();
+    VectorXf xv = particle.xv();		
+    MatrixXf Pv = particle.Pv();
     
     MatrixXf H(1,3);
     H<<0,0,1;            
