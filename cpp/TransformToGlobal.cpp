@@ -24,8 +24,7 @@ void TransformToGlobal(MatrixXf &p, VectorXf b)
 	if (p.rows() ==3){
 		for (int k=0; k<p_resized.cols();k++) {
 			input = p(2,k) +b(2);
-   			pi_to_pi(input);
-			p(2,k) = input;
+   			p(2,k) = pi_to_pi(input);
 		}		
 	}	
 }

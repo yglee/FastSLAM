@@ -7,8 +7,8 @@
 
 using namespace std;
 
-void pi_to_pi(vector<float> &angle); //takes in array of floats, returna array 
-void pi_to_pi(float &ang);
+void pi_to_pi(VectorXf &angle); //takes in array of floats, returna array 
+float pi_to_pi(float ang);
 vector<int> find1(vector<float> input);
 
 #endif //PI_TO_PI_H

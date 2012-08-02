@@ -35,17 +35,4 @@ private:
 	float* _da;
 };
 
-/*
-class Particles
-{
-public:
-	Particles(unsigned numParticles);
-	~Particles();
-	Particle &getParticle(unsigned index) const;
-	void setParticle(unsigned index, Particle &p);
-private:	
-	Particle *_particles;
-};
-*/
-
 #endif //PARTICLES_H

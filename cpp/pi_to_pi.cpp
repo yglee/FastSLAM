@@ -1,6 +1,6 @@
 #include "pi_to_pi.h"
 
-void pi_to_pi(vector<float> &angle)
+void pi_to_pi(VectorXf &angle)
 {	
     vector<int> index;
     index = find1(angle);
@@ -28,7 +28,7 @@ void pi_to_pi(vector<float> &angle)
     }
 }
 
-void pi_to_pi(float &ang) 
+float pi_to_pi(float ang) 
 {
 	if ((ang<-2*pi) || (ang>2*pi)) {
 		int n = floor(ang / 2*pi);
@@ -42,6 +42,7 @@ void pi_to_pi(float &ang)
 	if (ang < -pi) {
 		ang = ang+2*pi;
 	}
+        return ang;
 }
 
 vector<int> find1(vector<float> input) 

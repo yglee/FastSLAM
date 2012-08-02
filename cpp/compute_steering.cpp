@@ -42,7 +42,7 @@ void compute_steering(VectorXf x, MatrixXf wp, int& iwp, float minD,
 
 		//compute change in G to point towards current waypoint
 		float deltaG = atan2(cwp[1]-x[1], cwp[0]-x[0]) - x[2] - G;
-		pi_to_pi(deltaG);
+		deltaG = pi_to_pi(deltaG);
 
 		//limit rate
 		float maxDelta = rateG*dt;

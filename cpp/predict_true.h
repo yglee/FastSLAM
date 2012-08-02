@@ -2,7 +2,6 @@
 #define PREDICT_TRUE_H
 
 #include <Eigen/Dense>
-#include "pi_to_pi.h"
 
 using namespace Eigen;
 

@@ -8,7 +8,7 @@
 Particle::Particle() 
 {
 	_w = 1.0; 
-	_xv = VectorXf(3);
+	_xv = VectorXf(3,1);
 	_Pv = MatrixXf(3,3);
 	_xf = MatrixXf(0,0);
 	_Pf = NULL;
@@ -96,39 +96,4 @@ void Particle::setDa(float* da)
 {
 	_da = da;
 }
-
-
-#if 0
-/*************
-** Particles
-*************/
-Particles::Particles(unsigned numParticles)
-:_particles(NULL)
-{
-	_particles = new Particle[numParticles];
-
-	//TODO: can i get rid of this loop?
-	for (int i = 0; i < numParticles; i++) {
-		_particles[i].setW(1.0/(float) numParticles);
-	}
-}
-
-Particles::~Particles()
-{
-	if (_particles)
-		delete [] _particles;
-}
-
-//getters
-Particle &Particles::getParticle(unsigned index) const
-{
-	return _particles[index];
-}
-
-//setters
-void Particles::setParticle(unsigned index, Particle &p) 
-{
-	_particles[index] = p; 
-}
-#endif
 
