@@ -2,8 +2,6 @@
 #include "math.h"
 #include "pi_to_pi.h"
 
-//ugh, so confusing. Pf is a list of matrices so freakin double pointers...
-//TODO: double check this !!!!!!!
 void compute_jacobians(Particle particle, vector<int> idf, MatrixXf R, \
                        MatrixXf &zp, MatrixXf *Hv, MatrixXf *Hf, MatrixXf *Sf)
 {
