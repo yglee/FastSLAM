@@ -7,7 +7,7 @@ using namespace Eigen;
 class Particle{
 public:
 	Particle();
-	Particle(float w, VectorXf xv, MatrixXf Pv, MatrixXf xf, float* Pf, float* da);
+	Particle(float w, VectorXf xv, MatrixXf Pv, MatrixXf xf, MatrixXf* Pf, float* da);
 	~Particle();
         
 	//getters	
@@ -15,7 +15,7 @@ public:
 	VectorXf xv() const;
 	MatrixXf Pv() const;
 	MatrixXf xf() const;
-	float* Pf() const;
+	MatrixXf* Pf() const;
 	float* da() const;
 
 	//setters
@@ -23,7 +23,7 @@ public:
 	void setXv(VectorXf xv);
 	void setPv(MatrixXf Pv);
 	void setXf(MatrixXf xf);
-	void setPf(float* Pf);
+	void setPf(MatrixXf* Pf);
 	void setDa(float* da);
 	
 private:
@@ -31,7 +31,7 @@ private:
 	VectorXf _xv;
 	MatrixXf _Pv;		
 	MatrixXf _xf;
-	float* _Pf;
+	MatrixXf* _Pf;
 	float* _da;
 };
 

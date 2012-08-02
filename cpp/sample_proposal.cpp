@@ -10,10 +10,14 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 	VectorXf xv0 = VectorXf(xv);
 	MatrixXf Pv0 = MatrixXf(Pv);	
 	
+        MatrixXf zp(z.rows(),idf.size());
+        MatrixXf *Hv();
+        MatrixXf *Hf();
+        MatrixXf *Sf(); 
+        
 	//process each feature, incrementally refine proposal distribution
 	for (int i =0; i<idf.size(); i++) {
 		int j = idf[i];
-		
 		//compute_jacobians(particle, j, R);
 	}
 }  

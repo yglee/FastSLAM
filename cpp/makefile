@@ -10,7 +10,7 @@ SOURCES := $(wildcard ./*.cpp)
 #This line still kicks out an annoying error on Solaris.
 ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
 	#Assume Mac
-	INCLUDE := -I./include/ -I/usr/X11/include -I/opt/local/include -I/opt/local/include/eigen2
+	INCLUDE := -I./include/ -I/usr/X11/include -I/opt/local/include -I/opt/local/include/eigen3
 	LIBRARY := -L"/System/Library/Frameworks/OpenGL.framework/Libraries" \
     	-lGL -lGLU -lm -lstdc++
 	FRAMEWORK :=  

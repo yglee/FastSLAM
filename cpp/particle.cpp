@@ -15,7 +15,7 @@ Particle::Particle()
 	_da = NULL;
 }
 
-Particle::Particle(float w, VectorXf xv, MatrixXf Pv, MatrixXf xf, float* Pf, float* da)
+Particle::Particle(float w, VectorXf xv, MatrixXf Pv, MatrixXf xf, MatrixXf* Pf, float* da)
 {
 	_w = w;
 	_xv = xv;
@@ -50,7 +50,7 @@ MatrixXf Particle::xf() const
 	return _xf;	
 }
 
-float* Particle::Pf() const
+MatrixXf* Particle::Pf() const
 {
 	return _Pf;	
 }
@@ -87,7 +87,7 @@ void Particle::setXf(MatrixXf xf)
 	_xf = xf;
 }
 
-void Particle::setPf(float* Pf)
+void Particle::setPf(MatrixXf* Pf)
 {
 	_Pf = Pf;
 }

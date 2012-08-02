@@ -4,7 +4,7 @@
 void add_observation_noise(MatrixXf &z, MatrixXf R, int addnoise)
 {
 	if (addnoise == 1){
-		float len = z.cols();	
+		int len = z.cols();	
 		if (len > 0) {
 			MatrixXf randM1(1,len);
 			MatrixXf randM2(1,len);
