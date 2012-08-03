@@ -4,10 +4,10 @@
 #include <Eigen/Dense>
 #include "particle.h"
 #include "multivariate_gauss.h"
+#include "pi_to_pi.h"
 
 using namespace Eigen;
 
 void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, int addrandom);
 
-float pi_to_pi(float x);
 #endif //PREDICT_H

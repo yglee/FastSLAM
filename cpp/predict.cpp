@@ -43,14 +43,3 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 	xv_temp(2) = pi_to_pi(xv(2) + V*dt*sin(G/WB));				
 	particle.setXv(xv_temp);
 }
-
-float pi_to_pi(float x) 
-{
-	if (x > pi) {
-		x = x-2*pi;
-	} else if (x < -pi) {
-		x = x+2*pi;
-	}
-	return x;
-}
-

@@ -6,7 +6,6 @@ void pi_to_pi(VectorXf &angle)
     index = find1(angle);
     vector<int>::iterator iter;
     
-
     if (!index.empty()){
         for (iter = index.begin(); iter != index.end(); iter++) {
             //remember that iterators are pointers
@@ -45,7 +44,7 @@ float pi_to_pi(float ang)
         return ang;
 }
 
-vector<int> find1(vector<float> input) 
+vector<int> find1(VectorXf input) 
 {
 	vector<int> index;
     for (int i =0; i<input.size(); i++) {

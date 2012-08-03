@@ -5,6 +5,6 @@
 
 using namespace Eigen;
 
-void KF_cholesky_update(VectorXf x,MatrixXf P,VectorXf v,MatrixXf R,MatrixXf H,MatrixXf xf,MatriXf *Pf,int i);
+void KF_cholesky_update(VectorXf x,MatrixXf P,VectorXf v,MatrixXf R,MatrixXf H,MatrixXf xf,MatrixXf *Pf,int i);
 
 #endif

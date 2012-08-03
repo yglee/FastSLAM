@@ -5,7 +5,7 @@
 
 using namespace Eigen;
 
-VectorXf gauss_evalute(VectorXf v, MatrixXf S, int logflag =0);
+float gauss_evaluate(VectorXf v, MatrixXf S, int logflag =0);
 
 /*
 **INPUTS:

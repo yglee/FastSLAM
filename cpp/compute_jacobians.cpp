@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "compute_jacobians.h"
 #include "math.h"
 #include "pi_to_pi.h"
@@ -12,8 +14,12 @@ void compute_jacobians(Particle particle, vector<int> idf, MatrixXf R, \
     MatrixXf *Pf;
 
     for (int i=0; i<idf.size(); i++) {
-        xf.setColumn(i,((particle.xf()).column(idf(i))));
-        Pf[c] = (particle.Pf())[idf[c]];
+		for (int r=0; r<(particle.xf()).rows(); r++) {
+			xf(r,i) = (particle.xf())(r,(idf[i]));	
+		}
+		cout<<"particle.Pf()[0]"<<endl;
+		cout<<(particle.Pf())[0]<<endl;
+        Pf[i] = (particle.Pf())[idf[i]]; //particle.Pf is a array of matrices
     }
 
     float dx,dy,d2,d;

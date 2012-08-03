@@ -1,4 +1,7 @@
 #include "KF_joseph_update.h"
+#include <iostream>
+
+using namespace std;
 
 //TODO: check this!
 void KF_joseph_update(VectorXf &x, MatrixXf &P,float v,float R, MatrixXf H)
@@ -24,6 +27,9 @@ void KF_joseph_update(VectorXf &x, MatrixXf &P,float v,float R, MatrixXf H)
    
     float eps = 2.2204*pow(10,-16); //numerical safety 
     P = P+eye*eps;
+	cout<<"in KF_joseph_update, P"<<endl;
+	cout<<P<<endl;
+	
     PSD_check = P.llt().matrixL();
     PSD_check.transpose();
     PSD_check.conjugate(); //for upper tri

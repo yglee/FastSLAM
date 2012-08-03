@@ -7,9 +7,13 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     int rows = (particle.xf()).rows();
     MatrixXf xf(rows,idf.size());    
     MatrixXf *Pf;
-    for (int i=0; i<idf.size(); i++) {
-        xf.setColumn(i,((particle.xf()).column(idf(i))));
-        Pf[c] = (particle.Pf())[idf[c]];
+   
+	unsigned i,r; 
+    for (i=0; i<idf.size(); i++) {
+		for (r=0; r<(particle.xf()).rows(); r++) {
+			xf(r,i) = (particle.xf())(r,(idf[i]));	
+		}
+        Pf[i] = (particle.Pf())[idf[i]]; //particle.Pf is a array of matrices
     }
     
     MatrixXf zp;
@@ -17,21 +21,28 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     MatrixXf *Hf;
     MatrixXf *Sf;
     compute_jacobians(particle,idf,R,zp,Hv,Hf,Sf);
-    MatrixXf v = z-zp; 
-    v.setRow(1,pi_to_pi(v.row(1)));
-
+    MatrixXf v = z-zp;
+	
+	unsigned c;
+	for (c=0; c<v.cols();c++) {
+		v(1,c) = pi_to_pi(v(1,c));
+	}
+ 
     VectorXf vi;
     MatrixXf Hfi;
     MatrixXf Pfi;
     VectorXf xfi;
 
-    for (int i=0; i< idf.size(); i++) {
-        vi = v.column(i);
-        Hfi = Hf[i];  
+    for (i=0; i< idf.size(); i++) {
+        for (r=0; r<v.rows(); r++) {
+			vi(r) = v(r,i); //v.column(i);
+        }
+		Hfi = Hf[i];  
         Pfi = Pf[i];
-        xfi = xf.column(i);
-
-        KF_cholesky_update(xfi,Pfi,vi,R,Hfi,xf,Pf,i);
+		for (r=0; r<xf.rows(); r++) {
+        	xfi(r) = xf(r,i); //xfi = xf.column(i);
+		}
+       // KF_cholesky_update(xfi,Pfi,vi,R,Hfi,xf,Pf,i);
     }
     //TODO: finish this
 }

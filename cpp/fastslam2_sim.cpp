@@ -119,13 +119,13 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
 			//observe map features
 			if (!zf.isZero()) {
-				
 				//sample from 'optimal' proposal distribution, then update map
 				for (int i=0; i<NPARTICLES; i++) {
-				        sample_proposal(particles[i], zf, idf, Re);
-				        feature_update(particles[i],zf,idf,Re);
-                                }	
-			}			
+			        sample_proposal(particles[i], zf, idf, Re);
+			        //feature_update(particles[i],zf,idf,Re);
+                }	
+			}
+						
 		}
 	}		
 }
