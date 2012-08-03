@@ -12,7 +12,7 @@ void observe_heading(Particle &particle, float phi, int useheading)
     if (useheading ==0){
     	return;
     }
-	float sigmaPhi = 0.01*pi/180.0; 	
+    float sigmaPhi = 0.01*pi/180.0; 	
     VectorXf xv = particle.xv();		
     MatrixXf Pv = particle.Pv();
     

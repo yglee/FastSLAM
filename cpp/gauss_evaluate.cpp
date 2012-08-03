@@ -11,22 +11,22 @@ float gauss_evaluate(VectorXf v, MatrixXf S, int logflag)
 
     //normalised innovations
     VectorXf nin = Sc.jacobiSvd(ComputeThinU | ComputeThinV).solve(v);
-    
+
     unsigned s;
     //VectorXf E(nin.cols());
     float E=0;
-	for (s=0; s<nin.size(); s++) {
-		nin(s) = pow(nin(s),2);
-		E += nin(s);
-	}
-	E=-0.5*E;
+    for (s=0; s<nin.size(); s++) {
+        nin(s) = pow(nin(s),2);
+        E += nin(s);
+    }
+    E=-0.5*E;
     //Note: writing sum (x.*x,1) is a fast way to compute sets of inner-products
-    
-	unsigned i,j;
-	float C,w;
+
+    unsigned i;
+    float C,w;
     unsigned  m = min(Sc.rows(), Sc.cols());
-    
-	if (logflag !=1) {
+
+    if (logflag !=1) {
         float prod = 1;
         for (i=0; i<m; i++) {
             prod=prod*Sc(i,i); //multiply the diagonals 

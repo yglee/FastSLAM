@@ -10,6 +10,7 @@ Particle::Particle()
 	_w = 1.0; 
 	_xv = VectorXf(3,1);
 	_Pv = MatrixXf(3,3);
+        _Pv.setZero();
 	_xf = MatrixXf(0,0);
 	_Pf = NULL;
 	_da = NULL;

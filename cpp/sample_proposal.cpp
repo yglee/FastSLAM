@@ -20,20 +20,10 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 
     MatrixXf vi(z.rows(),1);
 
-	cout<<"particle attributes"<<endl;
-	cout<<"w"<<particle.w()<<endl;
-	cout<<"xv"<<particle.xv()<<endl;
-	
-	cout<<"Pv"<<particle.Pv()<<endl;
-	//TODO: Pv should be set at observe_heading or someplace else 
-	//before it gets here. It is not initialized anywhere by the time 
-	//it arrives at sample_proposal
+    cout<<"Sample Proposal: Pf -  "<<particle.Pf()<<endl;
 
-	cout<<"xf"<<particle.xf()<<endl;
-	cout<<"Pf"<<(particle.Pf())[0]<<endl;
-	
     //process each feature, incrementally refine proposal distribution
-	unsigned i;
+    unsigned i;
     for (i =0; i<idf.size(); i++) {
         vector<int> j;
         j.push_back(idf[i]);
@@ -42,10 +32,10 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
 
-		cout<<"z rows: "<<z.rows()<<" z cols: "<<z.cols()<<endl;
-		cout<<"zpi rows: "<<zpi.rows()<<" z cols: "<<zpi.cols()<<endl;
-		
-		vi<<1,2;
+        cout<<"z rows: "<<z.rows()<<" z cols: "<<z.cols()<<endl;
+        cout<<"zpi rows: "<<zpi.rows()<<" z cols: "<<zpi.cols()<<endl;
+
+        vi<<1,2;
         //vi = z.conservativeResize(z.rows(),1) - zpi;
         vi(1,0) = pi_to_pi(vi(1,0)); 		
 
@@ -55,20 +45,20 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 
         //proposal mean
         xv = xv * Pv * Hvi.transpose() * Sfi *vi;
-        
+
         particle.setXv(xv);
         particle.setPv(Pv); 
     }
-    
+
     //sample from proposal distribution
     VectorXf xvs = multivariate_gauss(xv,Pv,1); 
     particle.setXv(xvs);
     particle.setPv(VectorXf(3));
-    
+
     //compute sample weight: w = w* p(z|xk) p(xk|xk-1) / proposal
     float like = likelihood_given_xv(particle, z, idf, R);
-    float prior = gauss_evaluate(delta_xv(xv0,xvs), Pv0); 
-    float prop = gauss_evaluate(delta_xv(xv,xvs),Pv);
+    float prior = gauss_evaluate(delta_xv(xv0,xvs), Pv0,0); 
+    float prop = gauss_evaluate(delta_xv(xv,xvs),Pv,0);
     particle.setW(particle.w() * like * prior / prop); 
 } 
 
@@ -88,9 +78,9 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
     MatrixXf zi(z.rows(),1);
     MatrixXf v;    
 
-	unsigned i,k;
+    unsigned i,k;
     for (i=0; i<idf.size(); i++){
-		temp.push_back(i);
+        temp.push_back(i);
         compute_jacobians(particle, temp, R, zp, Hv, Hf, Sf);
         Hvi = Hv[0]; 
         Hfi = Hf[0]; 
@@ -100,7 +90,7 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
         }
         v = zi-zp;
         v(1,0) = pi_to_pi(v(1,0));
-        w = w*gauss_evaluate(v,Sf[i]);
+        w = w*gauss_evaluate(v,Sf[i],0);
     } 
     return w;
 }

@@ -1,5 +1,6 @@
 #include "KF_joseph_update.h"
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -8,8 +9,8 @@ void KF_joseph_update(VectorXf &x, MatrixXf &P,float v,float R, MatrixXf H)
 {
     VectorXf PHt = P*H.transpose();
     
-	MatrixXf S = H*PHt;
-	S(0,0) += R;
+    MatrixXf S = H*PHt;
+    S(0,0) += R;
     MatrixXf Si = S.inverse();	
     Si = make_symmetric(Si); 
     MatrixXf PSD_check = Si.llt().matrixL(); //chol of scalar is sqrt
@@ -25,10 +26,8 @@ void KF_joseph_update(VectorXf &x, MatrixXf &P,float v,float R, MatrixXf H)
     MatrixXf C = eye - W*H;
     P = C*P*C.transpose() + W*R*W.transpose();  
    
-    float eps = 2.2204*pow(10,-16); //numerical safety 
+    float eps = 2.2204*pow(10.0,-16); //numerical safety 
     P = P+eye*eps;
-	cout<<"in KF_joseph_update, P"<<endl;
-	cout<<P<<endl;
 	
     PSD_check = P.llt().matrixL();
     PSD_check.transpose();
