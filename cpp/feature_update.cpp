@@ -42,7 +42,14 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
         for (r=0; r<xf.rows(); r++) {
             xfi(r) = xf(r,i); //xfi = xf.column(i);
         }
-        KF_cholesky_update(xfi,Pfi,vi,R,Hfi,xf,Pf,i);
+        KF_cholesky_update(xfi,Pfi,vi,R,Hfi);
+        //TODO: insert xfi into xf, etc
+        for (r=0; r<xf.rows(); r++) {
+            xf(r,i) = xfi(r);
+        }
+        Pf[i] = Pfi; 
     }
-    //TODO: finish this
+
+    particle.setXf(xf);
+    particle.setPf(Pf);
 }

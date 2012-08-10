@@ -1,6 +1,6 @@
 #include "KF_cholesky_update.h"
 
-void KF_cholesky_update(VectorXf x,MatrixXf P,VectorXf v,MatrixXf R,MatrixXf H,MatrixXf xf,MatrixXf *Pf,int i)
+void KF_cholesky_update(VectorXf &x, MatrixXf &P,VectorXf v,MatrixXf R,MatrixXf H)
 {
     MatrixXf PHt = P*H.transpose();
     MatrixXf S = H*PHt + R;
@@ -14,8 +14,7 @@ void KF_cholesky_update(VectorXf x,MatrixXf P,VectorXf v,MatrixXf R,MatrixXf H,M
     MatrixXf W1 = PHt * SCholInv;
     MatrixXf W = W1 * SCholInv.transpose();
 
-    //TODO : xf(:,idf) = x + W*v; //update
-    //TODO: Pf(:,:,i) = P - W1*W1.transpose(); 
-
-    //TODO particle.xf()
+    //TODO: last three lines 
+    x = x + W*v;
+    P = P - W1*W1.transpose();
 }
