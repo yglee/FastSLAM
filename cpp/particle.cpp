@@ -1,5 +1,6 @@
 #include <iostream>
 #include "particle.h"
+#include <algorithm>
 
 /*************
 ** Particle

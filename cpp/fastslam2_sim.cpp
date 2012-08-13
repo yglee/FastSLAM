@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <vector>
 
 #include "fastslam2_sim.h"
 #include "particle.h"
@@ -16,6 +17,7 @@
 #include "resample_particles.h"
 
 using namespace config;
+using namespace std;
 
 void fastslam2_sim(MatrixXf lm, MatrixXf wp) 
 {
@@ -34,10 +36,12 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     float veh[2][3] = {{0,-WHEELBASE,-WHEELBASE},{0,-1,1}};
 
-    Particle *particles = new Particle[NPARTICLES];
-    float uniformw = 1.0/(float)NPARTICLES;    
+    //Particle *particles = new Particle[NPARTICLES];
+   	vector<Particle> particles(NPARTICLES);
+
+	float uniformw = 1.0/(float)NPARTICLES;    
     for (unsigned int p = 0; p < NPARTICLES; p++) {
-        particles[p].setW(uniformw);
+		particles[p].setW(uniformw);
     }
     VectorXf xtrue(3);
     xtrue.setZero();
@@ -118,23 +122,28 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
             vector<int> idf;
             MatrixXf zn(z.rows(),z.cols());
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
-
-            //observe map features
+            
+			//observe map features
             if (!zf.isZero()) {
-                
                 //sample from 'optimal' proposal distribution, then update map
                 for (int i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
                     feature_update(particles[i],zf,idf,Re);
                 }
-                
                 //resample
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
             }
 
             //Observe new features, augment map
             if (!zn.isZero()) {
-               //TODO 
+				for (int i=0; i<NPARTICLES; i++) {
+					if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
+						particles[i].setXv(multivariate_gauss(particles[i].xv(), 
+															  particles[i].Pv(),1));		
+						particles[i].setPv(MatrixXf(3,3)); //TODO: double check
+					}
+					add_feature(particles[i], zn, Re);	
+				}
             }
         }
     }		

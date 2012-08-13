@@ -1,4 +1,7 @@
 #include "feature_update.h"
+#include <iostream>
+
+using namespace std;
 
 void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
 {
@@ -16,12 +19,12 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
         Pf[i] = (particle.Pf())[idf[i]]; //particle.Pf is a array of matrices
     }
 
-    MatrixXf zp;
+    MatrixXf zp(2,idf.size());//idf.size is zero...
     MatrixXf *Hv;
     MatrixXf *Hf;
     MatrixXf *Sf;
     compute_jacobians(particle,idf,R,zp,Hv,Hf,Sf);
-    MatrixXf v = z-zp;
+	MatrixXf v = z-zp; //TODO: need to fix: idf.size() is zero. which makes this break.
 
     unsigned c;
     for (c=0; c<v.cols();c++) {

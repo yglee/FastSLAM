@@ -1,5 +1,4 @@
 #include "stratified_random.h"
-#include <vector>
 #include <assert.h>
 #include <iostream>
 

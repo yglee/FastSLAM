@@ -2,44 +2,51 @@
 #include <Eigen/Cholesky>
 #include <stdio.h>
 #include <iostream>
+#include "particle.h"
+#include <vector>
 
 using namespace std;
 using namespace Eigen;
 
-void helper(MatrixXf *t) {
-	MatrixXf A(2,2);
-	A<<1.0,2.0,1.0,2.0;
-	
-	*t = A;
+void test(Particle **a) 
+{
+	Particle *particles2 = new Particle[4];
+	for (int i =0; i< 4; i++) {
+		particles2[i].x = 1;
+	}
+	*a = particles2;
 }
+
 
 int main (int argc, char*argv[]) 
 {
 
-	MatrixXf A(3,5);
-	A << 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15;
-	cout<<"A"<<endl;
-	cout<<A<<endl;
+	Particle *particles = new Particle[10];
 
-	A.conservativeResize(3,3);
-	cout<<"A resized"<<endl;
-	cout<<A<<endl;
+	for (int j=0;j< 10; j++) {
+		particles[j].x = 2;
+	}
 
-#if 0
-	MatrixXf L = S.llt().matrixL();
+	for (int k=0; k<20; k++) {
+		cout<<particles[k].x<<" ";
+	}
+	cout<<" "<<endl;	
+		
+	test(&particles);
 
-	cout << "The Cholesky factor L is" << endl << L << endl;
-	cout << "To check this, let us compute L * L.transpose()" << endl;
-	cout << L * L.transpose() << endl;
-	cout<< "complex conjugate"<<endl;
-	MatrixXf A = L.transpose();
-	cout<< A * A.transpose() << endl;
-	cout << "This should equal the matrix S" << endl;	
+	for (int m=0; m<10; m++) {
+		cout<<particles[m].x<<" ";
+	}	
+	
+	cout<<" "<<endl;	
 
-        Vector3f vec;
-        vec << 1,2,3;
-        
-        cout<<"A is "<<endl;
-        cout<<vec<<endl;
-#endif
+	vector<Particle> newPart(3);
+	newPart[2].x = 300;
+	cout<<newPart[0].x<<" " <<newPart[1].x<<endl;
+
+	vector<Particle> oldPart = vector<Particle>(newPart);
+	newPart[2].x = 1000;
+	oldPart[2].x = 500;
+	cout<<oldPart[2].x<<endl;
+	cout<<newPart[2].x<<endl;
 }

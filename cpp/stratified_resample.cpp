@@ -1,6 +1,7 @@
 #include "stratified_resample.h"
+#include "stratified_random.h"
 
-void stratified_resample(VectorXf w, VectorXf &keep, float &Neff)
+void stratified_resample(VectorXf w, vector<int> &keep, float &Neff)
 {
     VectorXf wsqrd;
     for (int i=0; i<w.size(); i++) {
@@ -11,13 +12,28 @@ void stratified_resample(VectorXf w, VectorXf &keep, float &Neff)
     int len = w.size();
     vector<float> select;
     stratified_random(len,select); 
-    
-    //implement cumsum
+	cumsum(w);    
+
+	int ctr=0;
+	for (int i=0; i<len; i++) {
+		while ((ctr<len) && (select[ctr] < w(i))) {
+			keep.push_back(i);
+		}
+	}
 }
 
 //
 //returns a cumulative sum array
 //
-VectorXf cumsum(VectorXf w) 
+void cumsum(VectorXf &w) 
 {
+	VectorXf csumVec(w.size());
+	for (int i=0; i< w.size(); i++) {
+		float sum =0;
+		for (int j=0; j<i; j++) {
+			sum+=w(j);
+		}			
+		csumVec(i) = sum;
+	}
+	w = VectorXf(csumVec); //copy constructor. Double check
 }
