@@ -9,6 +9,15 @@ void stratified_resample(VectorXf w, VectorXf &keep, float &Neff)
     }
     Neff = 1/wsqrd.sum();
     int len = w.size();
+    vector<float> select;
     stratified_random(len,select); 
-    //TODO
+    
+    //implement cumsum
+}
+
+//
+//returns a cumulative sum array
+//
+VectorXf cumsum(VectorXf w) 
+{
 }

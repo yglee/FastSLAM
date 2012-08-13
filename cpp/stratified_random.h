@@ -5,6 +5,7 @@
 
 using namespace Eigen;
 
-void stratified_random();
+void stratified_random(int N, vector<float> &di);
+double unifRand();
 
 #endif

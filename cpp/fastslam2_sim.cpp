@@ -13,6 +13,7 @@
 #include "data_associate_known.h"
 #include "sample_proposal.h"
 #include "feature_update.h"
+#include "resample_particles.h"
 
 using namespace config;
 
