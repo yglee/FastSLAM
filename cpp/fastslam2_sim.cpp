@@ -15,6 +15,8 @@
 #include "sample_proposal.h"
 #include "feature_update.h"
 #include "resample_particles.h"
+#include "add_feature.h"
+
 
 using namespace config;
 using namespace std;
@@ -136,14 +138,14 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
             //Observe new features, augment map
             if (!zn.isZero()) {
-				for (int i=0; i<NPARTICLES; i++) {
-					if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
-						particles[i].setXv(multivariate_gauss(particles[i].xv(), 
-															  particles[i].Pv(),1));		
-						particles[i].setPv(MatrixXf(3,3)); //TODO: double check
-					}
-					add_feature(particles[i], zn, Re);	
-				}
+                for (int i=0; i<NPARTICLES; i++) {
+                    if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
+                        particles[i].setXv(multivariate_gauss(particles[i].xv(), 
+                                    particles[i].Pv(),1));		
+                        particles[i].setPv(MatrixXf(3,3)); //TODO: double check
+                    }
+                    add_feature(particles[i], zn, Re);	
+                }
             }
         }
     }		
