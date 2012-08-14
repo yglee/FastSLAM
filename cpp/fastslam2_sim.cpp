@@ -38,11 +38,11 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     float veh[2][3] = {{0,-WHEELBASE,-WHEELBASE},{0,-1,1}};
 
     //Particle *particles = new Particle[NPARTICLES];
-   	vector<Particle> particles(NPARTICLES);
+    vector<Particle> particles(NPARTICLES);
 
-	float uniformw = 1.0/(float)NPARTICLES;    
+    float uniformw = 1.0/(float)NPARTICLES;    
     for (unsigned int p = 0; p < NPARTICLES; p++) {
-		particles[p].setW(uniformw);
+        particles[p].setW(uniformw);
     }
     VectorXf xtrue(3);
     xtrue.setZero();
@@ -118,20 +118,22 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             //compute (known) data associations
             MatrixXf xfvar = particles[0].xf();
             int Nf = xfvar.cols();
-			vector<int> idf;
-            
-			MatrixXf zf(z.rows(),z.cols());
+            vector<int> idf;
+
+            MatrixXf zf(z.rows(),z.cols());
             zf.setZero();
-			MatrixXf zn(z.rows(),z.cols());
+            MatrixXf zn(z.rows(),z.cols());
             zn.setZero();
 
-			data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
-            
-			//observe map features
+            data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
+
+            //observe map features
             if (!zf.isZero()) {
-                //sample from 'optimal' proposal distribution, then update map
+                //isample from 'optimal' proposal distribution, then update map
                 for (unsigned i=0; i<NPARTICLES; i++) {
+                    cout<<"in fastslam2"<<endl;
                     sample_proposal(particles[i], zf, idf, Re);
+                    cout<<"after sample_proposal"<<endl;
                     feature_update(particles[i],zf,idf,Re);
                 }
                 //resample
@@ -142,20 +144,20 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             if (!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
-						VectorXf xv = multivariate_gauss(particles[i].xv(),
-										particles[i].Pv(),1);
-						particles[i].setXv(xv);
-						MatrixXf pv(3,3); 
-						pv.setZero();
+                        VectorXf xv = multivariate_gauss(particles[i].xv(),
+                                particles[i].Pv(),1);
+                        particles[i].setXv(xv);
+                        MatrixXf pv(3,3); 
+                        pv.setZero();
                         particles[i].setPv(pv); //TODO: double check
                     }
                     add_feature(particles[i], zn, Re);	
                 }
             }
         }
-		delete[] VnGn;
+        delete[] VnGn;
     }
-	return particles;
+    return particles;
 }
 
 MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 

@@ -8,7 +8,12 @@
 using namespace std;
 using namespace Eigen;
 
-void compute_jacobians(Particle particle, vector<int> idf, MatrixXf R, \
-                       MatrixXf &zp, MatrixXf *Hv, MatrixXf *Hf, MatrixXf *Sf);
+void compute_jacobians(Particle particle, 
+                        vector<int> idf, 
+                        MatrixXf R,
+                        MatrixXf &zp, 
+                        vector<MatrixXf> *Hv, 
+                        vector<MatrixXf> *Hf, 
+                        vector<MatrixXf> *Sf);
 
 #endif //COMPUTE_JACOBIANS_H

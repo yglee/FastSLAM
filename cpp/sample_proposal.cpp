@@ -6,14 +6,14 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 {
     VectorXf xv = particle.xv();
     MatrixXf Pv = particle.Pv();
-    VectorXf xv0 = VectorXf(xv);
-    MatrixXf Pv0 = MatrixXf(Pv);	
+    VectorXf xv0(xv);
+    MatrixXf Pv0(Pv);	
 
-    MatrixXf *Hv;
-    MatrixXf *Hf;
-    MatrixXf *Sf;
+    vector<MatrixXf> Hv;
+    vector<MatrixXf> Hf;
+    vector<MatrixXf> Sf;
 
-    MatrixXf zpi;
+    MatrixXf zpi(2,1);
     MatrixXf Hvi;
     MatrixXf Hfi;
     MatrixXf Sfi;
@@ -25,10 +25,20 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     for (i =0; i<idf.size(); i++) {
         vector<int> j;
         j.push_back(idf[i]);
-        compute_jacobians(particle,j,R,zpi,Hv,Hf,Sf);
+        compute_jacobians(particle,j,R,zpi,&Hv,&Hf,&Sf);
+        cout<<"after compute-jacobians"<<endl;
+        cout<<Hvi<<endl;
+        cout<<Hv[i]<<endl; //TODO: this is empty.
         Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
+
+        cout<<"Hvi"<<endl;
+        cout<<Hvi<<endl;
+        cout<<"Hfi"<<endl;
+        cout<<Hfi<<endl;
+        cout<<"Sfi"<<endl;
+        cout<<Sfi<<endl;
 
         vi<<1,2;
         //vi = z.conservativeResize(z.rows(),1) - zpi;
@@ -62,9 +72,9 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
     float w = 1;
     vector<int> temp;
 
-    MatrixXf *Hv;
-    MatrixXf *Hf;
-    MatrixXf *Sf;
+    vector<MatrixXf> Hv;
+    vector<MatrixXf> Hf;
+    vector<MatrixXf> Sf;
 
     MatrixXf zp;
     MatrixXf Hvi;
@@ -76,7 +86,7 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
     unsigned i,k;
     for (i=0; i<idf.size(); i++){
         temp.push_back(i);
-        compute_jacobians(particle, temp, R, zp, Hv, Hf, Sf);
+        compute_jacobians(particle,temp,R,zp,&Hv,&Hf,&Sf);
         Hvi = Hv[0]; 
         Hfi = Hf[0]; 
         Sfi = Sf[0];

@@ -20,11 +20,11 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     }
 
     MatrixXf zp(2,idf.size());//idf.size is zero...
-    MatrixXf *Hv;
-    MatrixXf *Hf;
-    MatrixXf *Sf;
+    vector<MatrixXf> *Hv;
+    vector<MatrixXf> *Hf;
+    vector<MatrixXf> *Sf;
     compute_jacobians(particle,idf,R,zp,Hv,Hf,Sf);
-	MatrixXf v = z-zp; //TODO: need to fix: idf.size() is zero. which makes this break.
+    MatrixXf v = z-zp; //TODO: need to fix: idf.size() is zero. which makes this break.
 
     unsigned c;
     for (c=0; c<v.cols();c++) {
@@ -40,7 +40,7 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
         for (r=0; r<v.rows(); r++) {
             vi(r) = v(r,i); //v.column(i);
         }
-        Hfi = Hf[i];  
+        Hfi = (*Hf)[i];  
         Pfi = Pf[i];
         for (r=0; r<xf.rows(); r++) {
             xfi(r) = xf(r,i); //xfi = xf.column(i);
