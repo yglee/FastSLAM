@@ -10,7 +10,7 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
     w.resize(N);
 
     float ws=0;
-    int i;    
+    unsigned i;    
     for (i=0; i<N; i++) {
         w(i) = particles[i].w(); 
         ws+=w(i);

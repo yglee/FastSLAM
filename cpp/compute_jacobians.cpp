@@ -10,10 +10,10 @@ void compute_jacobians(Particle particle, vector<int> idf, MatrixXf R, \
 
     int rows = (particle.xf()).rows();
     MatrixXf xf(rows,idf.size());    
-    MatrixXf *Pf;
+    vector<MatrixXf> Pf;
 
-    for (int i=0; i<idf.size(); i++) {
-        for (int r=0; r<(particle.xf()).rows(); r++) {
+    for (unsigned i=0; i<idf.size(); i++) {
+        for (unsigned r=0; r<(particle.xf()).rows(); r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	
         }
         Pf[i] = (particle.Pf())[idf[i]]; //particle.Pf is a array of matrices

@@ -4,8 +4,9 @@
 void data_associate_known(MatrixXf z, vector<int> idz, VectorXf &table, int Nf, \
 						  MatrixXf &zf, vector<int> &idf, MatrixXf &zn) 
 {
-	unsigned int i,ii,r;
-	vector<int> idn;  
+	unsigned i,ii,r;
+	vector<int> idn;
+  
 	for (i =0; i< idz.size(); i++){
 		ii = idz[i];
 		if (table(ii) ==0) {
@@ -20,7 +21,8 @@ void data_associate_known(MatrixXf z, vector<int> idz, VectorXf &table, int Nf, 
 			} 
 			idf.push_back(table(ii));
 		}	
-	}	
+	}
+
 	//add new feature IDs to lookup table
 	vector<int> counter;
 	for (unsigned int c=0; c<zn.cols(); c++) {

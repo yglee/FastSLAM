@@ -12,7 +12,7 @@ float gauss_evaluate(VectorXf v, MatrixXf S, int logflag)
     //normalised innovations
     VectorXf nin = Sc.jacobiSvd(ComputeThinU | ComputeThinV).solve(v);
 
-    unsigned s;
+    int s;
     //VectorXf E(nin.cols());
     float E=0;
     for (s=0; s<nin.size(); s++) {

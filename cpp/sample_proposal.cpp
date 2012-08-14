@@ -20,8 +20,6 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 
     MatrixXf vi(z.rows(),1);
 
-    cout<<"Sample Proposal: Pf -  "<<particle.Pf()<<endl;
-
     //process each feature, incrementally refine proposal distribution
     unsigned i;
     for (i =0; i<idf.size(); i++) {
@@ -31,9 +29,6 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
-
-        cout<<"z rows: "<<z.rows()<<" z cols: "<<z.cols()<<endl;
-        cout<<"zpi rows: "<<zpi.rows()<<" z cols: "<<zpi.cols()<<endl;
 
         vi<<1,2;
         //vi = z.conservativeResize(z.rows(),1) - zpi;

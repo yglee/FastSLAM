@@ -28,8 +28,9 @@ void get_visible_landmarks(VectorXf x, MatrixXf &lm, vector<int> &idf, float rma
 	MatrixXf lm_new (lm.rows(), ii.size());
 	vector<int>::iterator iter;
 
-	for (int j=0; j<lm.rows(); j++){
-		for(int k=0; k< ii.size(); k++){
+	unsigned j,k;
+	for (j=0; j<lm.rows(); j++){
+		for(k=0; k< ii.size(); k++){
 			lm_new(j,k) = lm(j,ii[k]);
 		}
 	}

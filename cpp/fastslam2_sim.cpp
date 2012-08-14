@@ -89,7 +89,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
         }
         predict_true(xtrue,V,G,WHEELBASE,dt);
 
-        //add process noise noise
+        //add process noise
         //TODO: need to truly randomize function in multivariate_gauss
         float* VnGn = new float[2];
         add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
@@ -118,11 +118,14 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             //compute (known) data associations
             MatrixXf xfvar = particles[0].xf();
             int Nf = xfvar.cols();
+			vector<int> idf;
+            
+			MatrixXf zf(z.rows(),z.cols());
+            zf.setZero();
+			MatrixXf zn(z.rows(),z.cols());
+            zn.setZero();
 
-            MatrixXf zf(z.rows(),z.cols());
-            vector<int> idf;
-            MatrixXf zn(z.rows(),z.cols());
-            data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
+			data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
             
 			//observe map features
             if (!zf.isZero()) {
@@ -139,9 +142,12 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             if (!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
-                        particles[i].setXv(multivariate_gauss(particles[i].xv(), 
-                                    particles[i].Pv(),1));		
-                        particles[i].setPv(MatrixXf(3,3)); //TODO: double check
+						VectorXf xv = multivariate_gauss(particles[i].xv(),
+										particles[i].Pv(),1);
+						particles[i].setXv(xv);
+						MatrixXf pv(3,3); 
+						pv.setZero();
+                        particles[i].setPv(pv); //TODO: double check
                     }
                     add_feature(particles[i], zn, Re);	
                 }

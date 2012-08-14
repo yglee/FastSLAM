@@ -77,7 +77,7 @@ void read_input_file(const string s, MatrixXf *lm, MatrixXf *wp)
 					exit(EXIT_FAILURE);
 				}
 				
-				for (int r=0; r< lm_rows; r++) {
+				for (unsigned r=0; r< lm_rows; r++) {
 					(*lm)(r,c) = strtof(tokens[r].c_str(),NULL);				
 				}				
 			}

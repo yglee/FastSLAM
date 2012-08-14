@@ -9,9 +9,9 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
 
     int rows = (particle.xf()).rows();
     MatrixXf xf(rows,idf.size());    
-    MatrixXf *Pf;
+    vector<MatrixXf> Pf;
 
-    int i,r; 
+    unsigned i,r; 
     for (i=0; i<idf.size(); i++) {
         for (r=0; r<(particle.xf()).rows(); r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	

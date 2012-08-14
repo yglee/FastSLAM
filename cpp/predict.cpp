@@ -9,7 +9,9 @@ using namespace std;
 void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, int addrandom)
 {
 	VectorXf xv = particle.xv();
+	xv.setZero();
 	MatrixXf Pv = particle.Pv();
+	Pv.setZero();
 	
 	//Jacobians
 	float phi = xv(2);
@@ -24,7 +26,8 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 	
 	//predict covariance
 	MatrixXf newPv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();
-        particle.setPv(newPv);		
+	particle.setPv(newPv);		
+	
 	//optional: add random noise to predicted state
 	if (addrandom ==1) {
 		VectorXf A(2);
