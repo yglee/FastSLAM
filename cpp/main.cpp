@@ -5,9 +5,10 @@
 #include <errno.h>
 #include <string>
 #include <vector>
-
 #include <Eigen/Dense>
+
 #include "fastslam2_sim.h"
+#include "particle.h"
 
 using namespace Eigen;
 using namespace std;
@@ -131,5 +132,5 @@ int main (int argc, char *argv[])
 	MatrixXf wp;
 
 	read_input_file("example_webmap.mat", &lm, &wp);
-	fastslam2_sim(lm,wp);
+	vector<Particle> data = fastslam2_sim(lm,wp);
 }

@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "fastslam2_sim.h"
-#include "particle.h"
 #include "add_control_noise.h"
 #include "predict.h"
 #include "observe_heading.h"
@@ -21,7 +20,7 @@
 using namespace config;
 using namespace std;
 
-void fastslam2_sim(MatrixXf lm, MatrixXf wp) 
+vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp) 
 {
     if (SWITCH_PREDICT_NOISE) {
         printf("Sampling from predict noise usually OFF for FastSLAM 2.0\n");	
@@ -52,7 +51,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
     float dtsum = 0; //change in time since last observation
     vector<int> ftag;
 
-    for (unsigned i=0; i< lm.cols(); i++) {
+    for (int i=0; i< lm.cols(); i++) {
         ftag.push_back(i); //ftag items are indexed from 1
     }
 
@@ -128,7 +127,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 			//observe map features
             if (!zf.isZero()) {
                 //sample from 'optimal' proposal distribution, then update map
-                for (int i=0; i<NPARTICLES; i++) {
+                for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
                     feature_update(particles[i],zf,idf,Re);
                 }
@@ -138,7 +137,7 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
             //Observe new features, augment map
             if (!zn.isZero()) {
-                for (int i=0; i<NPARTICLES; i++) {
+                for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
                         particles[i].setXv(multivariate_gauss(particles[i].xv(), 
                                     particles[i].Pv(),1));		
@@ -148,7 +147,9 @@ void fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 }
             }
         }
-    }		
+		delete[] VnGn;
+    }
+	return particles;
 }
 
 MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 
@@ -161,7 +162,7 @@ MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv)
     MatrixXf lnes(4,len);
 
     MatrixXf globalMat(2,rb.cols());
-    int i,j;
+    int j;
     for (j=0; j<globalMat.cols();j++) {
         globalMat(0,j) = rb(0,j)*cos(rb(1,j));
         globalMat(1,j) = rb(0,j)*sin(rb(1,j));   	
