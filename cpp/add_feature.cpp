@@ -50,14 +50,16 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
 	//TODO: WARNING: xfcopy is empty at this point
 	vector<MatrixXf> pfcopy(particle.Pf());  
 
-	for (unsigned c=0; c<ii.size(); c++) {		
-		for (unsigned r=0; r<xf.rows(); r++) {	
-			cout<<"xfcopy(r:"<<r<<" ii["<<c<<"]:"<<ii[c]<<")"<<endl;
-			
-			xfcopy(r,ii[c]) = xf(r,c); 
-		}	
+	for (unsigned c=0; c<ii.size(); c++) {
+                if (xfcopy.isZero()) {
+                    xfcopy = xf;
+                } else {		
+                    for (unsigned r=0; r<xf.rows(); r++) {	
+		    	xfcopy(r,ii[c]) = xf(r,c); 
+		    }
+                }	
 		if (pfcopy.empty()) {
-			pfcopy(Pf);
+			pfcopy = Pf;
 		} else {	
 			pfcopy[ii[c]] = Pf[c];	
 		}
