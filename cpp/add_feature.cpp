@@ -28,43 +28,33 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
 		xf(1,i) = xv(1) + r*s;
 		Gz <<c,-r*s,s,r*c;
 	
-		cout<<"Gz"<<endl;
-		cout<<Gz<<endl;
-		cout<<"R"<<endl;	
-		cout<<R<<endl;	
-
 		Pf.push_back(Gz*R*Gz.transpose()); 	
-		cout<<"Pf[0]"<<endl;
-		cout<<Pf[0]<<endl;
 	}
 
 	int lenx = particle.xf().cols();
 	vector<int> ii;
 	for (int i=lenx; i<lenx+lenz; i++) {
 		ii.push_back(i);
-		cout<<"i = "<<i<<endl;
 	}	
 
-	//copy out the xf and Pv matrices so I can modify it.
-	MatrixXf xfcopy = particle.xf();	
-	//TODO: WARNING: xfcopy is empty at this point
-	vector<MatrixXf> pfcopy(particle.Pf());  
+	MatrixXf xfCopy = particle.xf();	
+	vector<MatrixXf> pfCopy(particle.Pf());  
 
 	for (unsigned c=0; c<ii.size(); c++) {
-                if (xfcopy.isZero()) {
-                    xfcopy = xf;
-                } else {		
-                    for (unsigned r=0; r<xf.rows(); r++) {	
-		    	xfcopy(r,ii[c]) = xf(r,c); 
-		    }
-                }	
-		if (pfcopy.empty()) {
-			pfcopy = Pf;
+		if (xfCopy.isZero()) {
+			xfCopy = xf;
+		} else {			
+			for (unsigned r=0; r<xf.rows(); r++) {	
+				xfCopy(r,ii[c]) = xf(r,c); 
+			}
+		}	
+		if (pfCopy.empty()) {
+			pfCopy = Pf;
 		} else {	
-			pfcopy[ii[c]] = Pf[c];	
+			pfCopy[ii[c]] = Pf[c];	
 		}
 	}
-	
-	particle.setXf(xfcopy);
-	particle.setPf(pfcopy);
+
+	particle.setXf(xfCopy);
+	particle.setPf(pfCopy);
 }

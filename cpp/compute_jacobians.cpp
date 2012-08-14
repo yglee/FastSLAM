@@ -16,7 +16,7 @@ void compute_jacobians(Particle particle, vector<int> idf, MatrixXf R, \
         for (unsigned r=0; r<(particle.xf()).rows(); r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	
         }
-        Pf[i] = (particle.Pf())[idf[i]]; //particle.Pf is a array of matrices
+        Pf.push_back((particle.Pf())[idf[i]]); //particle.Pf is a array of matrices
     }
 
     float dx,dy,d2,d;
@@ -33,6 +33,8 @@ void compute_jacobians(Particle particle, vector<int> idf, MatrixXf R, \
         //predicted observation
         zp(0,i) = d;
         zp(1,i) = atan2(dy,dx) - xv(2);
+
+		cout<<"zp(1,"<<i<<")) "<<zp(1,i)<<endl;
         zp(1,i) = pi_to_pi(zp(1,i));
 
         //Jacobian wrt vehicle states
