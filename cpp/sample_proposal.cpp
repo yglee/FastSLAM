@@ -22,12 +22,12 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 
     MatrixXf vi(z.rows(),1);
 
-	cout<<"Pv in sample_proposal"<<endl;
-	cout<<Pv<<endl;
-	cout<<"should be 1.0e-04 * "<<endl; 
-	cout<<"          0.5041 -0.0236 -0.0056"<<endl;
-	cout<<"          -0.0236 0.01992 0.0459"<<endl;
-	cout<<"          -0.0056 0.0459 0.0106"<<endl;
+    cout<<"Pv in sample_proposal"<<endl;
+    cout<<Pv<<endl;
+    cout<<"should be 1.0e-04 * "<<endl; 
+    cout<<"          0.5041 -0.0236 -0.0056"<<endl;
+    cout<<"          -0.0236 0.01992 0.0459"<<endl;
+    cout<<"          -0.0056 0.0459 0.0106"<<endl;
 	
     //process each feature, incrementally refine proposal distribution
     unsigned i;
@@ -35,10 +35,11 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         vector<int> j;
         j.push_back(idf[i]);
         compute_jacobians(particle,j,R,zpi,&Hv,&Hf,&Sf);
-		//Break here
-		cout<<Pv(10,10)<<endl;
+	
+        //Break break code
+	cout<<Pv(10,10)<<endl;
 
-		Hvi = Hv[i];
+	Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
 
@@ -50,9 +51,9 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         cout<<Hvi<<endl;
         cout<<"Hvi.transpose()"<<endl;
         cout<<Hvi.transpose()<<endl;
-		cout<<"Sfi"<<endl;
-		cout<<Sfi<<endl;
-		//TODO: fix: Pv.inverse is Nan - use a pseudo inverse..
+	cout<<"Sfi"<<endl;
+	cout<<Sfi<<endl;
+	//TODO: fix: Pv.inverse is Nan - use a pseudo inverse..
 #if 0
         cout<<"Hfi"<<endl;
         cout<<Hfi<<endl;
@@ -66,13 +67,13 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 		cout<<vi<<endl;
 #endif
 
-		MatrixXf PvInv(Pv);
-		bool x = pseudoInverse<MatrixXf>(Pv, PvInv);
-		cout<<"succes? "<<x<<endl;
-		cout<<"pseudo inverse"<<endl;
-		cout<<PvInv<<endl;
-		
-		//proposal covariance
+	MatrixXf PvInv(Pv);
+	bool x = pseudoInverse<MatrixXf>(Pv, PvInv);
+	cout<<"succes? "<<x<<endl;
+	cout<<"pseudo inverse"<<endl;
+    	cout<<PvInv<<endl;
+	
+	//proposal covariance
         Pv = Hvi.transpose() * Sfi * Hvi + PvInv;//Pv.inverse();
         Pv = Pv.inverse();
 

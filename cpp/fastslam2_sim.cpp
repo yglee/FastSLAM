@@ -102,60 +102,60 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             observe_heading(particles[i], xtrue(2), SWITCH_HEADING_KNOWN); //if heading known, observe heading
         }
 
-		#if 0
-		cout<<"inside fastslam2"<<endl;
-		cout<<"particle count: "<<particles.size()<<endl;
-		cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
-		cout<<"xv: "<<particles[0].xv()<<" "<<"should be 0.0824, 0.0036, 0.0009"<<endl;
-		cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be 1.0e-0.4 *[0.5618, 0.0164, 0.0041; 0.0164, 0.1873, 0.0468; 0.0041, 0.0468, 0.0117]" <<endl;
-		cout<<"xf: "<<particles[0].xf()<<" "<<"should be empty"<<endl;
-	   	//cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
-		//cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
-        #endif
+#if 0
+        cout<<"inside fastslam2"<<endl;
+        cout<<"particle count: "<<particles.size()<<endl;
+        cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
+        cout<<"xv: "<<particles[0].xv()<<" "<<"should be 0.0824, 0.0036, 0.0009"<<endl;
+        cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be 1.0e-0.4 *[0.5618, 0.0164, 0.0041; 0.0164, 0.1873, 0.0468; 0.0041, 0.0468, 0.0117]" <<endl;
+        cout<<"xf: "<<particles[0].xf()<<" "<<"should be empty"<<endl;
+        //cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
+        //cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
+#endif
 
-		//observe step
+        //observe step
         dtsum = dtsum+dt;	
         if (dtsum >= DT_OBSERVE) {
             dtsum=0;
 
             //compute true data, then add noise
             ftag_visible = vector<int>(ftag); //modify the copy, not the ftag	
-			z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
-            #if 0
-			cout<<"ftag"<<endl;
-			vector<int>::iterator iter;
-			for (iter =ftag.begin(); iter!=ftag.end(); iter++) {
-				cout<<(*iter)<<" ";
-			}
-			cout<<endl;	
+            z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
+#if 0
+            cout<<"ftag"<<endl;
+            vector<int>::iterator iter;
+            for (iter =ftag.begin(); iter!=ftag.end(); iter++) {
+                cout<<(*iter)<<" ";
+            }
+            cout<<endl;	
 
-			//z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
-			cout<<"ftag_visible"<<endl;
-			vector<int>::iterator iter2;
-			for (iter2 =ftag_visible.begin(); iter2!=ftag_visible.end(); iter2++) {
-				cout<<(*iter2)<<" ";
-			}
-			cout<<endl;
-			cout<<"ftag_visible should be 0,21"<<endl;	
-			
-			//TODO:commented out for testing
+            //z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
+            cout<<"ftag_visible"<<endl;
+            vector<int>::iterator iter2;
+            for (iter2 =ftag_visible.begin(); iter2!=ftag_visible.end(); iter2++) {
+                cout<<(*iter2)<<" ";
+            }
+            cout<<endl;
+            cout<<"ftag_visible should be 0,21"<<endl;	
+
+            //TODO:commented out for testing
             //add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
             cout<<"get_observations returns z: "<<endl;
-			cout<<z<<endl;
-			cout<<"z should be [25.7745 25.2762; -1.4734,0.1384]"<<endl;
-			#endif
+            cout<<z<<endl;
+            cout<<"z should be [25.7745 25.2762; -1.4734,0.1384]"<<endl;
+#endif
 
-			if(!z.isZero()){
+            if(!z.isZero()){
                 plines = make_laser_lines(z,xtrue);
             }
 
-			#if 0
-			cout<<"plines "<<endl;
-			cout<<plines<<endl;
-			cout<<"plines should be [0.6741, 2.9922, Nan, 0.6741, 25.7446; -0.0309,-25.7009,Nan, -0.0309, 3.2710]"<<endl;
-            #endif
-			
-			//compute (known) data associations
+#if 0
+            cout<<"plines "<<endl;
+            cout<<plines<<endl;
+            cout<<"plines should be [0.6741, 2.9922, Nan, 0.6741, 25.7446; -0.0309,-25.7009,Nan, -0.0309, 3.2710]"<<endl;
+#endif
+
+            //compute (known) data associations
             MatrixXf xfvar = particles[0].xf();
             int Nf = xfvar.cols();
             vector<int> idf;
@@ -167,61 +167,66 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
 
-			#if 0
-			cout<<"zf "<<zf<<endl;
-			cout<<"zf should be empty"<<endl;
-					
-			cout<<"idf";	
-			vector<int>::iterator iter;
-			for (iter=idf.begin(); iter!=idf.end(); iter++) {
-				cout<<(*iter)<<" ";
-			}
-			cout<<endl;
-			cout<<"idf should be empty"<<endl;
+#if 0
+            cout<<"zf "<<zf<<endl;
+            cout<<"zf should be empty"<<endl;
 
-			cout<<"zn"<<endl;
-			cout<<zn<<endl;
-			cout<<"zn should be [25.7745, 25.2762; -1.4734, 0.1384]"<<endl;
+            cout<<"idf";	
+            vector<int>::iterator iter;
+            for (iter=idf.begin(); iter!=idf.end(); iter++) {
+                cout<<(*iter)<<" ";
+            }
+            cout<<endl;
+            cout<<"idf should be empty"<<endl;
 
-			cout<<"da_table"<<endl;
-			cout<<da_table<<endl;
-			//cout<<"da_table[0] = "<<da_table[0]<<" da_table[21]="<<da_table[21]<<endl;
-			cout<<"da_table should be all zero except 0 at index 0, 1 at index 21"<<endl;
-		
-            #endif
-			
-			//observe map features
+            cout<<"zn"<<endl;
+            cout<<zn<<endl;
+            cout<<"zn should be [25.7745, 25.2762; -1.4734, 0.1384]"<<endl;
+
+            cout<<"da_table"<<endl;
+            cout<<da_table<<endl;
+            //cout<<"da_table[0] = "<<da_table[0]<<" da_table[21]="<<da_table[21]<<endl;
+            cout<<"da_table should be all zero except 0 at index 0, 1 at index 21"<<endl;
+
+#endif
+
+            //observe map features
             if (!zf.isZero()) {
-				cout<<"zf is "<<endl;
-				cout<<zf<<endl;
-				cout<<"zf should be 25.6305 24.6263"<<endl;
-				cout<<"             -1.4785 0.1662"<<endl;
-		
+                #if 0
+                cout<<"zf is "<<endl;
+                cout<<zf<<endl;
+                cout<<"zf should be 25.6305 24.6263"<<endl;
+                cout<<"             -1.4785 0.1662"<<endl;
+                #endif
                 //isample from 'optimal' proposal distribution, then update map
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
                     cout<<"sample_proposal"<<endl;
-					feature_update(particles[i],zf,idf,Re);
-                	cout<<"feature_update"<<endl;
-				}		
-				cout<<"After sample_proposal and feature_udpate"<<endl;	
-				cout<<"particle count: "<<particles.size()<<endl;
+                    feature_update(particles[i],zf,idf,Re);
+                    cout<<"feature_update"<<endl;
+                }		
+                cout<<"After sample_proposal and feature_udpate"<<endl;	
+                cout<<"particle count: "<<particles.size()<<endl;
                 cout<<"w: "<<particles[0].w()<<" " <<"should be 14.7297"<<endl;
-				cout<<"xv: "<<particles[0].xv()<<endl;
-				cout<<"should be 1.5256"<<endl;
-				cout<<"          -0.0182"<<endl;
-				cout<<"          -0.0052"<<endl;
-				cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
-				cout<<"xf: "<<particles[0].xf()<<endl;
-				cout<<"should be 3.5838, 26.8077; -25.5826,3.7884"<<endl;					
-				cout<<"Pf[0]: "<<particles[0].Pf()[0]<<endl;
-				cout<<"should be [0.0996, 0.0083; 0.0083 0.0057]"<<endl;
-				cout<<"Pf[1]: "<<particles[0].Pf()[1]<<endl;
-				cout<<"should be [0.0069, -0.0129; -0.0129, 0.0925"<<endl;
-				//cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
-				//cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
-				
-				//resample
+                cout<<"xv: "<<particles[0].xv()<<endl;
+                cout<<"should be 1.5256"<<endl;
+                cout<<"          -0.0182"<<endl;
+                cout<<"          -0.0052"<<endl;
+                cout<<endl;
+                cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
+                cout<<"xf: "<<particles[0].xf()<<endl;
+                cout<<"should be 3.5838, 26.8077; -25.5826,3.7884"<<endl;	
+                cout<<endl;				
+                cout<<"Pf[0]: "<<particles[0].Pf()[0]<<endl;
+                cout<<"should be [0.0996, 0.0083; 0.0083 0.0057]"<<endl;
+                cout<<endl;
+                cout<<"Pf[1]: "<<particles[0].Pf()[1]<<endl;
+                cout<<"should be [0.0069, -0.0129; -0.0129, 0.0925"<<endl;
+                cout<<endl;
+                //cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
+                //cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
+
+                //resample
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
             }
 
@@ -230,45 +235,54 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
-                                		particles[i].Pv(),1);
+                                        particles[i].Pv(),1);
 
-						//TODO: xv[0] seems to have an approximation error from chol.
+                        //TODO: xv[0] seems to have an approximation error from chol.
                         particles[i].setXv(xv);
+                        cout<<"xv in fastslam2"<<endl;
+                        cout<<xv<<endl;
+                        cout<<"should be"<<endl;
+                        cout<<"0.7648"<<endl;
+                        cout<<"0.0221"<<endl;
+                        cout<<"0.0050"<<endl;
+                        cout<<endl;
                         MatrixXf pv(3,3); 
                         pv.setZero();
                         particles[i].setPv(pv); 
                     }
-					#if 0
-    				cout<<"After multivar gauss"<<endl;
-					cout<<"particle count: "<<particles.size()<<endl;
-					cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
-					cout<<"xv: "<<particles[0].xv()<<endl;
-					cout<<"should be 0.7648"<<endl;
-					cout<<"          0.0221"<<endl;
-					cout<<"          0.0050"<<endl;
-					cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
-					cout<<"xf: "<<particles[0].xf()<<" "<<"should be empty"<<endl;
-					//cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
-					//cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
-                    
-					add_feature(particles[i], zn, Re);	
-               
-					cout<<"After add_feature"<<endl;
-					cout<<"particle count: "<<particles.size()<<endl;
-					cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
-					cout<<"xv: "<<particles[0].xv()<<endl;
-					cout<<"should be 0.0824"<<endl;
-					cout<<"          0.0036"<<endl;
-					cout<<"          0.0009"<<endl;
-					cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
-					cout<<"xf: "<<particles[0].xf()<<endl;
-					cout<<"should be [3.4011 25.7814; -25.6172 3.6347]"<<endl;
-					cout<<"Pf[0]: "<<particles[0].Pf()[0]<<endl;
-					cout<<"should be [0.2004 0.0196; 0.0196 0.0120"<<endl;
-					cout<<"Pf[1]: "<<particles[0].Pf()[1]<<endl;
-					cout<<"should be [0.0138 -0.0261; -0.0261 0.1908"<<endl;
-					#endif
-				}
+
+                    add_feature(particles[i], zn, Re);	
+#if 0
+                    cout<<"After multivar gauss"<<endl;
+                    cout<<"particle count: "<<particles.size()<<endl;
+                    cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
+                    cout<<"xv: "<<particles[0].xv()<<endl;
+                    cout<<"should be 0.7648"<<endl;
+                    cout<<"          0.0221"<<endl;
+                    cout<<"          0.0050"<<endl;
+                    cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
+                    cout<<"xf: "<<particles[0].xf()<<" "<<"should be empty"<<endl;
+                    //cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
+                    //cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
+
+                    add_feature(particles[i], zn, Re);	
+
+                    cout<<"After add_feature"<<endl;
+                    cout<<"particle count: "<<particles.size()<<endl;
+                    cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
+                    cout<<"xv: "<<particles[0].xv()<<endl;
+                    cout<<"should be 0.0824"<<endl;
+                    cout<<"          0.0036"<<endl;
+                    cout<<"          0.0009"<<endl;
+                    cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
+                    cout<<"xf: "<<particles[0].xf()<<endl;
+                    cout<<"should be [3.4011 25.7814; -25.6172 3.6347]"<<endl;
+                    cout<<"Pf[0]: "<<particles[0].Pf()[0]<<endl;
+                    cout<<"should be [0.2004 0.0196; 0.0196 0.0120"<<endl;
+                    cout<<"Pf[1]: "<<particles[0].Pf()[1]<<endl;
+                    cout<<"should be [0.0138 -0.0261; -0.0261 0.1908"<<endl;
+#endif
+                }
             }
         }
         delete[] VnGn;
