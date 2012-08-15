@@ -5,6 +5,16 @@
 MatrixXf get_observations(VectorXf x, MatrixXf lm, vector<int> &idf, float rmax)
 {
 	get_visible_landmarks(x,lm,idf,rmax);
+	#if 0
+    cout<<"lm: "<<lm<<endl;
+	cout<<"lm should be [2.9922,25.7336;-25.7009, 3.27100]"<<endl;
+	cout<<"x: "<<x<<endl;
+	cout<<"x should be [0.6741;-0.0309;-0.0074]"<<endl;
+	cout<<"compute_range_bearing returns: "<<endl;
+	MatrixXf temp = compute_range_bearing(x,lm);
+	cout<<temp<<endl;
+	cout<<"compute range beearing should be [25.7745,25.2762;-1.4734,0.1384]"<<endl;
+	#endif
 	return compute_range_bearing(x,lm);	
 }
 
@@ -50,7 +60,7 @@ MatrixXf compute_range_bearing(VectorXf x, MatrixXf lm)
 	float phi = x(2);
 	MatrixXf z(2,lm.cols());
 	for (int i =0; i<lm.cols(); i++) {
-		z(0,i) = pow(dx(0,i),2) + pow(dy(0,i),2);		
+		z(0,i) = sqrt(pow(dx(0,i),2) + pow(dy(0,i),2));		
 		z(1,i) = atan2(dy(0,i),dx(0,i)) - phi;	
 	}
 

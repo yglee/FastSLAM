@@ -160,14 +160,13 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             int Nf = xfvar.cols();
             vector<int> idf;
 
-            MatrixXf zf(z.rows(),ftag_visible.size());
+            MatrixXf zf(z.rows(),z.cols());
             zf.setZero();
             MatrixXf zn(z.rows(),ftag_visible.size());
             zn.setZero();
 
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
 
-			#if 0
 			cout<<"zf "<<zf<<endl;
 			cout<<"zf should be empty"<<endl;
 					
@@ -186,42 +185,16 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 			cout<<"da_table"<<endl;
 			cout<<da_table<<endl;
 			//cout<<"da_table[0] = "<<da_table[0]<<" da_table[21]="<<da_table[21]<<endl;
-			cout<<"da_table should be all zero except 0 at index 0, 1 at index 21"<<endl;
+			cout<<"da_table should be all zero except 1 at index 0, 2 at index 21"<<endl;
 		
-            #endif
-			
-			//observe map features
+            //observe map features
             if (!zf.isZero()) {
-				cout<<"zf is "<<endl;
-				cout<<zf<<endl;
-				cout<<"zf should be 25.6305 24.6263"<<endl;
-				cout<<"             -1.4785 0.1662"<<endl;
-		
                 //isample from 'optimal' proposal distribution, then update map
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
-                    cout<<"sample_proposal"<<endl;
-					feature_update(particles[i],zf,idf,Re);
-                	cout<<"feature_update"<<endl;
-				}		
-				cout<<"After sample_proposal and feature_udpate"<<endl;	
-				cout<<"particle count: "<<particles.size()<<endl;
-                cout<<"w: "<<particles[0].w()<<" " <<"should be 14.7297"<<endl;
-				cout<<"xv: "<<particles[0].xv()<<endl;
-				cout<<"should be 1.5256"<<endl;
-				cout<<"          -0.0182"<<endl;
-				cout<<"          -0.0052"<<endl;
-				cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
-				cout<<"xf: "<<particles[0].xf()<<endl;
-				cout<<"should be 3.5838, 26.8077; -25.5826,3.7884"<<endl;					
-				cout<<"Pf[0]: "<<particles[0].Pf()[0]<<endl;
-				cout<<"should be [0.0996, 0.0083; 0.0083 0.0057]"<<endl;
-				cout<<"Pf[1]: "<<particles[0].Pf()[1]<<endl;
-				cout<<"should be [0.0069, -0.0129; -0.0129, 0.0925"<<endl;
-				//cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
-				//cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
-				
-				//resample
+                    feature_update(particles[i],zf,idf,Re);
+                }
+                //resample
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
             }
 
@@ -230,45 +203,14 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
-                                		particles[i].Pv(),1);
-
-						//TODO: xv[0] seems to have an approximation error from chol.
+                                particles[i].Pv(),1);
                         particles[i].setXv(xv);
                         MatrixXf pv(3,3); 
                         pv.setZero();
-                        particles[i].setPv(pv); 
+                        particles[i].setPv(pv); //TODO: double check
                     }
-					#if 0
-    				cout<<"After multivar gauss"<<endl;
-					cout<<"particle count: "<<particles.size()<<endl;
-					cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
-					cout<<"xv: "<<particles[0].xv()<<endl;
-					cout<<"should be 0.7648"<<endl;
-					cout<<"          0.0221"<<endl;
-					cout<<"          0.0050"<<endl;
-					cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
-					cout<<"xf: "<<particles[0].xf()<<" "<<"should be empty"<<endl;
-					//cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
-					//cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
-                    
-					add_feature(particles[i], zn, Re);	
-               
-					cout<<"After add_feature"<<endl;
-					cout<<"particle count: "<<particles.size()<<endl;
-					cout<<"w: "<<particles[0].w()<<" " <<"should be 0.0100"<<endl;
-					cout<<"xv: "<<particles[0].xv()<<endl;
-					cout<<"should be 0.0824"<<endl;
-					cout<<"          0.0036"<<endl;
-					cout<<"          0.0009"<<endl;
-					cout<<"Pv: "<<particles[0].Pv()<<" "<<"should be all zeros" <<endl;
-					cout<<"xf: "<<particles[0].xf()<<endl;
-					cout<<"should be [3.4011 25.7814; -25.6172 3.6347]"<<endl;
-					cout<<"Pf[0]: "<<particles[0].Pf()[0]<<endl;
-					cout<<"should be [0.2004 0.0196; 0.0196 0.0120"<<endl;
-					cout<<"Pf[1]: "<<particles[0].Pf()[1]<<endl;
-					cout<<"should be [0.0138 -0.0261; -0.0261 0.1908"<<endl;
-					#endif
-				}
+                    add_feature(particles[i], zn, Re);	
+                }
             }
         }
         delete[] VnGn;

@@ -14,6 +14,12 @@ using namespace Eigen;
 using namespace std;
 
 void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R);
+
 float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R);
 VectorXf delta_xv(VectorXf xv1, VectorXf xv2);
+
+template<typename _Matrix_Type_>
+bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double
+epsilon = std::numeric_limits<typename _Matrix_Type_::Scalar>::epsilon());
+
 #endif

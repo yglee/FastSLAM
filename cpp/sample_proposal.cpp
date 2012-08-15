@@ -1,11 +1,13 @@
 #include "sample_proposal.h"
 #include <iostream>
+#include <Eigen/SVD>
 
 //compute proposal distribution, then sample from it, and compute new particle weight
 void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R)
 {
     VectorXf xv = particle.xv();
     MatrixXf Pv = particle.Pv();
+
     VectorXf xv0(xv);
     MatrixXf Pv0(Pv);	
 
@@ -20,33 +22,60 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 
     MatrixXf vi(z.rows(),1);
 
+	cout<<"Pv in sample_proposal"<<endl;
+	cout<<Pv<<endl;
+	cout<<"should be 1.0e-04 * "<<endl; 
+	cout<<"          0.5041 -0.0236 -0.0056"<<endl;
+	cout<<"          -0.0236 0.01992 0.0459"<<endl;
+	cout<<"          -0.0056 0.0459 0.0106"<<endl;
+	
     //process each feature, incrementally refine proposal distribution
     unsigned i;
     for (i =0; i<idf.size(); i++) {
         vector<int> j;
         j.push_back(idf[i]);
         compute_jacobians(particle,j,R,zpi,&Hv,&Hf,&Sf);
-        cout<<"after compute-jacobians"<<endl;
-        cout<<Hvi<<endl;
-        cout<<Hv[i]<<endl; //TODO: this is empty.
-        Hvi = Hv[i];
+		//Break here
+		cout<<Pv(10,10)<<endl;
+
+		Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
-
-        cout<<"Hvi"<<endl;
-        cout<<Hvi<<endl;
-        cout<<"Hfi"<<endl;
-        cout<<Hfi<<endl;
-        cout<<"Sfi"<<endl;
-        cout<<Sfi<<endl;
 
         vi<<1,2;
         //vi = z.conservativeResize(z.rows(),1) - zpi;
         vi(1,0) = pi_to_pi(vi(1,0)); 		
 
-        //proposal covariance
-        Pv = Hvi.transpose() * Sfi * Hvi + Pv.inverse();
+        cout<<"Hvi"<<endl;
+        cout<<Hvi<<endl;
+        cout<<"Hvi.transpose()"<<endl;
+        cout<<Hvi.transpose()<<endl;
+		cout<<"Sfi"<<endl;
+		cout<<Sfi<<endl;
+		//TODO: fix: Pv.inverse is Nan - use a pseudo inverse..
+#if 0
+        cout<<"Hfi"<<endl;
+        cout<<Hfi<<endl;
+        cout<<"Sfi"<<endl;
+        cout<<Sfi<<endl;
+		cout<<"Pv"<<endl;
+		cout<<Pv<<endl;
+		cout<<"xv"<<endl;
+		cout<<xv<<endl;
+		cout<<"vi"<<endl;
+		cout<<vi<<endl;
+#endif
+
+		MatrixXf PvInv(Pv);
+		bool x = pseudoInverse<MatrixXf>(Pv, PvInv);
+		cout<<"succes? "<<x<<endl;
+		cout<<"pseudo inverse"<<endl;
+		cout<<PvInv<<endl;
+		
+		//proposal covariance
+        Pv = Hvi.transpose() * Sfi * Hvi + PvInv;//Pv.inverse();
         Pv = Pv.inverse();
+
 
         //proposal mean
         xv = xv * Pv * Hvi.transpose() * Sfi *vi;
@@ -106,4 +135,21 @@ VectorXf delta_xv(VectorXf xv1, VectorXf xv2)
     VectorXf dx = xv1-xv2; 
     dx(2) = pi_to_pi(dx(2));
     return dx;
+}
+
+template<typename _Matrix_Type_>
+bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double
+epsilon = std::numeric_limits<typename _Matrix_Type_::Scalar>::epsilon())
+{
+	if(a.rows()<a.cols())
+		return false;
+
+  	JacobiSVD< _Matrix_Type_ > svd = a.jacobiSvd();
+
+  	typename _Matrix_Type_::Scalar tolerance = epsilon * std::max(a.cols(),
+				a.rows()) * svd.singularValues().array().abs().maxCoeff();
+
+  	result = svd.matrixV() * _Matrix_Type_(_Matrix_Type_(
+		(svd.singularValues().array().abs() > tolerance).select(svd.singularValues().
+      	array().inverse(), 0) ).diagonal()) * svd.matrixU().adjoint();
 }
