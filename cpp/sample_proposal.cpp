@@ -1,12 +1,13 @@
 #include "sample_proposal.h"
 #include <iostream>
 #include <Eigen/SVD>
+#include <iomanip>
 
 //compute proposal distribution, then sample from it, and compute new particle weight
 void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R)
 {
-    VectorXf xv = particle.xv();
-    MatrixXf Pv = particle.Pv();
+    VectorXf xv(particle.xv());
+    MatrixXf Pv(particle.Pv());
 
     VectorXf xv0(xv);
     MatrixXf Pv0(Pv);	
@@ -21,25 +22,24 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     MatrixXf Sfi;
 
     MatrixXf vi(z.rows(),1);
-
+#if 0
     cout<<"Pv in sample_proposal"<<endl;
     cout<<Pv<<endl;
     cout<<"should be 1.0e-04 * "<<endl; 
     cout<<"          0.5041 -0.0236 -0.0056"<<endl;
     cout<<"          -0.0236 0.01992 0.0459"<<endl;
     cout<<"          -0.0056 0.0459 0.0106"<<endl;
-	
+#endif	
+
     //process each feature, incrementally refine proposal distribution
     unsigned i;
     for (i =0; i<idf.size(); i++) {
         vector<int> j;
         j.push_back(idf[i]);
-        compute_jacobians(particle,j,R,zpi,&Hv,&Hf,&Sf);
-	
-        //Break break code
-	cout<<Pv(10,10)<<endl;
 
-	Hvi = Hv[i];
+        compute_jacobians(particle,j,R,zpi,&Hv,&Hf,&Sf);
+
+        Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
 
@@ -47,39 +47,52 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         //vi = z.conservativeResize(z.rows(),1) - zpi;
         vi(1,0) = pi_to_pi(vi(1,0)); 		
 
-        cout<<"Hvi"<<endl;
-        cout<<Hvi<<endl;
-        cout<<"Hvi.transpose()"<<endl;
-        cout<<Hvi.transpose()<<endl;
-	cout<<"Sfi"<<endl;
-	cout<<Sfi<<endl;
-	//TODO: fix: Pv.inverse is Nan - use a pseudo inverse..
+        //TODO: fix: Pv.inverse is Nan - use a pseudo inverse..
 #if 0
         cout<<"Hfi"<<endl;
         cout<<Hfi<<endl;
         cout<<"Sfi"<<endl;
         cout<<Sfi<<endl;
-		cout<<"Pv"<<endl;
-		cout<<Pv<<endl;
-		cout<<"xv"<<endl;
-		cout<<xv<<endl;
-		cout<<"vi"<<endl;
-		cout<<vi<<endl;
+        cout<<"Pv"<<endl;
+        cout<<Pv<<endl;
+        cout<<"xv"<<endl;
+        cout<<xv<<endl;
+        cout<<"vi"<<endl;
+        cout<<vi<<endl;
 #endif
+        //add a little bias so I won't get NaNs when I do an inverse
+        cout<<"Pv"<<endl;
+        cout<<Pv<<endl;
 
-	MatrixXf PvInv(Pv);
-	bool x = pseudoInverse<MatrixXf>(Pv, PvInv);
-	cout<<"succes? "<<x<<endl;
-	cout<<"pseudo inverse"<<endl;
-    	cout<<PvInv<<endl;
-	
-	//proposal covariance
-        Pv = Hvi.transpose() * Sfi * Hvi + PvInv;//Pv.inverse();
+        int r,c;
+        for (r=0; r<Pv.rows(); r++) {
+            for (c=0; c<Pv.cols(); c++) {
+                if (r==c) {
+                    Pv(r,c) += 1.0e-11;
+                } 
+            }   
+        }
+
+        cout<<"Pv.inverse()"<<endl;
+        cout<<Pv.inverse()<<endl;
+        
+        //proposal covariance
+        Pv = Hvi.transpose() * Sfi * Hvi + Pv.inverse();
         Pv = Pv.inverse();
 
 
+        cout<<"xv"<<endl;
+        cout<<xv<<endl;
+        cout<<"Pv"<<endl;
+        cout<<Pv<<endl;
+        cout<<"Hvi"<<endl;
+        cout<<Hvi<<endl;
+        cout<<"Sfi"<<endl;
+        cout<<Sfi<<endl;
+        cout<<"vi"<<endl;
+        cout<<vi<<endl;
         //proposal mean
-        xv = xv * Pv * Hvi.transpose() * Sfi *vi;
+        xv = xv + Pv * Hvi.transpose() * Sfi *vi;
 
         particle.setXv(xv);
         particle.setPv(Pv); 
@@ -138,19 +151,21 @@ VectorXf delta_xv(VectorXf xv1, VectorXf xv2)
     return dx;
 }
 
+#if 0
 template<typename _Matrix_Type_>
 bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double
-epsilon = std::numeric_limits<typename _Matrix_Type_::Scalar>::epsilon())
+        epsilon = numeric_limits<typename _Matrix_Type_::Scalar>::epsilon())
 {
-	if(a.rows()<a.cols())
-		return false;
+    if(a.rows()<a.cols())
+        return false;
 
-  	JacobiSVD< _Matrix_Type_ > svd = a.jacobiSvd();
+    JacobiSVD< _Matrix_Type_ > svd = a.jacobiSvd();
 
-  	typename _Matrix_Type_::Scalar tolerance = epsilon * std::max(a.cols(),
-				a.rows()) * svd.singularValues().array().abs().maxCoeff();
+    typename _Matrix_Type_::Scalar tolerance = epsilon * max(a.cols(),
+            a.rows()) * svd.singularValues().array().abs().maxCoeff();
 
-  	result = svd.matrixV() * _Matrix_Type_(_Matrix_Type_(
-		(svd.singularValues().array().abs() > tolerance).select(svd.singularValues().
-      	array().inverse(), 0) ).diagonal()) * svd.matrixU().adjoint();
+    result = svd.matrixV() * _Matrix_Type_(_Matrix_Type_(
+                (svd.singularValues().array().abs() > tolerance).select(svd.singularValues().
+                    array().inverse(), 0) ).diagonal()) * svd.matrixU().adjoint();
 }
+#endif

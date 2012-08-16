@@ -16,7 +16,6 @@
 #include "resample_particles.h"
 #include "add_feature.h"
 
-
 using namespace config;
 using namespace std;
 
@@ -37,7 +36,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     float veh[2][3] = {{0,-WHEELBASE,-WHEELBASE},{0,-1,1}};
 
-    //Particle *particles = new Particle[NPARTICLES];
+    //vector of particles (their count will change)
     vector<Particle> particles(NPARTICLES);
 
     float uniformw = 1.0/(float)NPARTICLES;    
@@ -49,12 +48,13 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     float dt = DT_CONTROLS; //change in time btw predicts
     float dtsum = 0; //change in time since last observation
-    vector<int> ftag;
 
+    vector<int> ftag; //identifier for each landmark
     for (int i=0; i< lm.cols(); i++) {
-        ftag.push_back(i); //ftag items are indexed from 1
+        ftag.push_back(i); 
     }
 
+    //data ssociation table
     VectorXf da_table(lm.cols());
     da_table.setZero();	
 
@@ -156,10 +156,9 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 #endif
 
             //compute (known) data associations
-            MatrixXf xfvar = particles[0].xf();
-            int Nf = xfvar.cols();
-            vector<int> idf;
+            int Nf = (particles[0].xf()).cols();
 
+            vector<int> idf;
             MatrixXf zf(z.rows(),ftag_visible.size());
             zf.setZero();
             MatrixXf zn(z.rows(),ftag_visible.size());
@@ -167,6 +166,8 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
 
+            cout<<"in Fastslam2: idf size() "<<idf.size()<<endl;
+            
 #if 0
             cout<<"zf "<<zf<<endl;
             cout<<"zf should be empty"<<endl;
@@ -187,24 +188,26 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             cout<<da_table<<endl;
             //cout<<"da_table[0] = "<<da_table[0]<<" da_table[21]="<<da_table[21]<<endl;
             cout<<"da_table should be all zero except 0 at index 0, 1 at index 21"<<endl;
-
 #endif
 
             //observe map features
             if (!zf.isZero()) {
-                #if 0
+#if 0
                 cout<<"zf is "<<endl;
                 cout<<zf<<endl;
                 cout<<"zf should be 25.6305 24.6263"<<endl;
                 cout<<"             -1.4785 0.1662"<<endl;
-                #endif
+#endif
                 //isample from 'optimal' proposal distribution, then update map
+
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
                     cout<<"sample_proposal"<<endl;
                     feature_update(particles[i],zf,idf,Re);
                     cout<<"feature_update"<<endl;
-                }		
+                }	
+
+#if 0	
                 cout<<"After sample_proposal and feature_udpate"<<endl;	
                 cout<<"particle count: "<<particles.size()<<endl;
                 cout<<"w: "<<particles[0].w()<<" " <<"should be 14.7297"<<endl;
@@ -225,17 +228,24 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 cout<<endl;
                 //cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
                 //cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
+#endif
 
                 //resample
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
             }
 
             //Observe new features, augment map
+            //TODO: xv gets depreicated here
             if (!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
-                    if (zf.isZero()) {//sample from proposal distribution (if we have not already done so above
+                    if (zf.isZero()) {//sample from proposal distribution if we have not already done so above
+                        cout<<"in zf IS ZERO"<<endl;
+                        cout<<"particles["<<i<<"].xv()"<<particles[i].xv()<<endl;
+                        cout<<"particles["<<i<<"].Pv()"<<endl;
+                        cout<<particles[i].Pv()<<endl;
+
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
-                                        particles[i].Pv(),1);
+                                particles[i].Pv(),1);
 
                         //TODO: xv[0] seems to have an approximation error from chol.
                         particles[i].setXv(xv);
@@ -246,6 +256,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                         cout<<"0.0221"<<endl;
                         cout<<"0.0050"<<endl;
                         cout<<endl;
+
                         MatrixXf pv(3,3); 
                         pv.setZero();
                         particles[i].setPv(pv); 

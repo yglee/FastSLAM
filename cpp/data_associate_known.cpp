@@ -49,9 +49,10 @@ void data_associate_known(MatrixXf z, vector<int> idz, VectorXf &table, int Nf, 
     cout<<"Nf should be 0"<<endl;
     #endif
 
+    //TODO: look into this later (table(ii) == 0) but counter starts from index 0...
     //add new feature IDs to lookup table
     vector<int> counter;
-    for (unsigned int c=1; c<=zn.cols(); c++) {
+    for (unsigned int c=0; c<zn.cols(); c++) {
         counter.push_back(c+Nf);
     }
 
