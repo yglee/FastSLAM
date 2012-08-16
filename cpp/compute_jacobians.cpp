@@ -13,14 +13,18 @@ void compute_jacobians(Particle particle,
 {
     VectorXf xv = particle.xv();
 
+    #if 0
     cout<<"compute_jacobians: particle.xf()"<<endl;
     cout<<particle.xf()<<endl;
-
+    #endif
+    
     int rows = (particle.xf()).rows();
     MatrixXf xf(rows,idf.size()); 
     vector<MatrixXf> Pf;
     
     unsigned i,r;
+
+    #if 0
     cout<<"compute jacobians:"<<endl;
     cout<<"particle.xf().rows() "<<(particle.xf()).rows()<<endl;
     cout<<"particle.xf().cols() "<<(particle.xf()).cols()<<endl;
@@ -29,7 +33,9 @@ void compute_jacobians(Particle particle,
     cout<<"xf.rows() "<<xf.rows()<<endl;
     cout<<"xf.cols() "<<xf.cols()<<endl;
     cout<<endl;
-    
+    #endif    
+
+
     for (i=0; i<idf.size(); i++) {
         for (r=0; r<(particle.xf()).rows(); r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	

@@ -73,14 +73,16 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
             }   
         }
 
+        #if 0
         cout<<"Pv.inverse()"<<endl;
         cout<<Pv.inverse()<<endl;
-        
+        #endif        
+
         //proposal covariance
         Pv = Hvi.transpose() * Sfi * Hvi + Pv.inverse();
         Pv = Pv.inverse();
-
-
+    
+        #if 0
         cout<<"xv"<<endl;
         cout<<xv<<endl;
         cout<<"Pv"<<endl;
@@ -91,6 +93,7 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         cout<<Sfi<<endl;
         cout<<"vi"<<endl;
         cout<<vi<<endl;
+        #endif
         //proposal mean
         xv = xv + Pv * Hvi.transpose() * Sfi *vi;
 

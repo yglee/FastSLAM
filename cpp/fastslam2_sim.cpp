@@ -166,7 +166,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);	
 
-            cout<<"in Fastslam2: idf size() "<<idf.size()<<endl;
+            //cout<<"in Fastslam2: idf size() "<<idf.size()<<endl;
             
 #if 0
             cout<<"zf "<<zf<<endl;
@@ -202,9 +202,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
-                    cout<<"sample_proposal"<<endl;
                     feature_update(particles[i],zf,idf,Re);
-                    cout<<"feature_update"<<endl;
                 }	
 
 #if 0	
@@ -239,16 +237,18 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             if (!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution if we have not already done so above
+                        #if 0
                         cout<<"in zf IS ZERO"<<endl;
                         cout<<"particles["<<i<<"].xv()"<<particles[i].xv()<<endl;
                         cout<<"particles["<<i<<"].Pv()"<<endl;
                         cout<<particles[i].Pv()<<endl;
-
+                        #endif
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
                                 particles[i].Pv(),1);
 
                         //TODO: xv[0] seems to have an approximation error from chol.
                         particles[i].setXv(xv);
+                        #if 0
                         cout<<"xv in fastslam2"<<endl;
                         cout<<xv<<endl;
                         cout<<"should be"<<endl;
@@ -256,7 +256,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                         cout<<"0.0221"<<endl;
                         cout<<"0.0050"<<endl;
                         cout<<endl;
-
+                        #endif
                         MatrixXf pv(3,3); 
                         pv.setZero();
                         particles[i].setPv(pv); 
