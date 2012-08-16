@@ -1,0 +1,9 @@
+How to invoke the fastslam code in matlab
+
+first load the "example_webmap.mat" code by typing:
+"S = load('example_webmap.mat')"  inside matlab command window.
+
+Then go inside fastslam2 directory. Type in the command window:
+fastslam2_sim(S.lm, S.wp)
+
+This will run your simulation
