@@ -20,10 +20,10 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     }
 
     MatrixXf zp;    
-    vector<MatrixXf> *Hv;
-    vector<MatrixXf> *Hf;
-    vector<MatrixXf> *Sf;
-    compute_jacobians(particle,idf,R,zp,Hv,Hf,Sf);
+    vector<MatrixXf> Hv;
+    vector<MatrixXf> Hf;
+    vector<MatrixXf> Sf;
+    compute_jacobians(particle,idf,R,zp,&Hv,&Hf,&Sf);
 
 	#if 0
     cout<<"after compute_jacobians"<<endl;    
@@ -44,16 +44,16 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
         v(1,c) = pi_to_pi(v(1,c));
     }
 
-    VectorXf vi;
+    VectorXf vi(v.rows());
     MatrixXf Hfi;
     MatrixXf Pfi;
-    VectorXf xfi;
+    VectorXf xfi(xf.rows());
 
     for (i=0; i< idf.size(); i++) {
         for (r=0; r<v.rows(); r++) {
             vi(r) = v(r,i); //v.column(i);
         }
-        Hfi = (*Hf)[i];  
+        Hfi = Hf[i];  
         Pfi = Pf[i];
         for (r=0; r<xf.rows(); r++) {
             xfi(r) = xf(r,i); //xfi = xf.column(i);

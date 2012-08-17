@@ -134,10 +134,15 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     float like = likelihood_given_xv(particle, z, idf, R);
     float prior = gauss_evaluate(delta_xv(xv0,xvs), Pv0,0); 
     float prop = gauss_evaluate(delta_xv(xv,xvs),Pv,0);
+	cout<<"in compute_jacob: particle.w() = "<<particle.w()<<endl;
+	cout<<"like = "<<like<<endl;
+	cout<<"prior = "<<prior<<endl;
+	cout<<"prop = "<<prop<<endl;
+
     particle.setW(particle.w() * like * prior / prop); 
 } 
 
-float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R) 
+float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixXf R) 
 {
     float w = 1;
     vector<int> idfi;
@@ -153,18 +158,40 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
     VectorXf v(z.rows());    
 
     unsigned i,k;
+	cout<<"idf.size() "<<idf.size()<<endl;
     for (i=0; i<idf.size(); i++){
         idfi.push_back(i);
         compute_jacobians(particle,idfi,R,zp,&Hv,&Hf,&Sf);
         Hvi = Hv[0]; 
         Hfi = Hf[0]; 
         Sfi = Sf[0];
+		#if 1
+		cout<<"i = "<<i<<endl;
+		cout<<"z"<<endl;
+		cout<<z<<endl;
+		cout<<"z should be 25.6475   24.5412"<<endl;
+   		cout<<"		  	  -1.4803    0.2031"<<endl;
+		cout<<"zp[0] should be 25.7004"<<endl;
+   		cout<<"                -1.5063"<<endl;
+   		cout<<"zp[1] should be 24.6814"<<endl;
+    	cout<<"                0.1522"<<endl;
 
-        for (k=0; k<z.rows(); k++) {
-            v(k) = z(k,i)-zp(k,0);
+        #endif
+		for (k=0; k<z.rows(); k++) {
+		    v(k) = z(k,i)-zp(k,0);
         }
-		
         v(1) = pi_to_pi(v(1));
+		
+		cout<<"v in likelihood eval"<<endl;
+		cout<<v<<endl;
+		cout<<"should be 0.1804"<<endl;
+		cout<<"          0.0327"<<endl;
+		cout<<"SF["<<i<<"]"<<endl;
+		cout<<Sf[i]<<endl;
+		cout<<"should be 0.0201 -0.0002"<<endl;
+		cout<<"         -0.0002  0.0006"<<endl;
+		cout<<endl;
+		
         w = w*gauss_evaluate(v,Sf[i],0);
     } 
     return w;

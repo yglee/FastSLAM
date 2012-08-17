@@ -16,6 +16,8 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
     VectorXf xv = particle.xv();
 
     //TODO: this doesn't match :(
+	//TODO: fix this!!!
+	#if 0
     cout<<"xv in add_feature"<<endl;
     cout<<xv<<endl;
     cout<<"should be"<<endl;
@@ -23,6 +25,7 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
     cout<<"0.0221"<<endl;
     cout<<"0.0050"<<endl;
     cout<<endl;
+	#endif
 
     float r,b,s,c;
     MatrixXf Gz(2,2);

@@ -1,5 +1,8 @@
 #include "stratified_resample.h"
 #include "stratified_random.h"
+#include <iostream>
+
+using namespace std;
 
 void stratified_resample(VectorXf w, vector<int> &keep, float &Neff)
 {

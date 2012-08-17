@@ -40,9 +40,17 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     vector<Particle> particles(NPARTICLES);
 
     float uniformw = 1.0/(float)NPARTICLES;    
+	cout<<"uniformw "<<uniformw<<endl;
     for (unsigned int p = 0; p < NPARTICLES; p++) {
-        particles[p].setW(uniformw);
+	    particles[p].setW(uniformw);
     }
+
+	#if 0
+	for (int i=0; i< particles.size(); i++) {
+		cout<<"particles["<<i<<"].w() "<<particles[i].w()<<endl;
+	}	
+	#endif
+
     VectorXf xtrue(3);
     xtrue.setZero();
 
@@ -132,6 +140,41 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             cout<<endl;	
 
             //z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
+    VectorXf xv = particle.xv();
+
+    #if 0
+    cout<<"compute_jacobians: particle.xf()"<<endl;
+    cout<<particle.xf()<<endl;
+    #endif
+    
+    int rows = (particle.xf()).rows();
+    MatrixXf xf(rows,idf.size()); 
+    vector<MatrixXf> Pf;
+    
+    unsigned i,r;
+
+    #if 0
+    cout<<"compute jacobians:"<<endl;
+    cout<<"particle.xf().rows() "<<(particle.xf()).rows()<<endl;
+    cout<<"particle.xf().cols() "<<(particle.xf()).cols()<<endl;
+    cout<<"idf.size() "<<idf.size()<<endl;
+    cout<<"idf max "<<idf[idf.size()-1]<<endl;
+    cout<<"xf.rows() "<<xf.rows()<<endl;
+    cout<<"xf.cols() "<<xf.cols()<<endl;
+    cout<<endl;
+    #endif    
+
+
+    for (i=0; i<idf.size(); i++) {
+        for (r=0; r<(particle.xf()).rows(); r++) {
+            xf(r,i) = (particle.xf())(r,(idf[i]));	
+        }
+        if (particle.Pf().size() != 0) {
+            Pf.push_back((particle.Pf())[idf[i]]); //particle.Pf is a array of matrices
+        }
+    }
+
+    float dx,dy,d2,d;
             cout<<"ftag_visible"<<endl;
             vector<int>::iterator iter2;
             for (iter2 =ftag_visible.begin(); iter2!=ftag_visible.end(); iter2++) {
@@ -201,12 +244,23 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 cout<<"             -1.4785 0.1662"<<endl;
 #endif
                 //isample from 'optimal' proposal distribution, then update map
+				#if 0
+				for(int i=0; i< particles.size(); i++) {
+					cout<<"before particles["<<i<<"].w() "<<particles[i].w()<<endl;
+				}
+				#endif
 
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
                     feature_update(particles[i],zf,idf,Re);
-                }	
+                }
 
+				#if 0
+				for(int i=0; i< particles.size(); i++) {
+					cout<<"after particles["<<i<<"].w() "<<particles[i].w()<<endl;
+				}
+				#endif
+	
 #if 0	
                 cout<<"After sample_proposal and feature_udpate"<<endl;	
                 cout<<"particle count: "<<particles.size()<<endl;
@@ -229,7 +283,12 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 //cout<<"Pf: "<<particles[0].Pf()[0]<<" "<<"should be empty"<<endl;
                 //cout<<"da: "<<particles[0].da()[0]<<" "<<"should be empty"<<endl;
 #endif
-
+				#if 0
+				cout<<"right before resample"<<endl;
+				for(int i=0; i< particles.size(); i++) {
+					cout<<"particles["<<i<<"].w() "<<particles[i].w()<<endl;
+				}
+				#endif
                 //resample
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
             }
@@ -296,7 +355,12 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                     cout<<"should be [0.0138 -0.0261; -0.0261 0.1908"<<endl;
 #endif
                 }
-            }
+            }	
+	#if 0
+	for (int i=0; i< particles.size(); i++) {
+		cout<<"particles["<<i<<"].w() "<<particles[i].w()<<endl;
+	}	
+	#endif
         }
         delete[] VnGn;
     }

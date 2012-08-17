@@ -38,7 +38,6 @@ void compute_jacobians(Particle particle,
     cout<<endl;
     #endif    
 
-
     for (i=0; i<idf.size(); i++) {
         for (r=0; r<(particle.xf()).rows(); r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	
@@ -99,13 +98,12 @@ void compute_jacobians(Particle particle,
         //Jacobian wrt feature states
         HfMat<< dx/d,  dy/d,
             	-dy/d2, dx/d2;
-        cout<<"HvMat"<<endl;
-		cout<<HvMat<<endl;
+	
 		Hv->push_back(HvMat);
         Hf->push_back(HfMat);
         
         //innovation covariance of 'feature observation given the vehicle'
         MatrixXf SfMat = HfMat*Pf[i]*HfMat.transpose() + R;
-        Sf->push_back(SfMat);      
+		Sf->push_back(SfMat);      
     }			
 }

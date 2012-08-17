@@ -1,24 +1,32 @@
 #include "resample_particles.h"
 #include "configfile.h"
 #include "stratified_resample.h"
+#include <iostream>
+
+using namespace std;
 
 void resample_particles(vector<Particle> &particles, int Nmin, int doresample) 
 {
     unsigned int N = particles.size();
 	assert(particles.size() == config::NPARTICLES);
-    VectorXf w;
-    w.resize(N);
+    VectorXf w(N);
+	w.setZero();
 
-    float ws=0;
     unsigned i;    
     for (i=0; i<N; i++) {
-        w(i) = particles[i].w(); 
-        ws+=w(i);
+        w(i) = particles[i].w();
+		//cout<<"w at "<<i<<" "<<w(i)<<endl;
     }
+	
+	float ws = w.sum();
+	
+	//TODO: ws is zero!
+	//cout<<"ws is "<<ws<<endl;
     for (i=0; i<N; i++) {
         w(i) = w(i)/ws;
     }
-    
+   
+ 
 	float Neff;
 	vector<int> keep;
     stratified_resample(w,keep,Neff);
