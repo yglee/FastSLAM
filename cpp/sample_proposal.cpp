@@ -22,7 +22,7 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     MatrixXf Hfi;
     MatrixXf Sfi;
 
-    VectorXf vi;//(z.rows(),1);
+    VectorXf vi(z.rows(),1);
 #if 0
     cout<<"Pv in sample_proposal"<<endl;
     cout<<Pv<<endl;
@@ -45,16 +45,31 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
 
+		#if 0
         cout<<"i in SAMPLE_PROPOSAL"<<endl;
         cout<<i<<endl;
         cout<<"should be 1"<<endl;
-        for (r=0; r<z.rows(); r++) {
-            vi[r] = z(r,i) - zpi(r,i); 
+		cout<<endl;
+		
+		cout<<"vi"<<endl;
+		cout<<vi<<endl;
+		cout<<endl;
+		cout<<"z"<<endl;
+		cout<<z<<endl;
+		cout<<endl;
+		cout<<"zpi"<<endl;
+		cout<<zpi<<endl;
+		#endif
+		for (r=0; r<z.rows(); r++) {
+            vi[r] = z(r,i) - zpi(r,0); 
         }
+		#if 0
+		cout<<"vi"<<endl;
+		cout<<vi<<endl;
+		cout<<"should be [0.1355; -0.0333]"<<endl; 
+		cout<<endl;
+		#endif
         vi[1] = pi_to_pi(vi[1]);
-        //vi<<1,2;
-        //vi = z.conservativeResize(z.rows(),1) - zpi;
-        //vi(1,0) = pi_to_pi(vi(1,0)); 		
 
 #if 0
         cout<<"Hfi"<<endl;
@@ -69,8 +84,10 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         cout<<vi<<endl;
 #endif
         //add a little bias so I won't get NaNs when I do an inverse
-        cout<<"Pv"<<endl;
+   		#if 0
+	    cout<<"Pv"<<endl;
         cout<<Pv<<endl;
+		#endif
 
         for (r=0; r<Pv.rows(); r++) {
             for (c=0; c<Pv.cols(); c++) {
@@ -80,10 +97,10 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
             }   
         }
 
-        #if 0
+        #if 0 
         cout<<"Pv.inverse()"<<endl;
         cout<<Pv.inverse()<<endl;
-        #endif        
+        #endif  
 
         //proposal covariance
         Pv = Hvi.transpose() * Sfi * Hvi + Pv.inverse();
@@ -123,7 +140,7 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R) 
 {
     float w = 1;
-    vector<int> temp;
+    vector<int> idfi;
 
     vector<MatrixXf> Hv;
     vector<MatrixXf> Hf;
@@ -133,26 +150,21 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
     MatrixXf Hvi;
     MatrixXf Hfi;
     MatrixXf Sfi;
-    MatrixXf zi(z.rows(),1);
-    MatrixXf v;    
+    VectorXf v(z.rows());    
 
     unsigned i,k;
     for (i=0; i<idf.size(); i++){
-        temp.push_back(i);
-        compute_jacobians(particle,temp,R,zp,&Hv,&Hf,&Sf);
+        idfi.push_back(i);
+        compute_jacobians(particle,idfi,R,zp,&Hv,&Hf,&Sf);
         Hvi = Hv[0]; 
         Hfi = Hf[0]; 
         Sfi = Sf[0];
-        cout<<"in LIKELIHOOD GIVEN XV"<<endl;
-        cout<<"zi"<<endl;
-        cout<<zi<<endl;
-        cout<<"can we access row: "<<z.rows()<<" and cols: "<<idf.size()<<endl;        
 
         for (k=0; k<z.rows(); k++) {
-            zi(k,i);
+            v(k) = z(k,i)-zp(k,0);
         }
-        v = zi-zp;
-        v(1,0) = pi_to_pi(v(1,0));
+		
+        v(1) = pi_to_pi(v(1));
         w = w*gauss_evaluate(v,Sf[i],0);
     } 
     return w;

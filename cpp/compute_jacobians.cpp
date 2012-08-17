@@ -94,12 +94,14 @@ void compute_jacobians(Particle particle,
 
         //Jacobian wrt vehicle states
         HvMat<< -dx/d, -dy/d,  0, 
-            dy/d2, -dx/d2,-1;
+            	dy/d2, -dx/d2,-1;
 
         //Jacobian wrt feature states
         HfMat<< dx/d,  dy/d,
-            -dy/d2, dx/d2;
-        Hv->push_back(HvMat);
+            	-dy/d2, dx/d2;
+        cout<<"HvMat"<<endl;
+		cout<<HvMat<<endl;
+		Hv->push_back(HvMat);
         Hf->push_back(HfMat);
         
         //innovation covariance of 'feature observation given the vehicle'

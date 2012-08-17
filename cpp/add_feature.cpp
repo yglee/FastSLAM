@@ -51,9 +51,10 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
 
 
     for (unsigned c=0; c<ii.size(); c++) {
-        cout<<"ii"<<endl;
+        #if 0
+		cout<<"ii"<<endl;
         cout<<ii[c]<<endl;
-
+		#endif
     
         if (xfCopy.isZero()) {
             xfCopy = xf;
@@ -69,6 +70,7 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
         }
     }
 
+	#if 0
     cout<<"xf in add_feature"<<endl;
     cout<<xf<<endl;
     cout<<"should be"<<endl;
@@ -79,6 +81,7 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
     cout<<"xfCopy"<<endl;
     cout<<xfCopy<<endl;
     cout<<endl;
+	#endif
 
     particle.setXf(xfCopy);
     particle.setPf(pfCopy);

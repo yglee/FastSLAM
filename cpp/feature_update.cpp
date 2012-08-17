@@ -11,20 +11,12 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     MatrixXf xf(rows,idf.size());    
     vector<MatrixXf> Pf;
 
-    cout<<"particles.Pf()[0]"<<endl;
-    cout<<(particle.Pf())[0]<<endl;
-
-    cout<<"idf in feature update"<<endl;
-    for (int i=0; i< idf.size(); i++) {
-        cout<<"idf["<<i<<"]: "<<idf[i]<<endl;
-    }
-
     unsigned i,r; 
     for (i=0; i<idf.size(); i++) {
         for (r=0; r<(particle.xf()).rows(); r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	
         }
-        Pf[i] = (particle.Pf())[idf[i]]; //particle.Pf is a array of matrices
+        Pf.push_back((particle.Pf())[idf[i]]); //particle.Pf is a array of matrices
     }
 
     MatrixXf zp;    
@@ -32,8 +24,9 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     vector<MatrixXf> *Hf;
     vector<MatrixXf> *Sf;
     compute_jacobians(particle,idf,R,zp,Hv,Hf,Sf);
-    cout<<"after compute_jacobians"<<endl;    
 
+	#if 0
+    cout<<"after compute_jacobians"<<endl;    
     cout<<endl; 
     cout<<"in feature_update"<<endl;
     cout<<"zp is "<<endl;
@@ -42,6 +35,7 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     cout<<"25.6675 24.5294"<<endl;
     cout<<"-1.4925 0.1547"<<endl;
     cout<<endl;
+	#endif
 
     MatrixXf v = z-zp; //TODO: need to fix: idf.size() is zero. which makes this break.
 

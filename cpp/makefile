@@ -21,7 +21,7 @@ else
 	INCLUDE := -I./include/ -I/usr/X11R6/include -I/sw/include \
 		-I/usr/sww/include -I/usr/sww/pkg/Mesa/include -I/usr/include/eigen3
 	LIBRARY := -L./lib/nix -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib \
-		-L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib -lX11
+		-L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib
 	FRAMEWORK := 
 	MACROS := 
 	PLATFORM := *Nix
