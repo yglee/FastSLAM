@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Eigen/SVD>
 #include <iomanip>
+#include "assert.h"
 
 //compute proposal distribution, then sample from it, and compute new particle weight
 void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R)
@@ -16,12 +17,12 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     vector<MatrixXf> Hf;
     vector<MatrixXf> Sf;
 
-    MatrixXf zpi(2,1);
+    MatrixXf zpi;
     MatrixXf Hvi;
     MatrixXf Hfi;
     MatrixXf Sfi;
 
-    MatrixXf vi(z.rows(),1);
+    VectorXf vi;//(z.rows(),1);
 #if 0
     cout<<"Pv in sample_proposal"<<endl;
     cout<<Pv<<endl;
@@ -32,22 +33,29 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 #endif	
 
     //process each feature, incrementally refine proposal distribution
-    unsigned i;
+    unsigned i,r,c;
     for (i =0; i<idf.size(); i++) {
         vector<int> j;
         j.push_back(idf[i]);
 
         compute_jacobians(particle,j,R,zpi,&Hv,&Hf,&Sf);
+        assert(zpi.cols() == 1);
 
         Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
 
-        vi<<1,2;
+        cout<<"i in SAMPLE_PROPOSAL"<<endl;
+        cout<<i<<endl;
+        cout<<"should be 1"<<endl;
+        for (r=0; r<z.rows(); r++) {
+            vi[r] = z(r,i) - zpi(r,i); 
+        }
+        vi[1] = pi_to_pi(vi[1]);
+        //vi<<1,2;
         //vi = z.conservativeResize(z.rows(),1) - zpi;
-        vi(1,0) = pi_to_pi(vi(1,0)); 		
+        //vi(1,0) = pi_to_pi(vi(1,0)); 		
 
-        //TODO: fix: Pv.inverse is Nan - use a pseudo inverse..
 #if 0
         cout<<"Hfi"<<endl;
         cout<<Hfi<<endl;
@@ -64,7 +72,6 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         cout<<"Pv"<<endl;
         cout<<Pv<<endl;
 
-        int r,c;
         for (r=0; r<Pv.rows(); r++) {
             for (c=0; c<Pv.cols(); c++) {
                 if (r==c) {
@@ -136,6 +143,11 @@ float likelihood_given_xv(Particle &particle, MatrixXf z, vector<int>idf, Matrix
         Hvi = Hv[0]; 
         Hfi = Hf[0]; 
         Sfi = Sf[0];
+        cout<<"in LIKELIHOOD GIVEN XV"<<endl;
+        cout<<"zi"<<endl;
+        cout<<zi<<endl;
+        cout<<"can we access row: "<<z.rows()<<" and cols: "<<idf.size()<<endl;        
+
         for (k=0; k<z.rows(); k++) {
             zi(k,i);
         }

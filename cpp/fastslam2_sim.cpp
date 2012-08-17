@@ -56,7 +56,9 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     //data ssociation table
     VectorXf da_table(lm.cols());
-    da_table.setZero();	
+    for (int s=0; s<da_table.size(); s++) {
+        da_table[s] = -1;
+    }
 
     int iwp = 1; //index to first waypoint
     float G = 0; //initial steer angle

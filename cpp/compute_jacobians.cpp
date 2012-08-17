@@ -11,6 +11,9 @@ void compute_jacobians(Particle particle,
         vector<MatrixXf> *Hf, 
         vector<MatrixXf> *Sf)
 {
+    zp.resize(2,idf.size());
+    zp.setZero();
+    
     VectorXf xv = particle.xv();
 
     #if 0
@@ -70,9 +73,6 @@ void compute_jacobians(Particle particle,
     cout<<endl;
 #endif
 
-    cout<<"idf.size()"<<endl;
-    cout<<idf.size()<<endl;
-
     for (i=0; i<idf.size(); i++) {
         dx = xf(0,i) - xv(0);
         dy = xf(1,i) - xv(1);
@@ -86,18 +86,10 @@ void compute_jacobians(Particle particle,
         cout<<"d"<<d<<endl;
         cout<<"about to print zp"<<endl;
 #endif
-        cout<<"zp in compute_jacobians"<<endl;
-        cout<<zp<<endl;
-        cout<<"zp should be"<<endl;
-        cout<<"25.6580"<<endl;
-        cout<<"-1.4889"<<endl;
         
         //predicted observation
         zp(0,i) = d;
-        cout<<"zp(0,i) is "<<zp(0,i)<<endl;
         zp(1,i) = atan2(dy,dx) - xv(2);
-
-        cout<<"zp(1,i)"<<zp(1,i)<<endl;
         zp(1,i) = pi_to_pi(zp(1,i));
 
         //Jacobian wrt vehicle states
@@ -109,9 +101,9 @@ void compute_jacobians(Particle particle,
             -dy/d2, dx/d2;
         Hv->push_back(HvMat);
         Hf->push_back(HfMat);
-
+        
         //innovation covariance of 'feature observation given the vehicle'
         MatrixXf SfMat = HfMat*Pf[i]*HfMat.transpose() + R;
-        Sf->push_back(SfMat);  
+        Sf->push_back(SfMat);      
     }			
 }

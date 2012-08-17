@@ -13,7 +13,7 @@ void data_associate_known(MatrixXf z, vector<int> idz, VectorXf &table, int Nf, 
 
     for (i =0; i< idz.size(); i++){
         ii = idz[i];
-        if (table(ii) ==0) { //new feature
+        if (table(ii) ==-1) { //new feature
             for (r=0; r<z.rows();r++) {
                 zn(r,i) = z(r,i);
             }
