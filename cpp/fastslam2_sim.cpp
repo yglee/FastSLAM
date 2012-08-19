@@ -40,7 +40,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     vector<Particle> particles(NPARTICLES);
 
     float uniformw = 1.0/(float)NPARTICLES;    
-	cout<<"uniformw "<<uniformw<<endl;
+	//cout<<"uniformw "<<uniformw<<endl;
     for (unsigned int p = 0; p < NPARTICLES; p++) {
 	    particles[p].setW(uniformw);
     }
@@ -364,6 +364,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
         }
         delete[] VnGn;
     }
+    cout<<"done with all functions and will return particles"<<endl;
     return particles;
 }
 

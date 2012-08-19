@@ -6,7 +6,7 @@ using namespace std;
 
 void stratified_resample(VectorXf w, vector<int> &keep, float &Neff)
 {
-    VectorXf wsqrd;
+    VectorXf wsqrd(w.size());
     for (int i=0; i<w.size(); i++) {
         w(i) = w(i)/w.sum();
         wsqrd(i) = pow(w(i),2);

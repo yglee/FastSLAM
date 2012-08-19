@@ -9,23 +9,25 @@ using namespace std;
 
 float gauss_evaluate(VectorXf v, MatrixXf S, int logflag) 
 {
-	cout<<"in gauss_eval"<<endl;
-	cout<<"v"<<endl;
-	cout<<v<<endl;
-	cout<<endl;
-	cout<<"S"<<endl;
-	cout<<S<<endl;
-
+    #if 0
+    cout<<"in gauss_eval"<<endl;
+    cout<<"v"<<endl;
+    cout<<v<<endl;
+    cout<<endl;
+    cout<<"S"<<endl;
+    cout<<S<<endl;
+    #endif
+    
     int D = v.size();    
     MatrixXf Sc = S.llt().matrixL();
 
     //normalised innovations
     VectorXf nin = Sc.jacobiSvd(ComputeThinU | ComputeThinV).solve(v);
-	cout<<"nin"<<endl;
-	cout<<nin<<endl;
-	//break here
-	cout<<v[10000]<<endl;
-
+    
+    #if 0
+    cout<<"nin"<<endl;
+    cout<<nin<<endl;
+    #endif
 
     int s;
     //VectorXf E(nin.cols());
