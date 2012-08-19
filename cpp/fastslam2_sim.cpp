@@ -90,11 +90,14 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     vector<int> ftag_visible;
     MatrixXf z;
-    while (iwp !=0) {
+    int loopcounter =0;
+    while (iwp !=-1) {
+        cout<<loopcounter<<endl;
+        loopcounter++;
         //compute true data
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
-        if (iwp ==0 && NUMBER_LOOPS > 1) {
-            iwp = 1;
+        if (iwp ==-1 && NUMBER_LOOPS > 1) {
+            iwp = 0;
             NUMBER_LOOPS = NUMBER_LOOPS-1;
         }
         predict_true(xtrue,V,G,WHEELBASE,dt);
