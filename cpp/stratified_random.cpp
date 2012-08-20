@@ -6,16 +6,15 @@ using namespace std;
 
 void stratified_random(int N, vector<float> &di)
 { 
-    float k = 1/N;
+    float k = 1.0/(float)N;
    
     //deterministic intervals
-    di.push_back(k/2);
-    float temp = k;
-    while (temp <= (1-k/2)) {
+    float temp = k/2;
+    while (temp < (1-k/2)) {
         di.push_back(temp);
-        temp = temp*2;
+        temp = temp+k;
     }
-    
+   
     assert(di.size() == N); 
     
     //dither within interval

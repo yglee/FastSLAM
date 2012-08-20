@@ -24,20 +24,20 @@ void compute_steering(VectorXf x, MatrixXf wp, int& iwp, float minD,
 
 		//determine if current waypoint reached
 		Vector2d cwp;
-		cwp[0] = wp(0,iwp-1); //-1 since indexed from 0     
-		cwp[1] = wp(1,iwp-1);
+		cwp[0] = wp(0,iwp); //-1 since indexed from 0     
+		cwp[1] = wp(1,iwp);
 
 		float d2 = pow((cwp[0] - x[0]),2) + pow((cwp[1]-x[1]),2);     
 
 		if (d2 < minD*minD) {
-				iwp = iwp+1; //switch to next
-				if (iwp > wp.cols()) {
-						iwp =0;
-						return;	
+				iwp++; //switch to next
+				if (iwp >= wp.cols()) {
+				    iwp =-1;
+				    return;	
 				}
 
-				cwp[0] = wp(0,iwp-1); //-1 since indexed from 0
-				cwp[1] = wp(1,iwp-1);
+				cwp[0] = wp(0,iwp); //-1 since indexed from 0
+				cwp[1] = wp(1,iwp);
 		}
 
 		//compute change in G to point towards current waypoint

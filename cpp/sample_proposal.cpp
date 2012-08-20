@@ -128,7 +128,7 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     //sample from proposal distribution
     VectorXf xvs = multivariate_gauss(xv,Pv,1); 
     particle.setXv(xvs);
-    particle.setPv(VectorXf(3));
+    particle.setPv(MatrixXf(3,3));
 
     //compute sample weight: w = w* p(z|xk) p(xk|xk-1) / proposal
     float like = likelihood_given_xv(particle, z, idf, R);

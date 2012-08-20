@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void add_control_noise(float &V, float &G, Matrix2f Q, int addnoise, float* VnGn) 
+void add_control_noise(float V, float G, Matrix2f Q, int addnoise, float* VnGn) 
 {
 	if (addnoise ==1) {
 		VectorXf A(2);
