@@ -104,6 +104,6 @@ void compute_jacobians(Particle particle,
         
         //innovation covariance of 'feature observation given the vehicle'
         MatrixXf SfMat = HfMat*Pf[i]*HfMat.transpose() + R;
-		Sf->push_back(SfMat);      
+	Sf->push_back(SfMat);      
     }			
 }

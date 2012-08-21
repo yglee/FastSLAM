@@ -124,8 +124,6 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
     vector<MatrixXf> Sf;
 
     MatrixXf zp;
-    MatrixXf Hvi;
-    MatrixXf Hfi;
     MatrixXf Sfi;
     VectorXf v(z.rows());    
 
@@ -164,22 +162,17 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
     for (i=0; i<idf.size(); i++){
         idfi.push_back(idf[i]);
         compute_jacobians(particle,idfi,R,zp,&Hv,&Hf,&Sf);
-        Hvi = Hv[i];//Hv[0]; 
-        Hfi = Hf[i];//Hf[0]; 
-        Sfi = Sf[i];//Sf[0];
 
         for (k=0; k<z.rows(); k++) {
             v(k) = z(k,i)-zp(k,0); //TODO: this returns wrong values
         }
         v(1) = pi_to_pi(v(1));
 
-        w = w*gauss_evaluate(v,Sfi,0);//Sf[i],0);
+        w = w*gauss_evaluate(v,Sf[0],0);
         cout<<"new w: "<<w<<endl;
     } 
     cout<<"w returned "<<w<<endl;
     
-    //break
-    cout<<particle.Pf()[100]<<endl;
     return w;
 }
 
