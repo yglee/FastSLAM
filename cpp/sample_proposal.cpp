@@ -22,18 +22,10 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     MatrixXf Hfi;
     MatrixXf Sfi;
 
-    VectorXf vi(z.rows(),1);
-#if 0
-    cout<<"Pv in sample_proposal"<<endl;
-    cout<<Pv<<endl;
-    cout<<"should be 1.0e-04 * "<<endl; 
-    cout<<"          0.5041 -0.0236 -0.0056"<<endl;
-    cout<<"          -0.0236 0.01992 0.0459"<<endl;
-    cout<<"          -0.0056 0.0459 0.0106"<<endl;
-#endif	
+    VectorXf vi(z.rows());
 
     //process each feature, incrementally refine proposal distribution
-    unsigned i,r,c;
+    unsigned i,r;
     for (i =0; i<idf.size(); i++) {
         vector<int> j;
         j.push_back(idf[i]);
@@ -44,16 +36,12 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
-
-#if 0
+#if 1 
         cout<<"i in SAMPLE_PROPOSAL"<<endl;
         cout<<i<<endl;
         cout<<"should be 1"<<endl;
         cout<<endl;
 
-        cout<<"vi"<<endl;
-        cout<<vi<<endl;
-        cout<<endl;
         cout<<"z"<<endl;
         cout<<z<<endl;
         cout<<endl;
@@ -61,9 +49,12 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         cout<<zpi<<endl;
 #endif
         for (r=0; r<z.rows(); r++) {
-            vi[r] = z(r,i) - zpi(r,0); 
+            cout<<"z("<<r<<","<<i<<") "<<z(r,i)<<endl;;
+            cout<<"zpi("<<r<<","<<"0) "<<zpi(r,0)<<endl;;
+            vi[r] = z(r,i) - zpi(r,0);
+            cout<<"vi["<<r<<"] "<<vi[r]<<endl; 
         }
-#if 0
+#if 1
         cout<<"vi"<<endl;
         cout<<vi<<endl;
         cout<<"should be [0.1355; -0.0333]"<<endl; 
@@ -71,56 +62,29 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 #endif
         vi[1] = pi_to_pi(vi[1]);
 
-#if 0
-        cout<<"Hfi"<<endl;
-        cout<<Hfi<<endl;
-        cout<<"Sfi"<<endl;
-        cout<<Sfi<<endl;
-        cout<<"Pv"<<endl;
-        cout<<Pv<<endl;
-        cout<<"xv"<<endl;
-        cout<<xv<<endl;
-        cout<<"vi"<<endl;
-        cout<<vi<<endl;
-#endif
         //add a little bias so I won't get NaNs when I do an inverse
-#if 0
+
         cout<<"Pv"<<endl;
         cout<<Pv<<endl;
-#endif
 
+        #if 0 
         for (r=0; r<Pv.rows(); r++) {
             for (c=0; c<Pv.cols(); c++) {
                 if (r==c) {
-                    Pv(r,c) += 1.0e-11;
+                    Pv(r,c) += 1.0e-6;
                 } 
             }   
         }
-
-#if 0 
-        cout<<"Pv.inverse()"<<endl;
-        cout<<Pv.inverse()<<endl;
-#endif  
+        #endif
 
         //proposal covariance
         Pv = Hvi.transpose() * Sfi * Hvi + Pv.inverse();
         Pv = Pv.inverse();
 
-#if 0
-        cout<<"xv"<<endl;
-        cout<<xv<<endl;
-        cout<<"Pv"<<endl;
-        cout<<Pv<<endl;
-        cout<<"Hvi"<<endl;
-        cout<<Hvi<<endl;
-        cout<<"Sfi"<<endl;
-        cout<<Sfi<<endl;
-        cout<<"vi"<<endl;
-        cout<<vi<<endl;
-#endif
         //proposal mean
         xv = xv + Pv * Hvi.transpose() * Sfi *vi;
-
+        cout<<"xv at the end"<<endl;
+        cout<<xv<<endl;
         particle.setXv(xv);
         particle.setPv(Pv); 
     }
@@ -134,13 +98,17 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     float like = likelihood_given_xv(particle, z, idf, R);
     float prior = gauss_evaluate(delta_xv(xv0,xvs), Pv0,0); 
     float prop = gauss_evaluate(delta_xv(xv,xvs),Pv,0);
-    #if 0
+    #if 1
     cout<<"in compute_jacob: particle.w() = "<<particle.w()<<endl;
     cout<<"like = "<<like<<endl;
     cout<<"prior = "<<prior<<endl;
     cout<<"prop = "<<prop<<endl;
     #endif
     particle.setW(particle.w() * like * prior / prop); 
+    #if 1
+    cout<<"particle.w()"<<endl;
+    cout<<particle.w()<<endl;
+    #endif
 } 
 
 float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixXf R) 
@@ -166,36 +134,12 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
         Hvi = Hv[0]; 
         Hfi = Hf[0]; 
         Sfi = Sf[0];
-#if 0 
-        cout<<"i = "<<i<<endl;
-        cout<<"z"<<endl;
-        cout<<z<<endl;
-        cout<<"z should be 25.6475   24.5412"<<endl;
-        cout<<"		  -1.4803    0.2031"<<endl;
-        cout<<"zp"<<endl;
-        cout<<zp<<endl;
-        cout<<"zp[0] should be 25.7004"<<endl;
-        cout<<"                -1.5063"<<endl;
-        cout<<"zp[1] should be 24.6814"<<endl;
-        cout<<"                0.1522"<<endl;
 
-#endif
         for (k=0; k<z.rows(); k++) {
             v(k) = z(k,i)-zp(k,0); //TODO: this returns wrong values
         }
         v(1) = pi_to_pi(v(1));
 
-#if 0
-        cout<<"v in likelihood eval"<<endl;
-        cout<<v<<endl;
-        cout<<"should be -0.369"<<endl;
-        cout<<"          0.0140"<<endl;
-        cout<<"SF["<<i<<"]"<<endl;
-        cout<<Sf[i]<<endl;
-        cout<<"should be 0.0201 -0.0002"<<endl;
-        cout<<"         -0.0002  0.0006"<<endl;
-        cout<<endl;
-#endif
         w = w*gauss_evaluate(v,Sf[i],0);
     } 
     return w;
@@ -209,21 +153,3 @@ VectorXf delta_xv(VectorXf xv1, VectorXf xv2)
     return dx;
 }
 
-#if 0
-template<typename _Matrix_Type_>
-bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double
-        epsilon = numeric_limits<typename _Matrix_Type_::Scalar>::epsilon())
-{
-    if(a.rows()<a.cols())
-        return false;
-
-    JacobiSVD< _Matrix_Type_ > svd = a.jacobiSvd();
-
-    typename _Matrix_Type_::Scalar tolerance = epsilon * max(a.cols(),
-            a.rows()) * svd.singularValues().array().abs().maxCoeff();
-
-    result = svd.matrixV() * _Matrix_Type_(_Matrix_Type_(
-                (svd.singularValues().array().abs() > tolerance).select(svd.singularValues().
-                    array().inverse(), 0) ).diagonal()) * svd.matrixU().adjoint();
-}
-#endif

@@ -71,4 +71,8 @@ int main (int argc, char*argv[])
 	cout<<"Pv.inverse()"<<endl;
 	cout<<Pv.inverse()<<endl;
 
+        if (nan == nan) {
+            cout<<"nan"<<endl;
+        }
+    
 }

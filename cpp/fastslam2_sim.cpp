@@ -38,6 +38,9 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     //vector of particles (their count will change)
     vector<Particle> particles(NPARTICLES);
+    for (int i=0; i<particles.size(); i++){
+        particles[i] = Particle();
+    }
     
     //initialize particle weights as uniform
     float uniformw = 1.0/(float)NPARTICLES;    
@@ -88,8 +91,6 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     
     //Main loop
     while (iwp !=-1) {
-        //cout<<"count is "<<count<<endl;
-        //compute true data
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
         if (iwp ==-1 && NUMBER_LOOPS > 1) {
             iwp = 0;
@@ -99,29 +100,20 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
         //add process noise
         //TODO: need to truly randomize function in multivariate_gauss
-        //float* VnGn = new float[2];
+        float* VnGn = new float[2];
         //add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
-        //float Vn = VnGn[0];
-        //float Gn = VnGn[1];
-        float Vn = V;
-        float Gn = G;
+        float Vn = V;//VnGn[0];
+        float Gn = G;//VnGn[1];
 
         //Predict step	
         for (unsigned int i=0; i< NPARTICLES; i++) {
-            #if 0 
-            cout<<"in fastslam2: particles["<<i<<"].Pv() "<<endl;
-            cout<<particles[i].Pv()<<endl;
-            cout<<endl;
-            cout<<"in fastslam2: particles["<<i<<"].xv() "<<endl;
-            cout<<particles[i].xv()<<endl;
-            #endif
             predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
+
             observe_heading(particles[i], xtrue(2), SWITCH_HEADING_KNOWN); //if heading known, observe heading
         }
 
-
         //Observe step
-        dtsum = dtsum+dt;	
+        dtsum = dtsum+dt;
         if (dtsum >= DT_OBSERVE) {
             dtsum=0;
 
@@ -173,9 +165,9 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                 }
             }	
             count++;
-            //if (VnGn) { 
-                //delete[] VnGn;
-            //}
+            if (VnGn) { 
+                delete[] VnGn;
+            }
         }
     }
     cout<<"done with all functions and will return particles"<<endl;
