@@ -8,6 +8,8 @@
 using namespace std;
 using namespace Eigen;
 
+#include <Eigen/SVD>
+
 #if 0
 void test(Particle **a) 
 {
@@ -53,8 +55,6 @@ int main (int argc, char*argv[])
 	cout<<newPart[2].x<<endl;
 #endif
 
-        MatrixXf test1(2,0);
-
 	MatrixXf test(3,3);
 	test<<5.59645e-05, -3.26374e-06, -8.15936e-07,
 				-3.26374e-06,  1.89453e-05,  4.73632e-06,
@@ -71,8 +71,8 @@ int main (int argc, char*argv[])
 	cout<<"Pv.inverse()"<<endl;
 	cout<<Pv.inverse()<<endl;
 
-        if (nan == nan) {
-            cout<<"nan"<<endl;
-        }
-    
+        MatrixXf A_inv = Pv.llt().solve(MatrixXf::Identity(Pv.rows(),Pv.cols()));
+        cout<<"A_inv"<<endl;
+        cout<<A_inv<<endl;  
+  
 }

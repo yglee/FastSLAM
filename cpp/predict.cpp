@@ -10,8 +10,13 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 {
 	VectorXf xv = particle.xv();
         MatrixXf Pv = particle.Pv();
-
-	//Jacobians
+        #if 0
+        cout<<"particle.xv() in predict"<<endl;
+        cout<<particle.xv()<<endl;
+        cout<<"particle.Pv() in predict"<<endl;
+        cout<<particle.Pv()<<endl;
+	#endif
+        //Jacobians
 	float phi = xv(2);
 	MatrixXf Gv(3,3); 
 
@@ -25,9 +30,13 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 
 	//predict covariance
 	MatrixXf newPv;//(Pv.rows(),Pv.cols());
+        
         //TODO: Pv here is somehow corrupted. Probably in sample_proposal
+        #if 0
         cout<<"Pv in predict"<<endl;
         cout<<Pv<<endl;
+        #endif        
+
         newPv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();
         particle.setPv(newPv);	
 

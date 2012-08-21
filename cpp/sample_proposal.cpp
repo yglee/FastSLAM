@@ -36,7 +36,7 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         Hvi = Hv[i];
         Hfi = Hf[i];
         Sfi = Sf[i].inverse();
-#if 1 
+#if 0 
         cout<<"i in SAMPLE_PROPOSAL"<<endl;
         cout<<i<<endl;
         cout<<"should be 1"<<endl;
@@ -49,12 +49,12 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         cout<<zpi<<endl;
 #endif
         for (r=0; r<z.rows(); r++) {
-            cout<<"z("<<r<<","<<i<<") "<<z(r,i)<<endl;;
-            cout<<"zpi("<<r<<","<<"0) "<<zpi(r,0)<<endl;;
+            //cout<<"z("<<r<<","<<i<<") "<<z(r,i)<<endl;;
+            //cout<<"zpi("<<r<<","<<"0) "<<zpi(r,0)<<endl;;
             vi[r] = z(r,i) - zpi(r,0);
-            cout<<"vi["<<r<<"] "<<vi[r]<<endl; 
+            //cout<<"vi["<<r<<"] "<<vi[r]<<endl; 
         }
-#if 1
+#if 0
         cout<<"vi"<<endl;
         cout<<vi<<endl;
         cout<<"should be [0.1355; -0.0333]"<<endl; 
@@ -64,10 +64,10 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
 
         //add a little bias so I won't get NaNs when I do an inverse
 
+        #if 0
         cout<<"Pv"<<endl;
         cout<<Pv<<endl;
 
-        #if 0 
         for (r=0; r<Pv.rows(); r++) {
             for (c=0; c<Pv.cols(); c++) {
                 if (r==c) {
@@ -78,13 +78,14 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
         #endif
 
         //proposal covariance
-        Pv = Hvi.transpose() * Sfi * Hvi + Pv.inverse();
-        Pv = Pv.inverse();
+        MatrixXf Pv_inv = Pv.llt().solve(MatrixXf::Identity(Pv.rows(), Pv.cols())); 
+        Pv = Hvi.transpose() * Sfi * Hvi + Pv_inv;//Pv.inverse();
+        Pv = Pv.llt().solve(MatrixXf::Identity(Pv.rows(), Pv.cols()));//Pv.inverse();
 
         //proposal mean
         xv = xv + Pv * Hvi.transpose() * Sfi *vi;
-        cout<<"xv at the end"<<endl;
-        cout<<xv<<endl;
+        //cout<<"xv at the end"<<endl;
+        //cout<<xv<<endl;
         particle.setXv(xv);
         particle.setPv(Pv); 
     }
@@ -98,14 +99,14 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     float like = likelihood_given_xv(particle, z, idf, R);
     float prior = gauss_evaluate(delta_xv(xv0,xvs), Pv0,0); 
     float prop = gauss_evaluate(delta_xv(xv,xvs),Pv,0);
-    #if 1
+    #if 0
     cout<<"in compute_jacob: particle.w() = "<<particle.w()<<endl;
     cout<<"like = "<<like<<endl;
     cout<<"prior = "<<prior<<endl;
     cout<<"prop = "<<prop<<endl;
     #endif
     particle.setW(particle.w() * like * prior / prop); 
-    #if 1
+    #if 0 
     cout<<"particle.w()"<<endl;
     cout<<particle.w()<<endl;
     #endif

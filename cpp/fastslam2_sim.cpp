@@ -41,7 +41,8 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     for (int i=0; i<particles.size(); i++){
         particles[i] = Particle();
     }
-    
+   
+ 
     //initialize particle weights as uniform
     float uniformw = 1.0/(float)NPARTICLES;    
     for (unsigned int p = 0; p < NPARTICLES; p++) {
@@ -88,7 +89,8 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     vector<int> ftag_visible;
     MatrixXf z;
     int count =0;
-    
+   
+
     //Main loop
     while (iwp !=-1) {
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
@@ -107,9 +109,22 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
         //Predict step	
         for (unsigned int i=0; i< NPARTICLES; i++) {
+            if(i==47) {
+                cout<<"predict"<<endl<<flush;
+            }
             predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
-
+            if(i==47) {
+                cout<<particles[i].Pv()<<endl<<flush; 
+                cout<<particles[i].xv()<<endl<<flush; 
+                cout<<endl<<flush;
+                cout<<"observe"<<endl<<flush; 
+            }
             observe_heading(particles[i], xtrue(2), SWITCH_HEADING_KNOWN); //if heading known, observe heading
+            if(i==47) {
+                cout<<particles[i].Pv()<<endl<<flush; 
+                cout<<particles[i].xv()<<endl<<flush;
+                cout<<endl<<flush; 
+            }
         }
 
         //Observe step
@@ -138,13 +153,32 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             //observe map features
             if (!zf.isZero()) {
                 //isample from 'optimal' proposal distribution, then update map
-                for (unsigned i=0; i<NPARTICLES; i++) {
-                    sample_proposal(particles[i], zf, idf, Re);
-                    feature_update(particles[i],zf,idf,Re);
-                }
 
+                for (unsigned i=0; i<NPARTICLES; i++) {
+                    //cout<<"sample Proposal i= "<<i<<endl<<flush;
+                    if (i==47) {
+                        cout<<"sample_proposal"<<endl<<flush;
+                    }
+                    sample_proposal(particles[i], zf, idf, Re);
+                    if (i==47) {
+                        cout<<particles[i].Pv()<<endl<<flush; 
+                        cout<<particles[i].xv()<<endl<<flush; 
+                        cout<<endl<<flush;
+                        cout<<"feature_update"<<i<<endl<<flush;
+                    }
+                    feature_update(particles[i],zf,idf,Re);
+                    if(i==47){
+                        cout<<particles[47].Pv()<<endl<<flush; 
+                        cout<<particles[47].xv()<<endl<<flush; 
+                        cout<<endl<<flush;
+                    }
+                }
                 //resample
+                cout<<"resample_particles"<<endl<<flush;
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
+                cout<<particles[47].Pv()<<endl<<flush; 
+                cout<<particles[47].xv()<<endl<<flush; 
+                cout<<endl<<flush;
             }
 
             //Observe new features, augment map
@@ -152,16 +186,31 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             if (!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution if we have not already done so above
+                        if(i==47) {
+                            cout<<"multivar gauss"<<endl<<flush;
+                        }
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
                                                         particles[i].Pv(),1);
+                        if(i==47) {
+                            cout<<particles[i].Pv()<<endl<<flush; 
+                            cout<<particles[i].xv()<<endl<<flush; 
+                            cout<<endl<<flush;
+                        }
                         //TODO: xv[0] seems to have an approximation error from chol.
                         particles[i].setXv(xv);
                         MatrixXf pv(3,3); 
                         pv.setZero();
                         particles[i].setPv(pv); 
                     }
-
-                    add_feature(particles[i], zn, Re);	
+                    if (i==47) {
+                        cout<<"add_feature"<<endl<<flush;
+                    }
+                    add_feature(particles[i], zn, Re);
+                    if(i==47) {
+                        cout<<particles[i].Pv()<<endl<<flush;	
+                        cout<<particles[i].xv()<<endl<<flush;
+                        cout<<endl<<flush; 
+                    }
                 }
             }	
             count++;
@@ -170,7 +219,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             }
         }
     }
-    cout<<"done with all functions and will return particles"<<endl;
+    cout<<"done with all functions and will return particles"<<endl<<flush;
     return particles;
 }
 
