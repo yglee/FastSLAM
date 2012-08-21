@@ -53,7 +53,6 @@ void KF_joseph_update(VectorXf &x, MatrixXf &P,float v,float R, MatrixXf H)
     PSD_check = P.llt().matrixL();
     PSD_check.transpose();
     PSD_check.conjugate(); //for upper tri
-    //break
 }
 
 MatrixXf make_symmetric(MatrixXf P)

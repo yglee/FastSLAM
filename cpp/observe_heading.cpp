@@ -36,6 +36,4 @@ void observe_heading(Particle &particle, float phi, int useheading)
 
     particle.setXv(xv);
     particle.setPv(Pv);
-    //break here
-    cout<<particle.Pf()[1000]<<endl;
 }

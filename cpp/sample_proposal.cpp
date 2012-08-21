@@ -93,7 +93,9 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
     //sample from proposal distribution
     VectorXf xvs = multivariate_gauss(xv,Pv,1); 
     particle.setXv(xvs);
-    particle.setPv(MatrixXf(3,3));
+    MatrixXf zeros(3,3);
+    zeros.setZero();
+    particle.setPv(zeros);
 
     //compute sample weight: w = w* p(z|xk) p(xk|xk-1) / proposal
     float like = likelihood_given_xv(particle, z, idf, R);
@@ -127,22 +129,57 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
     MatrixXf Sfi;
     VectorXf v(z.rows());    
 
+    cout<<"xv"<<endl;
+    cout<<particle.xv()<<endl;
+    cout<<endl;
+    cout<<"Pv"<<endl;
+    cout<<particle.Pv()<<endl;
+    cout<<endl;
+    cout<<"xf"<<endl;
+    cout<<particle.xf()<<endl;
+    cout<<endl;
+    cout<<"Pf"<<endl;
+    cout<<particle.Pf()[0]<<endl;
+    cout<<endl;
+    cout<<particle.Pf()[1]<<endl;
+    cout<<endl;
+    cout<<"w"<<endl;
+    cout<<particle.w()<<endl;
+    cout<<endl;
+    cout<<"z"<<endl;
+    cout<<z<<endl;
+    cout<<endl;
+    
+    cout<<"idf"<<endl;
+    for (int i=0; i< idf.size(); i++) {
+        cout<<idf[i]<<" ";
+    }
+    cout<<endl;
+
+    cout<<"R"<<endl;
+    cout<<R<<endl;
+    
     unsigned i,k;
     //cout<<"idf.size() "<<idf.size()<<endl;
     for (i=0; i<idf.size(); i++){
-        idfi.push_back(i);
+        idfi.push_back(idf[i]);
         compute_jacobians(particle,idfi,R,zp,&Hv,&Hf,&Sf);
-        Hvi = Hv[0]; 
-        Hfi = Hf[0]; 
-        Sfi = Sf[0];
+        Hvi = Hv[i];//Hv[0]; 
+        Hfi = Hf[i];//Hf[0]; 
+        Sfi = Sf[i];//Sf[0];
 
         for (k=0; k<z.rows(); k++) {
             v(k) = z(k,i)-zp(k,0); //TODO: this returns wrong values
         }
         v(1) = pi_to_pi(v(1));
 
-        w = w*gauss_evaluate(v,Sf[i],0);
+        w = w*gauss_evaluate(v,Sfi,0);//Sf[i],0);
+        cout<<"new w: "<<w<<endl;
     } 
+    cout<<"w returned "<<w<<endl;
+    
+    //break
+    cout<<particle.Pf()[100]<<endl;
     return w;
 }
 
