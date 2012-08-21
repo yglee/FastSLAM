@@ -54,10 +54,17 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
             vi[r] = z(r,i) - zpi(r,0);
             //cout<<"vi["<<r<<"] "<<vi[r]<<endl; 
         }
-#if 0
+
+#if 1
+        cout<<"in sample proposal"<<endl;
+        cout<<"z"<<endl;
+        cout<<z<<endl;
+        cout<<endl;
+        cout<<"zpi"<<endl;
+        cout<<zpi<<endl;
+        cout<<endl;
         cout<<"vi"<<endl;
         cout<<vi<<endl;
-        cout<<"should be [0.1355; -0.0333]"<<endl; 
         cout<<endl;
 #endif
         vi[1] = pi_to_pi(vi[1]);
@@ -163,16 +170,28 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
         idfi.push_back(idf[i]);
         compute_jacobians(particle,idfi,R,zp,&Hv,&Hf,&Sf);
 
+        cout<<"at idf = "<<i<<endl;
+        cout<<"z"<<endl;
+        cout<<z<<endl;
+        cout<<endl;
+        cout<<"zp"<<endl;
+        cout<<zp<<endl;
+        cout<<endl;
+
         for (k=0; k<z.rows(); k++) {
             v(k) = z(k,i)-zp(k,0); //TODO: this returns wrong values
         }
         v(1) = pi_to_pi(v(1));
 
+        cout<<"v"<<endl;
+        cout<<v<<endl;
+        cout<<endl;
+
+
         w = w*gauss_evaluate(v,Sf[0],0);
         cout<<"new w: "<<w<<endl;
     } 
     cout<<"w returned "<<w<<endl;
-    
     return w;
 }
 
