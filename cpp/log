@@ -1,0 +1,1130 @@
+==10128== Memcheck, a memory error detector
+==10128== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==10128== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==10128== Command: ./fastslam
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083310: Particle::xv() const (DenseCoeffsBase.h:508)
+==10128==    by 0x8085163: predict(Particle&, float, float, Eigen::Matrix<float, 2, 2, 0, 2, 2>, float, float, int) (predict.cpp:11)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808331B: Particle::xv() const (Assign.h:315)
+==10128==    by 0x8085163: predict(Particle&, float, float, Eigen::Matrix<float, 2, 2, 0, 2, 2>, float, float, int) (predict.cpp:11)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c8 is 8 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80834E0: Particle::Pv() const (DenseCoeffsBase.h:508)
+==10128==    by 0x8085180: predict(Particle&, float, float, Eigen::Matrix<float, 2, 2, 0, 2, 2>, float, float, int) (predict.cpp:12)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80834EB: Particle::Pv() const (Assign.h:315)
+==10128==    by 0x8085180: predict(Particle&, float, float, Eigen::Matrix<float, 2, 2, 0, 2, 2>, float, float, int) (predict.cpp:12)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f948 is 8 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083BCE: Particle::setPv(Eigen::Matrix<float, -1, -1, 0, -1, -1>) (particle.cpp:82)
+==10128==    by 0x8085C16: predict(Particle&, float, float, Eigen::Matrix<float, 2, 2, 0, 2, 2>, float, float, int) (predict.cpp:31)
+==10128==    by 0x805750A: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:122)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083AFF: Particle::setXv(Eigen::Matrix<float, -1, 1, 0, -1, 1>) (particle.cpp:74)
+==10128==    by 0x8085DE6: predict(Particle&, float, float, Eigen::Matrix<float, 2, 2, 0, 2, 2>, float, float, int) (predict.cpp:49)
+==10128==    by 0x805750A: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:122)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836E0: Particle::xf() const (DenseCoeffsBase.h:508)
+==10128==    by 0x8057A41: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:148)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836EB: Particle::xf() const (Assign.h:315)
+==10128==    by 0x8057A41: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:148)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083310: Particle::xv() const (DenseCoeffsBase.h:508)
+==10128==    by 0x808E9F3: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:10)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808331B: Particle::xv() const (Assign.h:315)
+==10128==    by 0x808E9F3: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:10)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c8 is 8 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80834E0: Particle::Pv() const (DenseCoeffsBase.h:508)
+==10128==    by 0x808EA10: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:11)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80834EB: Particle::Pv() const (Assign.h:315)
+==10128==    by 0x808EA10: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:11)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f948 is 8 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A818: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A823: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c8 is 8 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A908: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A913: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f948 is 8 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A9F8: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA03: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA90: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA93: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AAF2: Particle::Particle(Particle const&) (PlainObjectBase.h:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AAF5: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABD6: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABDF: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABEC: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab708 is 0 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABF0: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab780 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABFC: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab788 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083AFF: Particle::setXv(Eigen::Matrix<float, -1, 1, 0, -1, 1>) (particle.cpp:74)
+==10128==    by 0x80903F4: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:136)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083BCE: Particle::setPv(Eigen::Matrix<float, -1, -1, 0, -1, -1>) (particle.cpp:82)
+==10128==    by 0x8090469: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:137)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A818: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A823: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c8 is 8 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A908: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A913: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f948 is 8 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A9F8: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA03: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA90: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA93: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AAF2: Particle::Particle(Particle const&) (PlainObjectBase.h:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AAF5: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABD6: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABDF: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABEC: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab708 is 0 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABF0: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab780 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABFC: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x808ED4A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:45)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab788 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083AFF: Particle::setXv(Eigen::Matrix<float, -1, 1, 0, -1, 1>) (particle.cpp:74)
+==10128==    by 0x809058A: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:142)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083BCE: Particle::setPv(Eigen::Matrix<float, -1, -1, 0, -1, -1>) (particle.cpp:82)
+==10128==    by 0x80905FD: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:143)
+==10128==    by 0x80583CD: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:160)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A818: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x1: ???
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A823: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x1: ???
+==10128==  Address 0x432f8c8 is 8 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A908: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A913: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x432f948 is 8 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808A9F8: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA03: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA90: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AA93: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AAF2: Particle::Particle(Particle const&) (PlainObjectBase.h:45)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808AAF5: Particle::Particle(Particle const&) (resample_particles.cpp:45)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABD6: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABDF: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABEC: Particle::Particle(Particle const&) (Assign.h:510)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab708 is 0 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABF0: Particle::Particle(Particle const&) (DenseCoeffsBase.h:508)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab780 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808ABFC: Particle::Particle(Particle const&) (Assign.h:315)
+==10128==    by 0x809077C: sample_proposal(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (sample_proposal.cpp:146)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab788 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836E0: Particle::xf() const (DenseCoeffsBase.h:508)
+==10128==    by 0x805B0E3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:10)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836EB: Particle::xf() const (Assign.h:315)
+==10128==    by 0x805B0E3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:10)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836E0: Particle::xf() const (DenseCoeffsBase.h:508)
+==10128==    by 0x805B270: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:16)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836EB: Particle::xf() const (Assign.h:315)
+==10128==    by 0x805B270: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:16)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836E0: Particle::xf() const (DenseCoeffsBase.h:508)
+==10128==    by 0x805B21C: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:17)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80836EB: Particle::xf() const (Assign.h:315)
+==10128==    by 0x805B21C: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:17)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083870: Particle::Pf() const (particle.cpp:100)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083873: Particle::Pf() const (particle.cpp:100)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80838D3: Particle::Pf() const (PlainObjectBase.h:45)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x80838D6: Particle::Pf() const (particle.cpp:100)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x808393E: Particle::Pf() const (Assign.h:510)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083947: Particle::Pf() const (Assign.h:510)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083954: Particle::Pf() const (Assign.h:510)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab708 is 0 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083958: Particle::Pf() const (DenseCoeffsBase.h:508)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab780 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083964: Particle::Pf() const (Assign.h:315)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab788 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8083870: Particle::Pf() const (particle.cpp:100)
+==10128==    by 0x805B2B3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:19)
+==10128==    by 0x1: ???
+==10128==  Address 0x47ab71c is 20 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805B7A0: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (DenseCoeffsBase.h:508)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c0 is 0 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805B7AB: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:315)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f8c8 is 8 bytes inside a block of size 12 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805B8CC: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (DenseCoeffsBase.h:508)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f940 is 0 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805B8D7: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:315)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x432f948 is 8 bytes inside a block of size 36 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x808325D: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805B9F8: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (DenseCoeffsBase.h:508)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BA03: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:315)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab438 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BAB0: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:71)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BAB3: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:71)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BB17: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (PlainObjectBase.h:45)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BB1A: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:71)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BD5E: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:510)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BD67: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:510)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BD74: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:510)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab708 is 0 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BD78: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (DenseCoeffsBase.h:508)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab780 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x805BD83: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (Assign.h:315)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab788 is 8 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8083CA3: Particle::setXf(Eigen::Matrix<float, -1, -1, 0, -1, -1>) (DenseCoeffsBase.h:508)
+==10128==    by 0x805CD17: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:69)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab430 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083252: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8082C16: _ZNSt6vectorIN5Eigen6MatrixIfLin1ELin1ELi0ELin1ELin1EEESaIS2_EEaSERKS4_.constprop.94 (DenseStorage.h:216)
+==10128==    by 0x8083F21: Particle::setPf(std::vector<Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::allocator<Eigen::Matrix<float, -1, -1, 0, -1, -1> > >) (particle.cpp:94)
+==10128==    by 0x805D503: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:70)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8082C1C: _ZNSt6vectorIN5Eigen6MatrixIfLin1ELin1ELi0ELin1ELin1EEESaIS2_EEaSERKS4_.constprop.94 (DenseStorage.h:216)
+==10128==    by 0x8083F21: Particle::setPf(std::vector<Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::allocator<Eigen::Matrix<float, -1, -1, 0, -1, -1> > >) (particle.cpp:94)
+==10128==    by 0x805D503: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:70)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8082C4C: _ZNSt6vectorIN5Eigen6MatrixIfLin1ELin1ELi0ELin1ELin1EEESaIS2_EEaSERKS4_.constprop.94 (DenseStorage.h:225)
+==10128==    by 0x8083F21: Particle::setPf(std::vector<Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::allocator<Eigen::Matrix<float, -1, -1, 0, -1, -1> > >) (particle.cpp:94)
+==10128==    by 0x805D503: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:70)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab70c is 4 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8082C4F: _ZNSt6vectorIN5Eigen6MatrixIfLin1ELin1ELi0ELin1ELin1EEESaIS2_EEaSERKS4_.constprop.94 (DenseStorage.h:226)
+==10128==    by 0x8083F21: Particle::setPf(std::vector<Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::allocator<Eigen::Matrix<float, -1, -1, 0, -1, -1> > >) (particle.cpp:94)
+==10128==    by 0x805D503: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:70)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab710 is 8 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid read of size 4
+==10128==    at 0x8082C68: _ZNSt6vectorIN5Eigen6MatrixIfLin1ELin1ELi0ELin1ELin1EEESaIS2_EEaSERKS4_.constprop.94 (Assign.h:510)
+==10128==    by 0x8083F21: Particle::setPf(std::vector<Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::allocator<Eigen::Matrix<float, -1, -1, 0, -1, -1> > >) (particle.cpp:94)
+==10128==    by 0x805D503: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:70)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab708 is 0 bytes inside a block of size 24 free'd
+==10128==    at 0x402ACFC: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083247: Particle::~Particle() (new_allocator.h:98)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== Invalid write of size 4
+==10128==    at 0x8082C73: _ZNSt6vectorIN5Eigen6MatrixIfLin1ELin1ELi0ELin1ELin1EEESaIS2_EEaSERKS4_.constprop.94 (DenseCoeffsBase.h:508)
+==10128==    by 0x8083F21: Particle::setPf(std::vector<Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::allocator<Eigen::Matrix<float, -1, -1, 0, -1, -1> > >) (particle.cpp:94)
+==10128==    by 0x805D503: feature_update(Particle&, Eigen::Matrix<float, -1, -1, 0, -1, -1>, std::vector<int, std::allocator<int> >, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (feature_update.cpp:70)
+==10128==    by 0x80585D4: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:161)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128==  Address 0x47ab780 is 0 bytes inside a block of size 16 free'd
+==10128==    at 0x402B06C: free (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x8083234: Particle::~Particle() (Memory.h:240)
+==10128==    by 0x808A462: resample_particles(std::vector<Particle, std::allocator<Particle> >&, int, int) (stl_construct.h:94)
+==10128==    by 0x805873D: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:165)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+fastslam: resample_particles.cpp:11: void resample_particles(std::vector<Particle>&, int, int): Assertion `particles.size() == config::NPARTICLES' failed.
+==10128== 
+==10128== HEAP SUMMARY:
+==10128==     in use at exit: 6,916 bytes in 40 blocks
+==10128==   total heap usage: 167,384 allocs, 167,344 frees, 12,271,489 bytes allocated
+==10128== 
+==10128== 168 bytes in 21 blocks are definitely lost in loss record 10 of 15
+==10128==    at 0x402B454: operator new[](unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==10128==    by 0x805740C: fastslam2_sim(Eigen::Matrix<float, -1, -1, 0, -1, -1>, Eigen::Matrix<float, -1, -1, 0, -1, -1>) (fastslam2_sim.cpp:105)
+==10128==    by 0x804B266: main (main.cpp:135)
+==10128== 
+==10128== LEAK SUMMARY:
+==10128==    definitely lost: 168 bytes in 21 blocks
+==10128==    indirectly lost: 0 bytes in 0 blocks
+==10128==      possibly lost: 0 bytes in 0 blocks
+==10128==    still reachable: 6,748 bytes in 19 blocks
+==10128==         suppressed: 0 bytes in 0 blocks
+==10128== Reachable blocks (those to which a pointer was found) are not shown.
+==10128== To see them, rerun with: --leak-check=full --show-reachable=yes
+==10128== 
+==10128== For counts of detected and suppressed errors, rerun with: -v
+==10128== ERROR SUMMARY: 50205 errors from 100 contexts (suppressed: 0 from 0)

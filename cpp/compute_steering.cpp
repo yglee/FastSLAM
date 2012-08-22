@@ -30,10 +30,10 @@ void compute_steering(VectorXf x, MatrixXf wp, int& iwp, float minD,
 		float d2 = pow((cwp[0] - x[0]),2) + pow((cwp[1]-x[1]),2);     
 
 		if (d2 < minD*minD) {
-				iwp = iwp+1; //switch to next
-				if (iwp > wp.cols()) {
-						iwp =-1;
-						return;	
+				iwp++; //switch to next
+				if (iwp >= wp.cols()) {
+				    iwp =-1;
+				    return;	
 				}
 
 				cwp[0] = wp(0,iwp); //-1 since indexed from 0
