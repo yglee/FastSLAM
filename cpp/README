@@ -1,3 +1,47 @@
++++++++++++++++++++++
+Algorithm
++++++++++++++++++++++
+
+Do the following M times:
+
+	- Retrieve a pose x from particle set Y
+	- Sample a new pose x given previous pose and controls: p(x_t | x_t-1, u_t)
+	- For each observed feature, identify correspondence for measurement and incorporate measurement into corresponding EKF by updating mean and covariance
+	- Calculate importance weight for new particle 
+ - Resampling: sample (with replacement!) M particles (using weight).
+
+++++++++++++++++++++++
+Variables 
+++++++++++++++++++++++
+
+=====particles=====
+w = importance weight
+xv = robot pose? (x, y, theta) - aka path estimate
+Pv = (either control or measurement??) 
+xf = (either control or measurement??)
+Pf = set of covariance matrix for kalman filter gaussian reprenting nth feature location
+da = set of mean for kalman filter
+
+set of kalman filters with mean and covariance (one for each feature in the map)
+
+w.lm = landmark positions
+w.wp  = way points defining robots path (bcs this is known, cond'l independence is possible
+
+
+=====Particle Filter=======
+with M particles and N features, number of particle filters will be 1+MN
+particle filter is used to estimate path posterior (robot position). 
+
+
+=====Kalman Filter (EKF)========
+Kalman filter is used to estimate the map feature locations.
+Each particle posses its own set of EKF since each EKF is conditioned on a robot path.
+
+=====Fast SLAM Notes=======
+Features are conditionally indpendent given the robot path 
+
+
+
 8/23/12
 Went through and did unity tests on all files and they seem to generate correct result for one given set of inputs. There is a matrix dimensionality error and at this point, I need to read the papers and identify each variables and rename them and think about what they do...
 
