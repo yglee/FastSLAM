@@ -55,7 +55,7 @@ void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R
             //cout<<"vi["<<r<<"] "<<vi[r]<<endl; 
         }
 
-#if 1
+#if 0 
         cout<<"in sample proposal"<<endl;
         cout<<"z"<<endl;
         cout<<z<<endl;
@@ -134,36 +134,6 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
     MatrixXf Sfi;
     VectorXf v(z.rows());    
 
-    cout<<"xv"<<endl;
-    cout<<particle.xv()<<endl;
-    cout<<endl;
-    cout<<"Pv"<<endl;
-    cout<<particle.Pv()<<endl;
-    cout<<endl;
-    cout<<"xf"<<endl;
-    cout<<particle.xf()<<endl;
-    cout<<endl;
-    cout<<"Pf"<<endl;
-    cout<<particle.Pf()[0]<<endl;
-    cout<<endl;
-    cout<<particle.Pf()[1]<<endl;
-    cout<<endl;
-    cout<<"w"<<endl;
-    cout<<particle.w()<<endl;
-    cout<<endl;
-    cout<<"z"<<endl;
-    cout<<z<<endl;
-    cout<<endl;
-    
-    cout<<"idf"<<endl;
-    for (int i=0; i< idf.size(); i++) {
-        cout<<idf[i]<<" ";
-    }
-    cout<<endl;
-
-    cout<<"R"<<endl;
-    cout<<R<<endl;
-    
     unsigned i,k;
     //cout<<"idf.size() "<<idf.size()<<endl;
     for (i=0; i<idf.size(); i++){
@@ -179,19 +149,23 @@ float likelihood_given_xv(Particle particle, MatrixXf z, vector<int>idf, MatrixX
         cout<<endl;
 
         for (k=0; k<z.rows(); k++) {
-            v(k) = z(k,i)-zp(k,0); //TODO: this returns wrong values
+            v(k) = z(k,i)-zp(k,i); //TODO: this returns wrong values
         }
         v(1) = pi_to_pi(v(1));
 
+        cout<<"GAUSS EVAL INPUTS"<<endl;
         cout<<"v"<<endl;
         cout<<v<<endl;
         cout<<endl;
 
+        cout<<"sf"<<endl;
+        cout<<Sf[0]<<endl;
 
+        cout<<"gauss_eval "<<gauss_evaluate(v,Sf[0],0)<<endl;
         w = w*gauss_evaluate(v,Sf[0],0);
-        cout<<"new w: "<<w<<endl;
+        //cout<<"new w: "<<w<<endl;
     } 
-    cout<<"w returned "<<w<<endl;
+    //cout<<"w returned "<<w<<endl;
     return w;
 }
 

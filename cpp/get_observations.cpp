@@ -45,7 +45,12 @@ void get_visible_landmarks(VectorXf x, MatrixXf &lm, vector<int> &idf, float rma
 		}
 	}
 	lm = MatrixXf(lm_new); 
-	idf = vector<int>(ii); 			
+	//idf = vector<int>(ii); 			
+        vector<int>idf_backup(idf);
+        idf.clear();
+        for(int i=0; i<ii.size(); i++) {
+            idf.push_back(idf_backup[ii[i]]);
+        }
 }
 
 MatrixXf compute_range_bearing(VectorXf x, MatrixXf lm) 
@@ -71,12 +76,14 @@ vector<int> find2(MatrixXf dx, MatrixXf dy, float phi, float rmax)
 {
 	vector<int> index;
 	//incremental tests for bounding semi-circle
-	for (int i =0; i<dx.cols(); i++) {
-		if ((abs(dx(0,i)) < rmax) && (abs(dy(0,i)) < rmax)
-		&& ((dx(0,i)* cos(phi) + dy(0,i)* sin(phi)) > 0)
-		&& ((pow(dx(0,i),2) + pow(dy(0,i),2)) < pow(rmax,2))) {
+	for (int j=0; j<dx.rows(); j++) {
+            for (int i =0; i<dx.cols(); i++) {
+		if ((abs(dx(j,i)) < rmax) && (abs(dy(j,i)) < rmax)
+		&& ((dx(j,i)* cos(phi) + dy(j,i)* sin(phi)) > 0)
+		&& ((pow(dx(j,i),2) + pow(dy(j,i),2)) < pow(rmax,2))) {
 			index.push_back(i);			
 		}
-	}	
+	    }	
+        }
 	return index;				
 }

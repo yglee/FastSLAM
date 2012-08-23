@@ -2,6 +2,8 @@
 #include <math.h>
 #include <iostream>
 
+
+#define pi 3.1416
 //checked all values. everything works
 
 using namespace std;
@@ -55,6 +57,18 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 	VectorXf xv_temp(3);
         xv_temp << xv(0) + V*dt*cos(G+xv(2)),
 	           xv(1) + V*dt*sin(G+xv(2)),
-	           pi_to_pi(xv(2) + V*dt*sin(G/WB));
+	           pi_to_pi2(xv(2) + V*dt*sin(G/WB));
         particle.setXv(xv_temp);
 }
+
+float pi_to_pi2(float ang) 
+{
+    if (ang > pi) {
+        ang = ang - (2*pi);
+    }
+    if (ang < -pi) {
+        ang = ang + (2*pi);
+    }
+    return ang;
+}
+

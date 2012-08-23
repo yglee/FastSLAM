@@ -12,7 +12,7 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
     VectorXf w(N);
     w.setZero();
 
-    unsigned i;    
+    int i;    
     for (i=0; i<N; i++) {
         w(i) = particles[i].w();
         //cout<<"w at "<<i<<" "<<w(i)<<endl;
@@ -20,13 +20,11 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
 
     float ws = w.sum();
 
-    //TODO: ws is zero!
-    cout<<"ws is "<<ws<<endl;
     for (i=0; i<N; i++) {
         w(i) = w(i)/ws;
     }
 
-    float Neff;
+    float Neff=0;
     vector<int> keep;
     stratified_resample(w,keep,Neff);
 
@@ -38,7 +36,9 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
             particles[i] = old_particles[keep[i]]; 	
         }	
         for (i=0; i<N; i++) {
-            particles[i].setW(1/N);
+            cout<<"N"<<endl;
+            cout<<N<<endl;
+            particles[i].setW(1.0/(float)N);
         }
     }		
 }

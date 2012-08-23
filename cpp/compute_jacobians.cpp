@@ -99,7 +99,7 @@ void compute_jacobians(Particle particle,
         HfMat<< dx/d,  dy/d,
             	-dy/d2, dx/d2;
 	
-		Hv->push_back(HvMat);
+	Hv->push_back(HvMat);
         Hf->push_back(HfMat);
         
         //innovation covariance of 'feature observation given the vehicle'
