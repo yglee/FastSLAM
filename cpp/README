@@ -1,3 +1,6 @@
+8/23/12
+Went through and did unity tests on all files and they seem to generate correct result for one given set of inputs. There is a matrix dimensionality error and at this point, I need to read the papers and identify each variables and rename them and think about what they do...
+
 
 8/21/12
 even a little bit of numerical error results in exp(E) to go zero (when E<0) in gauss evaluate.
