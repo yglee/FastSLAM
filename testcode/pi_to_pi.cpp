@@ -36,3 +36,15 @@ float pi_to_pi(float ang)
     return ang;
 }
 
+#if 0
+vector<int> find1(VectorXf input) 
+{
+	vector<int> index;
+    for (int i =0; i<input.size(); i++) {
+        if ((input[i] > 2*pi) || (input[i] < -2*pi)){
+            index.push_back(i);
+        }    
+    }
+	return index; 
+}
+#endif
