@@ -13,25 +13,10 @@ void compute_jacobians(Particle particle,
 {
     VectorXf xv = particle.xv();
 
-    #if 0
-    cout<<"compute_jacobians: particle.xf()"<<endl;
-    cout<<particle.xf()<<endl;
-    #endif
-    
     int rows = (particle.xf()).rows();
     MatrixXf xf(rows,idf.size()); 
     vector<MatrixXf> Pf;
     
-    #if 0
-    cout<<"compute jacobians:"<<endl;
-    cout<<"particle.xf().rows() "<<(particle.xf()).rows()<<endl;
-    cout<<"particle.xf().cols() "<<(particle.xf()).cols()<<endl;
-    cout<<"idf.size() "<<idf.size()<<endl;
-    cout<<"idf max "<<idf[idf.size()-1]<<endl;
-    cout<<"xf.rows() "<<xf.rows()<<endl;
-    cout<<"xf.cols() "<<xf.cols()<<endl;
-    cout<<endl;
-    #endif    
     unsigned i;
     int r;
     for (unsigned i=0; i<idf.size(); i++) {
@@ -47,40 +32,11 @@ void compute_jacobians(Particle particle,
     MatrixXf HvMat(2,3);
     MatrixXf HfMat (2,2);
 
-#if 0
-    cout<<"before for loop in compute_jacobians"<<endl;
-    cout<<"idf.size()"<<idf.size()<<endl;
-    cout<<"xv "<<endl;
-    cout<<xv<<endl;
-    cout<<"should be 1.5052"<<endl;
-    cout<<"         -0.0293"<<endl;
-    cout<<"         -0.0079"<<endl;
-    cout<<endl;
-    cout<<"xf"<<endl;
-    cout<<xf<<endl;
-    cout<<"should be 3.4011"<<endl;
-    cout<<"        -25.6172"<<endl;	
-    cout<<endl;
-    cout<<"Pf"<<endl;
-    cout<<Pf[0]<<endl;
-    cout<<"should be 0.2005 0.0195"<<endl;
-    cout<<"          0.0196 0.0120"<<endl;
-    cout<<endl;
-#endif
-
     for (i=0; i<idf.size(); i++) {
         dx = xf(0,i) - xv(0);
         dy = xf(1,i) - xv(1);
         d2 = pow(dx,2) + pow(dy,2);	
         d = sqrt(d2);
-
-#if 0
-        cout<<"dx"<<dx<<endl;
-        cout<<"dy"<<dy<<endl;
-        cout<<"d2"<<d2<<endl;
-        cout<<"d"<<d<<endl;
-        cout<<"about to print zp"<<endl;
-#endif
         
         //predicted observation
         zp(0,i) = d;

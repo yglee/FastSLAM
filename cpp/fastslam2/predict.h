@@ -2,8 +2,8 @@
 #define PREDICT_H
 
 #include <Eigen/Dense>
-#include "particle.h"
-#include "multivariate_gauss.h"
+#include "core/particle.h"
+#include "core/multivariate_gauss.h"
 
 using namespace Eigen;
 

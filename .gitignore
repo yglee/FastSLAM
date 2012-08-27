@@ -1,1 +1,7 @@
+*.swp
+test/**/*
 *~
+*.o
+exec
+build
+.DS_Store

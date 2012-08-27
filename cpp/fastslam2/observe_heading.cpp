@@ -1,6 +1,6 @@
 #include "observe_heading.h"
-#include "pi_to_pi.h"
-#include "KF_joseph_update.h"
+#include "core/pi_to_pi.h"
+#include "core/KF_joseph_update.h"
 
 #include <iostream>
 #include <vector>

@@ -9,23 +9,29 @@ using namespace std;
 // add new features
 //
 void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
-{	
+{
+    cout<<"ADD_FEATURE"<<endl;
+    cout<<"z"<<endl;
+    cout<<z<<endl;
+    cout<<"R"<<endl;
+    cout<<R<<endl;
+    cout<<"particle.w"<<endl;
+    cout<<particle.w()<<endl;
+    cout<<"particle.xv"<<endl;
+    cout<<particle.xv()<<endl;
+    cout<<"particle.Pv"<<endl;
+    cout<<particle.Pv()<<endl;
+    cout<<"particle.xf"<<endl;
+    cout<<particle.xf()<<endl;
+    cout<<"particle.Pf"<<endl;
+    for (int i=0; i<(particle.Pf()).size();i++) {
+        cout<<particle.Pf()[i]<<endl;
+    }
+	
     int lenz = z.cols();
     MatrixXf xf(2,lenz);
     vector<MatrixXf> Pf;
     VectorXf xv = particle.xv();
-
-    //TODO: this doesn't match :(
-	//TODO: fix this!!!
-	#if 0
-    cout<<"xv in add_feature"<<endl;
-    cout<<xv<<endl;
-    cout<<"should be"<<endl;
-    cout<<"0.7648"<<endl;
-    cout<<"0.0221"<<endl;
-    cout<<"0.0050"<<endl;
-    cout<<endl;
-	#endif
 
     float r,b,s,c;
     MatrixXf Gz(2,2);
@@ -49,42 +55,67 @@ void add_feature(Particle &particle, MatrixXf z, MatrixXf R)
         ii.push_back(i);
     }	
 
-    MatrixXf xfCopy = particle.xf();	
-    vector<MatrixXf> pfCopy(particle.Pf());  
+    //MatrixXf xfCopy;// = particle.xf();	
+    //vector<MatrixXf> pfCopy(particle.Pf());  
 
+    cout<<"xf"<<endl;
+    cout<<xf<<endl;
 
-    for (unsigned c=0; c<ii.size(); c++) {
-        #if 0
-		cout<<"ii"<<endl;
-        cout<<ii[c]<<endl;
-		#endif
+//TODO: there is a bug here. xfCopy (which is particle.xf) should grow in size 
+//based on length of ii
+//new xfCopy columns = max(ii.size(),xfCopy.cols())
+//initialize to 0
+
     
+    //stupid dynamically sized matlab matrices :((((
+    int prows = particle.xf().rows();
+    int pcols = particle.xf().cols();
+    int iisize = ii.size();
+ 
+    //max value in ii
+    vector<int>::iterator maxelem;
+    maxelem = std::max_element(ii.begin(),ii.end());
+    int xfc = std::max((*maxelem)+1,pcols);
+
+    cout<<"particle.xf().cols()"<<endl;
+    cout<<pcols<<endl;
+    cout<<"max"<<endl;
+    cout<<xfc<<endl;
+    MatrixXf xfCopy(prows,xfc);
+    xfCopy.setZero();
+    for (int i =0; i<prows; i++) {
+        for (int j=0; j<pcols; j++) {
+            xfCopy(i,j) =particle.xf()(i,j); 
+        }
+    }
+    
+
+    //stupid matlab... I need to dynamically
+    //pfCopy
+    int pfcols = particle.Pf().size();
+    int Pfc = std::max((*maxelem)+1,pfcols); 
+    vector<MatrixXf> pfCopy(Pfc);
+    for (int i=0; i<pfcols; i++) {
+        pfCopy[i] = particle.Pf()[i];
+    }
+
+    for (unsigned l=0; l<ii.size(); l++) {
+        if (ii.size() == 0) {
+            break;
+        }
         if (xfCopy.isZero()) {
             xfCopy = xf;
         } else {			
-            for (unsigned r=0; r<xf.rows(); r++) {	
-                xfCopy(r,ii[c]) = xf(r,c); 
+            for (unsigned k=0; k<xf.rows(); k++) {
+                xfCopy(k,ii[l]) = xf(k,l); 
             }
         }	
         if (pfCopy.empty()) {
             pfCopy = Pf;
         } else {	
-            pfCopy[ii[c]] = Pf[c];	
+            pfCopy[ii[l]] = Pf[l];	
         }
     }
-
-	#if 0
-    cout<<"xf in add_feature"<<endl;
-    cout<<xf<<endl;
-    cout<<"should be"<<endl;
-    cout<<"3.4011   25.7814"<<endl;
-    cout<<"-25.6172 3.6347"<<endl;
-    cout<<endl; 
-
-    cout<<"xfCopy"<<endl;
-    cout<<xfCopy<<endl;
-    cout<<endl;
-	#endif
 
     particle.setXf(xfCopy);
     particle.setPf(pfCopy);

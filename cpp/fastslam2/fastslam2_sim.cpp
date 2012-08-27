@@ -3,18 +3,18 @@
 #include <vector>
 
 #include "fastslam2_sim.h"
-#include "add_control_noise.h"
+#include "core/add_control_noise.h"
 #include "predict.h"
 #include "observe_heading.h"
-#include "get_observations.h"
-#include "add_observation_noise.h"
-#include "TransformToGlobal.h"
-#include "line_plot_conversion.h"
-#include "data_associate_known.h"
+#include "core/get_observations.h"
+#include "core/add_observation_noise.h"
+#include "core/TransformToGlobal.h"
+#include "core/line_plot_conversion.h"
+#include "core/data_associate_known.h"
 #include "sample_proposal.h"
-#include "feature_update.h"
-#include "resample_particles.h"
-#include "add_feature.h"
+#include "core/feature_update.h"
+#include "core/resample_particles.h"
+#include "core/add_feature.h"
 
 using namespace config;
 using namespace std;

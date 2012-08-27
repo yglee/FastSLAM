@@ -4,11 +4,11 @@
 #include <vector>
 #include <Eigen/Dense>
 
-#include "particle.h"
-#include "compute_jacobians.h"
-#include "multivariate_gauss.h"
+#include "core/particle.h"
+#include "core/compute_jacobians.h"
+#include "core/multivariate_gauss.h"
 #include "gauss_evaluate.h"
-#include "pi_to_pi.h"
+#include "core/pi_to_pi.h"
 
 using namespace Eigen;
 using namespace std;

@@ -135,6 +135,7 @@ for i=1:np
     p(i).da= [];
 end
 
+%don't implement this
 function p= make_covariance_ellipses(particle)
 N= 10;
 inc= 2*pi/N;
@@ -158,6 +159,7 @@ if lenf > 0
     end
 end
 
+%don't implement this
 function p= make_ellipse(x,P,circ)
 % make a single 2-D ellipse 
 r= sqrtm_2by2(P);
@@ -168,6 +170,7 @@ p(1,:)= [a(1,:)+x(1) NaN];
 %
 %
 
+%don't implement this
 function h= setup_animations(lm,wp)
 figure
 plot(lm(1,:),lm(2,:),'g*')
@@ -181,7 +184,7 @@ h.xfp= plot(0,0,'r.','erasemode','background'); % estimated features (particle m
 h.xvp= plot(0,0,'r.','erasemode','xor'); % estimated vehicle (particles)
 h.cov= plot(0,0,'erasemode','xor'); % covariances of max weight particle
 
-
+%dont implement this
 function do_plot(h, particles, xtrue, plines, veh)
 
 xvp = [particles.xv];

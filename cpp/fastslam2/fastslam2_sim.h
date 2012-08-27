@@ -8,10 +8,10 @@
 #include <vector>
 #include <Eigen/Dense>
 
-#include "configfile.h"
-#include "compute_steering.h"
-#include "predict_true.h"
-#include "particle.h"
+#include "core/configfile.h"
+#include "core/compute_steering.h"
+#include "core/predict_true.h"
+#include "core/particle.h"
 
 using namespace std;
 using namespace Eigen;
