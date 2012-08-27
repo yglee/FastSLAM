@@ -15,11 +15,11 @@ public:
         
 	//getters	
 	float w() const;
-	VectorXf xv() const;
-	MatrixXf Pv() const;
-	MatrixXf xf() const;
-	vector<MatrixXf> Pf() const;
-	float* da() const;
+	VectorXf xv() const; //robot pose: x,y,theta (heading dir)
+	MatrixXf Pv() const; //controls: velocities
+	MatrixXf xf() const; //measurements: range, bearing
+	vector<MatrixXf> Pf() const; //covariance matrices for EKF 
+	float* da() const; //mean for EKF
 
 	//setters
 	void setW(float w);

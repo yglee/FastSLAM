@@ -1,3 +1,9 @@
+++++++++++++++++++++++
+Function Description
+++++++++++++++++++++++
+
+
+
 +++++++++++++++++++++
 Algorithm
 +++++++++++++++++++++
@@ -20,11 +26,12 @@ xv = robot pose? (x, y, theta) - aka path estimate
 Pv = (either control or measurement??) 
 xf = (either control or measurement??)
 Pf = set of covariance matrix for kalman filter gaussian reprenting nth feature location
+        length should equal number of landmarks the particle sees at time t
 da = set of mean for kalman filter
 
 set of kalman filters with mean and covariance (one for each feature in the map)
 
-w.lm = landmark positions
+w.lm = landmark positions (range, bearing)
 w.wp  = way points defining robots path (bcs this is known, cond'l independence is possible
 
 
@@ -38,23 +45,6 @@ Kalman filter is used to estimate the map feature locations.
 Each particle posses its own set of EKF since each EKF is conditioned on a robot path.
 
 =====Fast SLAM Notes=======
-Features are conditionally indpendent given the robot path 
+Features are conditionally indpendent given the robot path
 
-
-
-8/23/12
-Went through and did unity tests on all files and they seem to generate correct result for one given set of inputs. There is a matrix dimensionality error and at this point, I need to read the papers and identify each variables and rename them and think about what they do...
-
-
-8/21/12
-even a little bit of numerical error results in exp(E) to go zero (when E<0) in gauss evaluate.
-The problem is the input to gauss evaluate, v. It's set in sample_proposal. line 172. v is wrong... 
-
-Do a check: 
-is likelhood_given_xv returning a 0 with the right inputs? Then, the function has a problem. If the inputs are wrong, then sample_particles might be wrong. Check this (add a break in likelihood_given_xv. 
-
-
-w is zero in resample particles. w is set in sample_proposal. The likelihood given xv returns a 0 everytime, causing w to be 0. This results in nan's, which should throw a division by 0 error
-
-7/25/12
-fix the multivariate gauss's use of Random() (from eigen). It doesn't return diff. random numbers at each turn
+ 

@@ -128,8 +128,8 @@ void read_input_file(const string s, MatrixXf *lm, MatrixXf *wp)
 
 int main (int argc, char *argv[])
 {
-	MatrixXf lm;
-	MatrixXf wp;
+	MatrixXf lm; //landmark positions
+	MatrixXf wp; //way points
 
 	read_input_file("example_webmap.mat", &lm, &wp);
 	vector<Particle> data = fastslam2_sim(lm,wp);

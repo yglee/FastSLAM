@@ -6,14 +6,13 @@ using namespace std;
 void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
 {
     //Having selected a new pose from the proposal distribution, this pose is assumed perfect and each feature update maybe computed independently and without pose uncertainty
-
-    int rows = (particle.xf()).rows();
-    MatrixXf xf(rows,idf.size());    
+    int rows = 2; //for range and bearing  //(particle.xf()).rows();
+    MatrixXf xf(rows,idf.size()); //idf.size = num measurements for landmarks   
     vector<MatrixXf> Pf;
 
     unsigned i,r; 
     for (i=0; i<idf.size(); i++) {
-        for (r=0; r<(particle.xf()).rows(); r++) {
+        for (r=0; r<rows; r++) {
             xf(r,i) = (particle.xf())(r,(idf[i]));	
         }
         Pf.push_back((particle.Pf())[idf[i]]); //particle.Pf is a array of matrices
@@ -25,24 +24,7 @@ void feature_update(Particle &particle, MatrixXf z, vector<int>idf, MatrixXf R)
     vector<MatrixXf> Hf;
     vector<MatrixXf> Sf;
     compute_jacobians(particle,idf,R,zp,&Hv,&Hf,&Sf);
-
-	#if 0
-    cout<<"after compute_jacobians"<<endl;    
-    cout<<endl; 
-    cout<<"in feature_update"<<endl;
-    cout<<"zp is "<<endl;
-    cout<<zp<<endl;
-    cout<<"zp should be"<<endl;
-    cout<<"25.6675 24.5294"<<endl;
-    cout<<"-1.4925 0.1547"<<endl;
-    cout<<endl;
-	#endif
-
-    cout<<"z"<<endl;
-    cout<<z.rows()<<" "<<z.cols()<<endl;
-    cout<<"zp"<<endl;
-    cout<<zp.rows()<<" "<<zp.cols()<<endl;
-    MatrixXf v = z-zp; //TODO: need to fix: idf.size() is zero. which makes this break.
+    MatrixXf v = z-zp;
 
     unsigned c;
     for (c=0; c<v.cols();c++) {
