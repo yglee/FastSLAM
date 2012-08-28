@@ -55,15 +55,12 @@ vector<VectorXf> compute_range_bearing(VectorXf x, MatrixXf lm)
 	assert(dy.size() == lm.cols());
 
 	float phi = x(2);
-	//MatrixXf z(2,lm.cols()); //range and bearing for each landmark
 	vector<VectorXf> z;
 
 	for (int i =0; i<lm.cols(); i++) {
 		VectorXf zvec(2);
 		zvec<< sqrt(pow(dx[i],2) + pow(dy[i],2)), atan2(dy[i],dx[i]) - phi;	
 		z.push_back(zvec);
-		//z(0,i) = sqrt(pow(dx[i],2) + pow(dy[i],2));	//range	
-		//z(1,i) = atan2(dy[i],dx[i]) - phi;	//bearing
 	}
 
 	return z; 

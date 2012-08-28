@@ -14,7 +14,6 @@ void KF_cholesky_update(VectorXf &x, MatrixXf &P,VectorXf v,MatrixXf R,MatrixXf 
     MatrixXf W1 = PHt * SCholInv;
     MatrixXf W = W1 * SCholInv.transpose();
 
-    //TODO: last three lines 
     x = x + W*v;
     P = P - W1*W1.transpose();
 }

@@ -145,11 +145,13 @@ int main (int argc, char *argv[])
 		cout<<"xf (EFK means)"<<endl;
 		for(int j=0; j<data[i].xf().size(); j++) {
 			cout<<data[i].xf()[j]<<endl;
+			cout<<endl;
 		}
 		cout<<endl;
 		cout<<"Pf (covariance mat)"<<endl;
 		for(int k=0; k<data[i].Pf().size(); k++) {
 			cout<<data[i].Pf()[k]<<endl;
+			cout<<endl;
 		}
 		cout<<endl;
 		cout<<endl;

@@ -8,14 +8,12 @@ using namespace std;
 void resample_particles(vector<Particle> &particles, int Nmin, int doresample) 
 {
     unsigned int N = particles.size();
-    //assert(particles.size() == config::NPARTICLES);
     VectorXf w(N);
     w.setZero();
 
     int i;    
     for (i=0; i<N; i++) {
         w(i) = particles[i].w();
-        //cout<<"w at "<<i<<" "<<w(i)<<endl;
     }
 
     float ws = w.sum();

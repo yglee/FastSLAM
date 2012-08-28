@@ -84,12 +84,10 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
     }	
 
     vector<int> ftag_visible;
-    //MatrixXf z;
 	vector<VectorXf> z; //range and bearings of visible landmarks
 
     //Main loop
     while (iwp !=-1) {
-		//cout<<counter++<<endl;
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
         if (iwp ==-1 && NUMBER_LOOPS > 1) {
             iwp = 0;
@@ -113,12 +111,6 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
 					xf_j[2] = xtrue[2];
 					particles[i].setXfi(j,xf_j);	
 				}           
-				//MatrixXf xf = particles[i].xf();
-                //vector<VectorXf> xf = particles[i].xf();
-				//for (int c=0; c< xf.cols(); c++) {
-                //    xf(2,c) = xtrue(2,c);
-                //}
-                //particles[i].setXf(xf);
             }
         }
 
@@ -134,21 +126,16 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
             z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
             //TODO
             //add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
-            //if(!z.isZero()){
             if (!z.empty()){
 			    plines = make_laser_lines(z,xtrue);
             }
 
             //Compute (known) data associations
-            int Nf = particles[0].xf().size();//(particles[0].xf()).cols();
+            int Nf = particles[0].xf().size();
             vector<int> idf;
-            //MatrixXf zf(z.rows(),ftag_visible.size());
-            //zf.setZero();
 			vector<VectorXf> zf;
 			vector<VectorXf> zn;            
 
-			//MatrixXf zn(z.rows(),ftag_visible.size());
-            //zn.setZero();
             bool testflag= false;
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);
             
@@ -178,23 +165,20 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
 
 //rb is measurements
 //xv is robot pose
-MatrixXf make_laser_lines(vector<VectorXf> rb, VectorXf xv) //MatrixXf rb, VectorXf xv) 
+MatrixXf make_laser_lines(vector<VectorXf> rb, VectorXf xv) 
 {
-    //if (rb.isZero()) {
     if (rb.empty()) {
         return MatrixXf(0,0);
     }
 
-    //int len = rb.cols();
     int len = rb.size();
     MatrixXf lnes(4,len);
 
-    //MatrixXf globalMat(2,rb.cols());
     MatrixXf globalMat(2,rb.size());
     int j;
     for (j=0; j<globalMat.cols();j++) {
-        globalMat(0,j) = rb[j][0]*cos(rb[j][1]); //rb(0,j)*cos(rb(1,j));
-        globalMat(1,j) = rb[j][0]*sin(rb[j][1]);//rb(0,j)*sin(rb(1,j));   	
+        globalMat(0,j) = rb[j][0]*cos(rb[j][1]); 
+        globalMat(1,j) = rb[j][0]*sin(rb[j][1]);   	
     }
 
     TransformToGlobal(globalMat,xv);

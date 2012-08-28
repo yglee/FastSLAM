@@ -1,15 +1,62 @@
 ++++++++++++++++++++++
 Function Description
 ++++++++++++++++++++++
+***core***
 
+==add_control_noise==      
+adds noise to control input (i.e velocities)
 
+==compute_jacobians==  
+mostly used for Kalman Filter measurement update 
+
+==data_associate_known==  
+for this FastSLAM implementation, we assume that 
+data_association is known (landmarks are identifiable)
+
+==KF_cholesky_update== 
+   
+==multivariate_gauss== 
+
+ 
+==predict_true==       
+ 
+==stratified_resample==
+Resamples particles based on importance weight
+
+==add_feature==            
+
+==compute_steering==   
+==feature_update==        
+==KF_joseph_update==      
+==particle==            
+==resample_particles==  
+==TransformToGlobal==
+==add_observation_noise==  
+==configfile==         
+==get_observations==      
+==line_plot_conversion==  
+==pi_to_pi==            
+==stratified_random==
+
+***fastslam1***
+==compute_weight==  
+computes weight of the particle for importance sampling 
+to generate new set of particles
+
+==fastslam1_sim == 
+where all the other functions are called.
+
+==main==  
+calls fastslam1_sim, which returns final set of particles
+
+==predict==
+predicts robot position
 
 +++++++++++++++++++++
 Algorithm
 +++++++++++++++++++++
 
 Do the following M times:
-
 	- Retrieve a pose x from particle set Y
 	- Sample a new pose x given previous pose and controls: p(x_t | x_t-1, u_t)
 	- For each observed feature, identify correspondence for measurement and incorporate measurement into corresponding EKF by updating mean and covariance
@@ -23,13 +70,11 @@ Variables
 =====particles=====
 w = importance weight
 xv = robot pose? (x, y, theta) - aka path estimate
-Pv = (either control or measurement??) 
-xf = (either control or measurement??)
-Pf = set of covariance matrix for kalman filter gaussian reprenting nth feature location
-        length should equal number of landmarks the particle sees at time t
-da = set of mean for kalman filter
-
-set of kalman filters with mean and covariance (one for each feature in the map)
+Pv = control input (i.e. velocities) 
+xf = means for EKF
+Pf = set of covariance matrix for kalman filter gaussian representing nth feature location
+     length should equal number of landmarks the particle sees at time t
+da = not sure (it's never used)
 
 w.lm = landmark positions (range, bearing)
 w.wp  = way points defining robots path (bcs this is known, cond'l independence is possible
@@ -38,7 +83,6 @@ w.wp  = way points defining robots path (bcs this is known, cond'l independence 
 =====Particle Filter=======
 with M particles and N features, number of particle filters will be 1+MN
 particle filter is used to estimate path posterior (robot position). 
-
 
 =====Kalman Filter (EKF)========
 Kalman filter is used to estimate the map feature locations.

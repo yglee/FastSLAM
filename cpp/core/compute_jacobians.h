@@ -11,7 +11,6 @@ using namespace Eigen;
 void compute_jacobians(Particle particle, 
                         vector<int> idf, 
                         MatrixXf R,
-                        //MatrixXf &zp, 
                         vector<VectorXf> &zp,
 						vector<MatrixXf> *Hv, 
                         vector<MatrixXf> *Hf, 
