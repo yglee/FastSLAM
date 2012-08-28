@@ -10,6 +10,7 @@ using namespace std;
 
 void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, int addrandom)
 {
+#if 0
 	VectorXf xv = particle.xv();
         MatrixXf Pv = particle.Pv();
         #if 0
@@ -41,7 +42,7 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 
         newPv = Gv*Pv*Gv.transpose() + Gu*Q*Gu.transpose();
         particle.setPv(newPv);	
-
+#endif
 	//optional: add random noise to predicted state
 	if (addrandom ==1) {
 		VectorXf A(2);
@@ -54,6 +55,7 @@ void predict(Particle &particle,float V,float G,Matrix2f Q, float WB,float dt, i
 	}	
 
 	//predict state
+        VectorXf xv = particle.xv();
 	VectorXf xv_temp(3);
         xv_temp << xv(0) + V*dt*cos(G+xv(2)),
 	           xv(1) + V*dt*sin(G+xv(2)),
