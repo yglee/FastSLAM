@@ -15,6 +15,7 @@ install(FILES
     add_control_noise.h      compute_jacobians.h  data_associate_known.h  KF_cholesky_update.h    multivariate_gauss.h  stratified_random.h   predict_true.h
     add_feature.h            compute_steering.h   feature_update.h        KF_joseph_update.h      particle.h            printMat.h            stratified_resample.h
     add_observation_noise.h  configfile.h         get_observations.h      line_plot_conversion.h  pi_to_pi.h            resample_particles.h  TransformToGlobal.h
+	utilities.h
     DESTINATION include/fslam/core
   )
 

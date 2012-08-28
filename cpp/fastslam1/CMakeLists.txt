@@ -10,7 +10,7 @@ add_library(FastSLAM1
 target_link_libraries(FastSLAM1 FastSLAM_core) # We don't depend on anything
 
 install(FILES
-    compute_weight.h  fastslam1_sim.h  predict.h
+    compute_weight.h  fastslam1_sim.h  predict.h 
     DESTINATION include/fslam/fastslam1
   )
 

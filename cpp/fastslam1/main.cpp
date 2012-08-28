@@ -9,6 +9,7 @@
 
 #include "fastslam1_sim.h"
 #include "core/particle.h"
+#include "core/utilities.h"
 
 using namespace Eigen;
 using namespace std;
@@ -128,6 +129,8 @@ void read_input_file(const string s, MatrixXf *lm, MatrixXf *wp)
 
 int main (int argc, char *argv[])
 {
+	MyTimer Timer = MyTimer();
+	Timer.Start();
 	MatrixXf lm; //landmark positions
 	MatrixXf wp; //way points
 
@@ -156,4 +159,6 @@ int main (int argc, char *argv[])
 		cout<<endl;
 		cout<<endl;
 	}
+	Timer.Stop();
+	Timer.Print("fastslam 1.0 ");
 }
