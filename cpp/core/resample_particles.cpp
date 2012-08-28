@@ -38,7 +38,8 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
         for (i=0; i<N; i++) {
             cout<<"N"<<endl;
             cout<<N<<endl;
-            particles[i].setW(1.0/(float)N);
+			float new_w = 1.0f/(float)N;
+            particles[i].setW(new_w);
         }
     }		
 }

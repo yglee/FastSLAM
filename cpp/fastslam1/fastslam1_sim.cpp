@@ -18,6 +18,7 @@
 using namespace config;
 using namespace std;
 
+int counter=0;
 vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp) 
 {
     if (SWITCH_PREDICT_NOISE) {
@@ -83,12 +84,12 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
     }	
 
     vector<int> ftag_visible;
-    MatrixXf z;
-    int count =0;
-   
+    //MatrixXf z;
+	vector<VectorXf> z; //range and bearings of visible landmarks
 
     //Main loop
     while (iwp !=-1) {
+		//cout<<counter++<<endl;
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
         if (iwp ==-1 && NUMBER_LOOPS > 1) {
             iwp = 0;
@@ -107,11 +108,17 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
         for (unsigned int i=0; i< NPARTICLES; i++) {
             predict(particles[i],Vn,Gn,Qe,WHEELBASE,dt,SWITCH_PREDICT_NOISE);
             if (SWITCH_HEADING_KNOWN) {
-                MatrixXf xf = particles[i].xf();
-                for (int c=0; c< xf.cols(); c++) {
-                    xf(2,c) = xtrue(2,c);
-                }
-                particles[i].setXf(xf);
+    			for (int j=0; j< particles[i].xf().size(); j++) {
+					VectorXf xf_j = particles[i].xf()[j];
+					xf_j[2] = xtrue[2];
+					particles[i].setXfi(j,xf_j);	
+				}           
+				//MatrixXf xf = particles[i].xf();
+                //vector<VectorXf> xf = particles[i].xf();
+				//for (int c=0; c< xf.cols(); c++) {
+                //    xf(2,c) = xtrue(2,c);
+                //}
+                //particles[i].setXf(xf);
             }
         }
 
@@ -127,28 +134,33 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
             z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
             //TODO
             //add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
-            if(!z.isZero()){
-                plines = make_laser_lines(z,xtrue);
+            //if(!z.isZero()){
+            if (!z.empty()){
+			    plines = make_laser_lines(z,xtrue);
             }
 
             //Compute (known) data associations
-            int Nf = (particles[0].xf()).cols();
+            int Nf = particles[0].xf().size();//(particles[0].xf()).cols();
             vector<int> idf;
-            MatrixXf zf(z.rows(),ftag_visible.size());
-            zf.setZero();
-            MatrixXf zn(z.rows(),ftag_visible.size());
-            zn.setZero();
+            //MatrixXf zf(z.rows(),ftag_visible.size());
+            //zf.setZero();
+			vector<VectorXf> zf;
+			vector<VectorXf> zn;            
+
+			//MatrixXf zn(z.rows(),ftag_visible.size());
+            //zn.setZero();
             bool testflag= false;
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);
             
             //perform update
             for (int i =0; i<NPARTICLES; i++) {
-                if (!zf.isZero()) { //observe map features
+                if (!zf.empty()) { //observe map features
                     float w = compute_weight(particles[i],zf,idf,R);
-                    particles[i].setW(particles[i].w() * w);
+					w = particles[i].w()*w;
+                    particles[i].setW(w);
                     feature_update(particles[i],zf,idf,R);
                 }
-                if (!zn.isZero()) {
+                if (!zn.empty()) {
                     add_feature(particles[i], zn, R);
                 }
             }
@@ -164,20 +176,25 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
     return particles;
 }
 
-MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 
+//rb is measurements
+//xv is robot pose
+MatrixXf make_laser_lines(vector<VectorXf> rb, VectorXf xv) //MatrixXf rb, VectorXf xv) 
 {
-    if (rb.isZero()) {
+    //if (rb.isZero()) {
+    if (rb.empty()) {
         return MatrixXf(0,0);
     }
 
-    int len = rb.cols();
+    //int len = rb.cols();
+    int len = rb.size();
     MatrixXf lnes(4,len);
 
-    MatrixXf globalMat(2,rb.cols());
+    //MatrixXf globalMat(2,rb.cols());
+    MatrixXf globalMat(2,rb.size());
     int j;
     for (j=0; j<globalMat.cols();j++) {
-        globalMat(0,j) = rb(0,j)*cos(rb(1,j));
-        globalMat(1,j) = rb(0,j)*sin(rb(1,j));   	
+        globalMat(0,j) = rb[j][0]*cos(rb[j][1]); //rb(0,j)*cos(rb(1,j));
+        globalMat(1,j) = rb[j][0]*sin(rb[j][1]);//rb(0,j)*sin(rb(1,j));   	
     }
 
     TransformToGlobal(globalMat,xv);

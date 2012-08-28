@@ -133,4 +133,25 @@ int main (int argc, char *argv[])
 
 	read_input_file("example_webmap.mat", &lm, &wp);
 	vector<Particle> data = fastslam1_sim(lm,wp);
+	for (int i=0; i<data.size(); i++) {
+		cout<<"particle i="<<i<<endl;
+		cout<<endl;
+		cout<<"xv (robot pose)"<<endl;
+		cout<<data[i].xv()<<endl;
+		cout<<endl;
+		cout<<"Pv (controls)"<<endl;
+		cout<<data[i].Pv()<<endl;
+		cout<<endl;
+		cout<<"xf (EFK means)"<<endl;
+		for(int j=0; j<data[i].xf().size(); j++) {
+			cout<<data[i].xf()[j]<<endl;
+		}
+		cout<<endl;
+		cout<<"Pf (covariance mat)"<<endl;
+		for(int k=0; k<data[i].Pf().size(); k++) {
+			cout<<data[i].Pf()[k]<<endl;
+		}
+		cout<<endl;
+		cout<<endl;
+	}
 }

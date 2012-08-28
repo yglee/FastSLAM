@@ -1,0 +1,16 @@
+8/23/12
+Went through and did unity tests on all files and they seem to generate correct result for one given set of inputs. There is a matrix dimensionality error and at this point, I need to read the papers and identify each variables and rename them and think about what they do...
+
+
+8/21/12
+even a little bit of numerical error results in exp(E) to go zero (when E<0) in gauss evaluate.
+The problem is the input to gauss evaluate, v. It's set in sample_proposal. line 172. v is wrong... 
+
+Do a check: 
+is likelhood_given_xv returning a 0 with the right inputs? Then, the function has a problem. If the inputs are wrong, then sample_particles might be wrong. Check this (add a break in likelihood_given_xv. 
+
+
+w is zero in resample particles. w is set in sample_proposal. The likelihood given xv returns a 0 everytime, causing w to be 0. This results in nan's, which should throw a division by 0 error
+
+7/25/12
+fix the multivariate gauss's use of Random() (from eigen). It doesn't return diff. random numbers at each turn

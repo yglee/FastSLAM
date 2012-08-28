@@ -8,6 +8,7 @@
 using namespace Eigen;
 using namespace std;
 
-float compute_weight(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R); 
+//float compute_weight(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R); 
+float compute_weight(Particle &particle, vector<VectorXf> z, vector<int> idf, MatrixXf R); 
 
 #endif
