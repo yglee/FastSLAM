@@ -79,28 +79,23 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
         Re = 2*R;
     }
 
-    if (SWITCH_PROFILE) {
-        //TODO: 
-    }	
-
     vector<int> ftag_visible;
 	vector<VectorXf> z; //range and bearings of visible landmarks
 
     //Main loop
     while (iwp !=-1) {
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
-        if (iwp ==-1 && NUMBER_LOOPS > 1) {
+		if (iwp ==-1 && NUMBER_LOOPS > 1) {
             iwp = 0;
             NUMBER_LOOPS = NUMBER_LOOPS-1;
         }
         predict_true(xtrue,V,G,WHEELBASE,dt);
 
         //add process noise
-        //TODO: need to truly randomize function in multivariate_gauss
-        float* VnGn = new float[2];
-        //add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
-        float Vn = V;//VnGn[0];
-        float Gn = G;//VnGn[1];
+        float* VnGn = new float[2];        
+		add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
+        float Vn = VnGn[0];
+        float Gn = VnGn[1];
 
         //Predict step	
         for (unsigned int i=0; i< NPARTICLES; i++) {
@@ -124,8 +119,8 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
             
             //z is the range and bearing of the observed landmark
             z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
-            //TODO
-            //add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
+            add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
+
             if (!z.empty()){
 			    plines = make_laser_lines(z,xtrue);
             }

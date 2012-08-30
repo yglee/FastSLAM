@@ -16,6 +16,5 @@ for i=1:length(idf)
                  dy/d2, -dx/d2, -1];
     Hf(:,:,i)= [ dx/d,   dy/d; % Jacobian wrt feature states
                 -dy/d2,  dx/d2];
-    Sf(:,:,i)= Hf(:,:,i) * Pf(:,:,i) * Hf(:,;w
-:,i)' + R; % innovation covariance of 'feature observation given the vehicle'
+    Sf(:,:,i)= Hf(:,:,i) * Pf(:,:,i) * Hf(:,:,i)' + R; % innovation covariance of 'feature observation given the vehicle'
 end

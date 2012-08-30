@@ -81,16 +81,10 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
         Re = 2*R;
     }
 
-    if (SWITCH_PROFILE) {
-        //TODO: 
-    }	
-
     vector<int> ftag_visible;
-    MatrixXf z;
-    int count =0;
-   
-
-    //Main loop
+   	vector<VectorXf> z;
+ 
+	//Main loop
     while (iwp !=-1) {
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
         if (iwp ==-1 && NUMBER_LOOPS > 1) {
@@ -100,11 +94,10 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
         predict_true(xtrue,V,G,WHEELBASE,dt);
 
         //add process noise
-        //TODO: need to truly randomize function in multivariate_gauss
         float* VnGn = new float[2];
-        //add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
-        float Vn = V;//VnGn[0];
-        float Gn = G;//VnGn[1];
+        add_control_noise(V,G,Q,SWITCH_CONTROL_NOISE,VnGn);
+        float Vn = VnGn[0];
+        float Gn = VnGn[1];
 
         //Predict step	
         for (unsigned int i=0; i< NPARTICLES; i++) {
@@ -122,62 +115,38 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             
             //z is the range and bearing of the observed landmark
             z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
-            //TODO
-            //add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
-            if(!z.isZero()){
+            add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
+            
+			if(!z.empty()){
                 plines = make_laser_lines(z,xtrue);
             }
 
             //Compute (known) data associations
-            int Nf = (particles[0].xf()).cols();
+            int Nf = particles[0].xf().size(); //(particles[0].xf()).cols();
             vector<int> idf;
-            if (ftag_visible.size() ==2) {
-                cout<<"INPUT GET OBSERVE"<<endl;
-                cout<<"xtrue"<<endl;
-                cout<<xtrue<<endl;
-                cout<<"lm"<<endl;
-                cout<<lm<<endl;
-                cout<<"ftag_visible"<<endl;
-                for (int i=0; i<ftag.size(); i++) {
-                    cout<<ftag[i]<<" ";
-                }
-                cout<<endl;
-                cout<<"max range: "<<MAX_RANGE<<endl;
-                cout<<"OUTPUT GET_OBSERVE"<<endl;
-                cout<<"ftag_visible"<<endl;
-                for (int i=0; i<ftag_visible.size(); i++) {
-                    cout<<ftag_visible[i]<<" ";
-                }
-            }
+           	vector<VectorXf> zf;
+			vector<VectorXf> zn;
 
-            MatrixXf zf(z.rows(),ftag_visible.size());
-            zf.setZero();
-            MatrixXf zn(z.rows(),ftag_visible.size());
-            zn.setZero();
-    
             bool testflag= false;
-            
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);
-            //observe map features
-            if (!zf.isZero()) {
+            
+			//observe map features
+            if (!zf.empty()) {
                 //isample from 'optimal' proposal distribution, then update map
-
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     sample_proposal(particles[i], zf, idf, Re);
-                    feature_update(particles[i],zf,idf,Re);
+                    feature_update(particles[i], zf, idf, Re);
                 }
                 //resample
                 resample_particles(particles,NEFFECTIVE,SWITCH_RESAMPLE);
             }
 
             //Observe new features, augment map
-            //TODO: xv gets depreicated here
             if (!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
                     if (zf.isZero()) {//sample from proposal distribution if we have not already done so above
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
                                                         particles[i].Pv(),1);
-                        //TODO: xv[0] seems to have an approximation error from chol.
                         particles[i].setXv(xv);
                         MatrixXf pv(3,3); 
                         pv.setZero();
@@ -186,8 +155,8 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
                     add_feature(particles[i], zn, Re);
                 }
             }	
-            count++;
-            if (VnGn) { 
+            
+			if (VnGn) { 
                 delete[] VnGn;
             }
         }
@@ -196,7 +165,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     return particles;
 }
 
-MatrixXf make_laser_lines(MatrixXf rb, VectorXf xv) 
+MatrixXf make_laser_lines(vector<VectorXf> rb, VectorXf xv) 
 {
     if (rb.isZero()) {
         return MatrixXf(0,0);

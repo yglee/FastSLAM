@@ -6,6 +6,7 @@
 #include <vector>
 
 #define pi 3.1416
+
 using namespace std;
 //
 //compute particle weight for sampling

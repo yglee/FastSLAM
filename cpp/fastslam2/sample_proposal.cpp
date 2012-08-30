@@ -5,7 +5,8 @@
 #include "assert.h"
 
 //compute proposal distribution, then sample from it, and compute new particle weight
-void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R)
+//void sample_proposal(Particle &particle, MatrixXf z, vector<int> idf, MatrixXf R)
+void sample_proposal(Particle &particle, vector<VectorXf> z, vector<int> idf, MatrixXf R)
 {
     VectorXf xv(particle.xv()); //robot position
     MatrixXf Pv(particle.Pv()); //controls (motion command)
