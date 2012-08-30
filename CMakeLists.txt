@@ -45,6 +45,7 @@ endif(ENABLE_RPATHS)
 include(AddFSLAM)
 find_package(Eigen3 REQUIRED)
 find_package(GooglePerfTools)
+find_package(OpenCL REQUIRED)
 
 # Finish up local custom options based on what was found above
 fslam_enable_testing()
