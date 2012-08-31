@@ -71,4 +71,4 @@ add_subdirectory(cpp/fastslam1)
 add_subdirectory(cpp/fastslam2)
 
 # Adding test directories
-add_subdirectory(cpp/gtest)
+add_subdirectory(testcode)

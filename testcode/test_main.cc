@@ -41,5 +41,7 @@ int main()
         exit(error);
     }
      
-    cout<<"hello i am runnign opencl!"<<endl;
+    //allocate memory
+    const int mem_size = sizeof(float)*size;
+    
 }
