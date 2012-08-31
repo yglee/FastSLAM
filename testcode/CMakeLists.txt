@@ -3,7 +3,7 @@ include_directories(${OPENCL_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/..)
 
 install(FILES
-	vector_add_cpu.h
+    vector_add_cpu.h   
     DESTINATION include/fslam/test # core
   )
 
