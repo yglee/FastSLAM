@@ -64,7 +64,7 @@ int main()
     size_t src_size=0;
     
     //get kernel path
-    string kernelpaths = "/Users/ylee8/FastSLAM/testcode"; //BuildRegGetPackageLocation( "FastSLAM" ) + "/testcode/";
+    string kernelpaths = "/Users/ylee8/FastSLAM/testcode"; //BuildRegGetPackageLocation( "FastSLAM" ) + "/testcode/"
     
     //get cl_program
     cl_program program = context.CreateProgramFromFile(kernelpaths + PROGRAM_FILE); 
