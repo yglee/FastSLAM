@@ -3,17 +3,14 @@
 #ifndef OPENCL_WRAPPER_H
 #define OPENCL_WRAPPER_H
 
-//#include <CL/cl.h>
-#include <OpenCL/OpenCL.h>
-//#include <CL/cl_gl.h>
-
+#include <OpenCL/cl.h>
+#include <OpenCL/cl_gl.h>
 #include <string>
 #include <iostream>
 
 // forward decl
 class OpenCLContext;
 class OpenCLProgram;
-class OpenCLTexture;
 
 // defines
 #define TEXTURE_TYPE_UBYTE 1
@@ -49,7 +46,6 @@ class OpenCLBuffer : public OpenCLMemory
 {
     friend class OpenCLContext;
     friend class OpenCLKernel;
-    friend class OpenCLTexture;
     
 public:
     ~OpenCLBuffer();
@@ -61,10 +57,6 @@ public:
     size_t GetSize() const
     {
         return _size;
-    }
-    unsigned int GetGLBuffer() const
-    {
-        return _ogl_buffer;
     }
     
     // upload of data to the memory buffer
@@ -87,67 +79,8 @@ private:
     
     OpenCLContext &_context;
     size_t _size;
-    unsigned int _ogl_buffer;
+    //unsigned int _ogl_buffer;
 };
-
-////////////////////////////////////////////////////////////////////////////////
-// OpenCL texture abstraction
-
-class OpenCLTexture : public OpenCLMemory
-{
-    friend class OpenCLContext;
-    friend class OpenCLKernel;
-    
-public:
-    ~OpenCLTexture();
-    
-    bool IsValid() const
-    {
-        return _buffer != NULL;
-    }
-    const size_t *GetSize() const
-    {
-        return _size;
-    }
-    unsigned int GetOpenGLTexture() const
-    {
-        return _ogl_tex;
-    }
-    
-    // upload of data from one OpenCLBuffer to a texture
-    // it checks that the transfer does not exceed the bounds of the image
-    // the data needs to be in the internal format of the texture
-    // if blocking is false the source buffer must be kept around until the
-    // transfer completes
-    bool TransferDataToImage(OpenCLBuffer *data, size_t data_offset,
-                             size_t size[3], size_t offset[3],
-                             bool blocking = true);
-    
-    // download data from a texture to an OpenCLBuffer
-    // it checks that the transfer does not exceed the bounds of he buffer
-    // if blocking is false the destination buffer must be kept around until
-    // the transfer completes
-    bool TransferDataFromImage(OpenCLBuffer *data, size_t data_offset,
-                               size_t size[3], size_t offset[3],
-                               bool blocking = true);
-    
-    bool UploadData(const void *data, size_t size[3], size_t offset[3],
-                    int channels, int type_size);
-    
-private:
-    OpenCLTexture(OpenCLContext &context, size_t size[3],
-                  int channels, int type_size, cl_mem_flags flags);
-    OpenCLTexture(OpenCLContext &context, int opengl_tex, bool is_3d,
-                  cl_mem_flags flags);
-    
-    OpenCLContext &_context;
-    size_t _size[3];
-    int _channels;
-    int _type_size;
-    unsigned int _ogl_tex;
-    unsigned int _io_buf;
-};
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // OpenCL kernel abstraction
@@ -172,7 +105,6 @@ public:
     bool SetArray(int argNo, T *arg, int numElem);
     
     bool SetBuf(int argNo, OpenCLBuffer *buf);
-    bool SetTexture(int argNo, OpenCLTexture *tex);
     
     // call the kernel
     bool RunKernel(int dim, const size_t *workSize, const size_t *localWorkSize = NULL);
@@ -271,12 +203,6 @@ public:
         return _context != NULL;
     }
     
-    // 
-    bool HasOpenGLSupport() const
-    {
-        return _supportsOpenGL;
-    }
-    
     // Queries to capabilities of the OpenCL device
     bool HasImagingSupport() const;
     size_t MaxWorkGroupSize() const;
@@ -289,22 +215,10 @@ public:
     
     // Create mem buffer
     OpenCLBuffer *AllocMemBuffer(size_t size, cl_mem_flags flags);
-    OpenCLBuffer *AllocGLMemBuffer(size_t size, cl_mem_flags flags);
-    
-    // create a texture
-    // type_size = 1, 2, 4 -> byte, half , float
-    OpenCLTexture *AllocTexture(size_t size[3], int channels,
-                               int type_size, cl_mem_flags);
-    OpenCLTexture *GetTextureFromGL(unsigned int ogl_tex,
-                                    bool is_3d, cl_mem_flags);
     
     // Flow control
     void Finish();
-    
-    // OpenGL interop
-    bool AcquireGLObjects(OpenCLMemory **objs, int num_objs);
-    void ReleaseGLObjects(OpenCLMemory **objs, int num_objs);
-    
+
 private:
     cl_platform_id _platform;
     cl_device_id _device;

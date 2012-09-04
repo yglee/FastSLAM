@@ -2,10 +2,19 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories(${OPENCL_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/..)
 
+add_library(OPENCLWRAPPER
+	openCLWrapper.cpp 
+)
+
 install(FILES
-    vector_add_cpu.h   
-    DESTINATION include/fslam/test # core
+    openCLWrapper.h
+    DESTINATION include/fslam/test
   )
 
-set(FSLAM_USED_LIBS ${OPENCL_LIBRARIES})
+install(TARGETS
+    OPENCLWRAPPER
+    DESTINATION lib
+)
+
+set(FSLAM_USED_LIBS ${OPENCL_LIBRARIES} OPENCLWRAPPER)
 add_fslam_tool(fslam_gpu test_main.cc)

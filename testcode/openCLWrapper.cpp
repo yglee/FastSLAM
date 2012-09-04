@@ -1,8 +1,5 @@
 
 #include "openCLWrapper.h"
-#include "openGLUtils.h"
-
-#include "common/tf/stopwatch.h"
 
 #include <iostream>
 #include <fstream>
@@ -69,7 +66,6 @@ ErrorMsg openCL_error_msgs[] = {
 {CL_INVALID_EVENT_WAIT_LIST, "CL_INVALID_EVENT_WAIT_LIST"},
 {CL_INVALID_EVENT, "CL_INVALID_EVENT"},
 {CL_INVALID_OPERATION, "CL_INVALID_OPERATION"},
-{CL_INVALID_GL_OBJECT, "CL_INVALID_GL_OBJECT"},
 {CL_INVALID_BUFFER_SIZE, "CL_INVALID_BUFFER_SIZE"},
 {CL_INVALID_MIP_LEVEL, "CL_INVALID_MIP_LEVEL"},
 {CL_INVALID_GLOBAL_WORK_SIZE, "CL_INVALID_GLOBAL_WORK_SIZE"},
@@ -100,49 +96,12 @@ OpenCLBuffer::OpenCLBuffer(OpenCLContext &context,
                            size_t size,
                            cl_mem_flags flags,
                            bool create_ogl_buffer)
-: _context(context), _size(size), _ogl_buffer(0) 
+: _context(context), _size(size) 
 {
     cl_int error = 0;
     
-    /*
-    // this doesn't seem to be true
-    size_t mmas = _context.MaxMemAllocSize();
-    if (size > mmas)
-    {
-        cerr << "Error allocating OpenCL buffer of size " << size
-             << ", size exceeds max. mem alloc size of " << mmas << endl;
-        
-        //return;
-    }
-    */
-    
-    if (create_ogl_buffer) {
-        // clear any previous errors
-        glGetError();
-        
-        // allocate a pixel buffer of the right size
-        glGenBuffers(1, &_ogl_buffer);
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _ogl_buffer);
-        glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB, size, 0, GL_STREAM_DRAW_ARB);
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-        
-        GLenum gl_error = glGetError();
-        if (gl_error != GL_NO_ERROR) {
-            cerr << "Error: OpenGL error during buffer creation: "
-                 << gl_error << endl;
-            
-            glDeleteBuffers(1, &_ogl_buffer);
-            _ogl_buffer = 0;
-            
-            return;
-        }
-        
-        _buffer = clCreateFromGLBuffer(_context._context, flags,
-                                       _ogl_buffer, &error);
-    }
-    else {
-        _buffer = clCreateBuffer(_context._context, flags, size, NULL, &error);
-    }
+
+    _buffer = clCreateBuffer(_context._context, flags, size, NULL, &error);
     
     if (error != CL_SUCCESS) {
         cerr << "Error allocating OpenCL buffer of size " << size
@@ -150,10 +109,6 @@ OpenCLBuffer::OpenCLBuffer(OpenCLContext &context,
         
         _buffer = NULL;
         _size = 0;
-        if (_ogl_buffer) {
-            glDeleteBuffers(1, &_ogl_buffer);
-            _ogl_buffer = 0;
-        }
     }
 }
 
@@ -161,8 +116,6 @@ OpenCLBuffer::~OpenCLBuffer()
 {
     if (_buffer)
         clReleaseMemObject(_buffer);
-    if (_ogl_buffer)
-        glDeleteBuffers(1, &_ogl_buffer);
 }
 
 bool OpenCLBuffer::UploadData(const void *data, size_t size, size_t offset,
@@ -174,14 +127,9 @@ bool OpenCLBuffer::UploadData(const void *data, size_t size, size_t offset,
         return false;
     
     OpenCLMemory *ptr = this;
-    if (_ogl_buffer)
-        _context.AcquireGLObjects(&ptr, 1);
     
     error = clEnqueueWriteBuffer(_context._queue, _buffer, blocking,
                                  offset, size, data, 0, 0, 0);
-    
-    if (_ogl_buffer)
-        _context.ReleaseGLObjects(&ptr, 1);
     
     if (error != CL_SUCCESS) {
         cerr << "Error writing OpenCL buffer: "
@@ -201,380 +149,13 @@ bool OpenCLBuffer::DownloadData(void *data, size_t size, size_t offset,
         return false;
     
     OpenCLMemory *ptr = this;
-    if (_ogl_buffer)
-        _context.AcquireGLObjects(&ptr, 1);
     
     error = clEnqueueReadBuffer(_context._queue, _buffer, blocking,
                                 offset, size, data, 0, 0, 0);
     
-    if (_ogl_buffer)
-        _context.ReleaseGLObjects(&ptr, 1);
-    
     if (error != CL_SUCCESS) {
         cerr << "Error reading OpenCL buffer: "
              << GetOpenCLErrorString(error) << endl;
-        return false;
-    }
-    
-    return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-OpenCLTexture::OpenCLTexture(OpenCLContext &context,
-                             size_t size[3], int channels, int type_size,
-                             cl_mem_flags flags)
-: _context(context), _channels(channels), _type_size(type_size),
-  _ogl_tex(0), _io_buf(0)
-{
-    _size[0] = size[0];
-    _size[1] = size[1];
-    _size[2] = size[2];
-    
-    glGenTextures(1, &_ogl_tex);
-    
-    bool is_3d = (_size[2] != 0);
-    cl_int error = 0;
-    
-    // determine the right texture format
-    int internal_format;
-    int transfer;
-    if (channels == 1) {
-        if (type_size == 1)
-            internal_format = GL_R;
-        else if (type_size == 2)
-            internal_format = GL_R16F;
-        else
-            internal_format = GL_R32F;
-        
-        transfer = GL_R;
-    }
-    else if (channels == 2)  {
-        if (type_size == 1)
-            internal_format = GL_RG;
-        else if (type_size == 2)
-            internal_format = GL_RG16F;
-        else
-            internal_format = GL_RG32F;
-        
-        transfer = GL_RG;
-    }
-    else if (channels == 2) {
-        if (type_size == 1)
-            internal_format = GL_RGB;
-        else if (type_size == 2)
-            internal_format = GL_RGB16F;
-        else
-            internal_format = GL_RGB32F;
-        
-        transfer = GL_RGB;
-    }
-    else {
-        if (type_size == 1)
-            internal_format = GL_RGBA;
-        else if (type_size == 2)
-            internal_format = GL_RGBA16F;
-        else
-            internal_format = GL_RGBA32F;
-        
-        transfer = GL_RGBA;
-    }
-    
-    // clear any existing errors
-    glGetError();
-    
-    if (!is_3d) {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, _ogl_tex);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, internal_format,
-                     _size[0], _size[1], 0, transfer, GL_FLOAT, 0);
-        
-        glDisable(GL_TEXTURE_2D);
-        
-        _buffer = clCreateFromGLTexture2D(_context._context, flags,
-                                          GL_TEXTURE_2D, 0 /*mip level*/,
-                                          _ogl_tex, &error);
-    }
-    else {
-        glEnable(GL_TEXTURE_3D);
-        glBindTexture(GL_TEXTURE_3D, _ogl_tex);
-        glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        
-        glTexImage3D(GL_TEXTURE_3D, 0, internal_format,
-                     _size[0], _size[1], _size[2], 0, transfer, GL_FLOAT, 0);
-        
-        glDisable(GL_TEXTURE_3D);
-        
-        _buffer = clCreateFromGLTexture3D(_context._context, flags,
-                                          GL_TEXTURE_3D, 0 /*mip level*/,
-                                          _ogl_tex, &error);
-    }
-    
-    GLenum gl_error = glGetError();
-    if (gl_error != GL_NO_ERROR) {
-        cerr << "Error: OpenGL error during texture creation: "
-             << gl_error << endl;
-        
-        glDeleteTextures(1, &_ogl_tex);
-        
-        if (_buffer)
-            clReleaseMemObject(_buffer);
-        
-        _buffer = NULL;
-        _size[0] = 0;
-        _size[1] = 0;
-        _size[2] = 0;
-        
-        return;
-    }
-    
-    if (error != CL_SUCCESS) {
-        cerr << "Error allocating OpenCL texture of size "
-             << "(" << _size[0] << ", " << _size[1] << ", " << _size[2] << ")"
-             << ", error : " << GetOpenCLErrorString(error) << endl;
-        
-        _buffer = NULL;
-        _size[0] = 0;
-        _size[1] = 0;
-        _size[2] = 0;
-    }
-    
-    glGenBuffers(1, &_io_buf);
-}
-
-OpenCLTexture::OpenCLTexture(OpenCLContext &context,
-                             int opengl_tex, bool is_3d,
-                             cl_mem_flags flags)
-: _context(context), _channels(0), _type_size(0),
-  _ogl_tex(opengl_tex), _io_buf(0)
-{
-    cl_int error = 0;
-    
-    
-    
-    if (!is_3d) {
-        _buffer = clCreateFromGLTexture2D(_context._context, flags,
-                                          GL_TEXTURE_2D, 0 /*mip level*/,
-                                          opengl_tex, &error);
-    }
-    else {
-        _buffer = clCreateFromGLTexture3D(_context._context, flags,
-                                          GL_TEXTURE_3D, 0 /*mip level*/,
-                                          opengl_tex, &error);
-    }
-    
-    if (error != CL_SUCCESS) {
-        cerr << "Error getting OpenCL texture from OpenGL" <<
-                ", error : " << GetOpenCLErrorString(error) << endl;
-        _buffer = NULL;
-        return;
-    }
-    
-    if (!is_3d) {
-        int tmp;
-        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &tmp);
-        _size[0] = tmp;
-        glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &tmp);
-        _size[1] = tmp;
-        _size[2] = 0;
-    }
-    else {
-        int tmp;
-        glGetTexLevelParameteriv(GL_TEXTURE_3D, 0, GL_TEXTURE_WIDTH, &tmp);
-        _size[0] = tmp;
-        glGetTexLevelParameteriv(GL_TEXTURE_3D, 0, GL_TEXTURE_HEIGHT, &tmp);
-        _size[1] = tmp;
-        glGetTexLevelParameteriv(GL_TEXTURE_3D, 0, GL_TEXTURE_DEPTH, &tmp);
-        _size[2] = tmp;
-    }
-    
-    glGenBuffers(1, &_io_buf);
-}
-
-OpenCLTexture::~OpenCLTexture()
-{
-    if (_buffer)
-        clReleaseMemObject(_buffer);
-    
-    // only delete the OpenGL textrue if we created it
-    if (_type_size != 0)
-        glDeleteTextures(1, &_ogl_tex);
-    
-    if (_io_buf != 0)
-        glDeleteBuffers(1, &_io_buf);
-}
-
-bool OpenCLTexture::TransferDataToImage(OpenCLBuffer *data, size_t data_offset,
-                                        size_t size[3], size_t offset[3],
-                                        bool blocking)
-{
-    if (offset[0] + size[0] > _size[0] ||
-        offset[1] + size[1] > _size[1] ||
-        offset[2] + size[2] > _size[2]) {
-        cerr << "Warning: TransferDataToImage out of bounds" << endl;
-        return false;
-    }
-    
-    if (size[0] == 0 ||
-        size[1] == 0 ||
-        size[2] == 0) {
-        cerr << "Warning: TransferDataToImage has zero size" << endl;
-        return false;
-    }
-    
-    OpenCLMemory *ptr = this;
-    _context.AcquireGLObjects(&ptr, 1);
-    
-    cl_int error = 0;
-    error = clEnqueueCopyBufferToImage(_context._queue, data->_buffer, _buffer,
-                                       data_offset, offset, size,
-                                       0, 0, 0);
-    
-    _context.ReleaseGLObjects(&ptr, 1);
-    
-    if (error != CL_SUCCESS) {
-        cerr << "Error uploading to OpenCL texture: "
-             << GetOpenCLErrorString(error) << endl;
-        return false;
-    }
-    
-    if (blocking)
-        _context.Finish();
-    
-    return true;
-}
-
-bool OpenCLTexture::TransferDataFromImage(OpenCLBuffer *data,
-                                          size_t data_offset,
-                                          size_t size[3], size_t offset[3],
-                                          bool blocking)
-{
-    if (offset[0] + size[0] > _size[0] ||
-        offset[1] + size[1] > _size[1] ||
-        offset[2] + size[2] > _size[2]) {
-        cerr << "Warning: TransferDataFromImage out of bounds" << endl;
-        return false;
-    }
-    
-    if (size[0] == 0 ||
-        size[1] == 0 ||
-        size[2] == 0) {
-        cerr << "Warning: TransferDataFromImage has zero size" << endl;
-        return false;
-    }
-    
-    OpenCLMemory *ptr = this;
-    _context.AcquireGLObjects(&ptr, 1);
-    
-    cl_int error = 0;
-    error = clEnqueueCopyImageToBuffer(_context._queue, _buffer, data->_buffer,
-                                       offset, size, data_offset,
-                                       0, 0, 0);
-    
-    _context.ReleaseGLObjects(&ptr, 1);
-    
-    if (error != CL_SUCCESS) {
-        cerr << "Error uploading to OpenCL texture: "
-             << GetOpenCLErrorString(error) << endl;
-        return false;
-    }
-    
-    if (blocking)
-        _context.Finish();
-    
-    return true;
-}
-
-bool OpenCLTexture::UploadData(const void *data, size_t size[3],
-                               size_t offset[3], int channels, int type_size)
-{
-    
-    if (offset[0] + size[0] > _size[0] ||
-        offset[1] + size[1] > _size[1] ||
-        offset[2] + size[2] > _size[2]) {
-        cerr << "Warning: UploadData out of bounds" << endl;
-        cerr << "Texture size: "
-             << _size[0] << " x " << _size[1] << " x " << _size[2] << endl;
-        cerr << "Offset: "
-             << offset[0] << " x " << offset[1] << " x " << offset[2] << endl;
-        cerr << "Upload size: "
-             << size[0] << " x " << size[1] << " x " << size[2] << endl;
-        return false;
-    }
-    
-    if (size[0] == 0 ||
-        size[1] == 0 ||
-        size[2] == 0) {
-        cerr << "Warning: UploadData has zero size" << endl;
-        return false;
-    }
-    
-    int format;
-    int transfer;
-    if (type_size == 1)
-        format = GL_UNSIGNED_BYTE;
-    else if (type_size == 2)
-        format = GL_HALF_FLOAT_ARB;
-    else
-        format = GL_FLOAT;
-        
-    if (channels == 1)
-        transfer = GL_R;
-    else if (channels == 2)
-        transfer = GL_RG;
-    else if (channels == 2)
-        transfer = GL_RGB;
-    else
-        transfer = GL_RGBA;
-    
-    size_t bytes = size[0] * size[1] * size[2] * channels * type_size;
-    
-    // clear any existing errors
-    glGetError();
-    
-    if (_size[2] == 0) {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, _ogl_tex);
-        
-        glTexSubImage2D(GL_TEXTURE_2D, 0, offset[0], offset[1],
-                        size[0], size[1], transfer, format, data);
-        
-        glDisable(GL_TEXTURE_2D);
-    } else {
-        glEnable(GL_TEXTURE_3D);
-        glBindTexture(GL_TEXTURE_3D, _ogl_tex);
-        
-        // using the pbuffer is way faster than doing it straight up
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _io_buf);
-        glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB, bytes, NULL, GL_STREAM_DRAW);
-        
-        void *io_mem = glMapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, GL_WRITE_ONLY);
-        assert(io_mem);
-        memcpy(io_mem, data, bytes);
-        glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB);
-        
-        glTexSubImage3D(GL_TEXTURE_3D, 0, offset[0], offset[1], offset[2],
-                        size[0], size[1], size[2], transfer, format, 0);
-        
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-        
-        glDisable(GL_TEXTURE_3D);
-    }
-    
-    GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        cerr << "Error: OpenGL error during texture upload: " << error << endl;
         return false;
     }
     
@@ -614,22 +195,6 @@ bool OpenCLKernel::SetBuf(int argNo, OpenCLBuffer *buf)
     
     cl_int error = clSetKernelArg(_kernel, argNo,
                                   sizeof(cl_mem), &buf->_buffer);
-    if (error == CL_SUCCESS)
-        return true;
-    
-    std::cerr << "Error setting kernel argument: "
-              << GetOpenCLErrorString(error) << std::endl;
-    
-    return false;
-}
-
-bool OpenCLKernel::SetTexture(int argNo, OpenCLTexture *tex)
-{
-    if (!_kernel)
-        return false;
-    
-    cl_int error = clSetKernelArg(_kernel, argNo,
-                                  sizeof(cl_mem), &tex->_buffer);
     if (error == CL_SUCCESS)
         return true;
     
@@ -766,26 +331,7 @@ OpenCLContext::OpenCLContext(bool openGLSupport)
         0
     };
 
-    // make sure we have an OpenGL context before we try to allocate a OpenCL
-    // context that supports it
-    if (_supportsOpenGL &&
-       (glXGetCurrentContext() == NULL || glXGetCurrentDisplay() == NULL)) {
-        cerr << "Error getting OpenCL context (no OpenGL context)" << endl;
-        
-        _device = 0;
-        _platform = 0;
-        
-        return;
-    }
-    
-    cl_context_properties gl_props[] = {
-        CL_GL_CONTEXT_KHR, (cl_context_properties)glXGetCurrentContext(),
-        CL_GLX_DISPLAY_KHR, (cl_context_properties)glXGetCurrentDisplay(),
-        CL_CONTEXT_PLATFORM, (cl_context_properties)(_platform),
-        0
-    };
-
-    _context = clCreateContext((_supportsOpenGL ? gl_props : props), 1,
+    _context = clCreateContext(props, 1,
                                &_device, NULL, NULL, &error);
     if (error != CL_SUCCESS) {
         cerr << "Error creating context: "
@@ -923,55 +469,6 @@ OpenCLBuffer *OpenCLContext::AllocMemBuffer(size_t size, cl_mem_flags flags)
     return NULL;
 }
 
-OpenCLBuffer *OpenCLContext::AllocGLMemBuffer(size_t size, cl_mem_flags flags)
-{
-    if (!_context)
-        return NULL;
-    
-    OpenCLBuffer *buf = new OpenCLBuffer(*this, size, flags, true);
-    
-    if (buf->IsValid())
-        return buf;
-    
-    delete buf;
-    
-    return NULL;
-}
-
-OpenCLTexture *OpenCLContext::AllocTexture(size_t size[3], int channels,
-                                           int type_size, cl_mem_flags flags)
-{
-    if (!_context)
-        return NULL;
-    
-    OpenCLTexture *tex = new OpenCLTexture(*this, size, channels,
-                                           type_size, flags);
-    
-    if (tex->IsValid())
-        return tex;
-    
-    delete tex;
-    
-    return NULL;
-}
-
-OpenCLTexture *OpenCLContext::GetTextureFromGL(unsigned int ogl_tex,
-                                               bool is_3d,
-                                               cl_mem_flags flags)
-{
-    if (!_context)
-        return NULL;
-    
-    OpenCLTexture *tex = new OpenCLTexture(*this, ogl_tex, is_3d, flags);
-    
-    if (tex->IsValid())
-        return tex;
-    
-    delete tex;
-    
-    return NULL;
-}
-
 void OpenCLContext::Finish()
 {
     if (!_context)
@@ -985,43 +482,4 @@ void OpenCLContext::Finish()
         cerr << "Error Finish: " << GetOpenCLErrorString(error) << endl;
     }
 }
-
-bool OpenCLContext::AcquireGLObjects(OpenCLMemory **objs, int num_objs)
-{
-    vector<cl_mem> memobj;
-    
-    memobj.resize(num_objs);
-    for (int i = 0; i < num_objs; ++i)
-        memobj[i] = objs[i]->_buffer;
-    
-    cl_int error = clEnqueueAcquireGLObjects(_queue, num_objs, &memobj[0],
-                                             0, NULL, NULL);
-    if (error != CL_SUCCESS) {
-        cerr << "Error AcquireGLObjects: "
-             << GetOpenCLErrorString(error) << endl;
-        return false;
-    }
-    
-    return true;
-}
-
-void OpenCLContext::ReleaseGLObjects(OpenCLMemory **objs, int num_objs)
-{
-    vector<cl_mem> memobj;
-    
-    memobj.resize(num_objs);
-    for (int i = 0; i < num_objs; ++i)
-        memobj[i] = objs[i]->_buffer;
-    
-    cl_int error = clEnqueueReleaseGLObjects(_queue, num_objs, &memobj[0],
-                                             0, NULL, NULL);
-    if (error != CL_SUCCESS) {
-        cerr << "Error ReleaseGLObjects: "
-             << GetOpenCLErrorString(error) << endl;
-        return;
-    }
-    
-    return;
-}
-
 
