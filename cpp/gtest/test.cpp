@@ -10,7 +10,7 @@
 #include "core/add_feature.h"
 #include "fastslam1/compute_weight.h"
 #include "fastslam1/predict.h"
-#include "test.h"
+#include <gtest/gtest.h>
 
 TEST(FASTSLAM_TEST,numerical_accuracy_test)
 {
