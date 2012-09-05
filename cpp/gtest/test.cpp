@@ -12,13 +12,7 @@
 #include "fastslam1/predict.h"
 #include "test.h"
 
-void test() 
+TEST(FASTSLAM_TEST,numerical_accuracy_test)
 {
-
-	/*
-	TEST(FactorialTest, HandlesZeroInput) {
-  		EXPECT_EQ(1, 2);
-	}
-	*/
-
+    EXPECT_EQ(1,1);
 }
