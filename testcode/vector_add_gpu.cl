@@ -1,7 +1,9 @@
-__kernel void vector_add_gpu (__global const float* src_a,
-                     __global const float* src_b,
-                     __global float* res,
-		   const int num)
+//CL
+__kernel void 
+vecAdd_k (__global const float* src_a,
+          __global const float* src_b,
+          __global float* res,
+          const int num)
 {
    /* get_global_id(0) returns the ID of the thread in execution.
    As many threads are launched at the same time, executing the same kernel,

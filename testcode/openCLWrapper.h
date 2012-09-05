@@ -3,8 +3,18 @@
 #ifndef OPENCL_WRAPPER_H
 #define OPENCL_WRAPPER_H
 
+#ifdef __APPLE__
 #include <OpenCL/cl.h>
+#else
+#include <CL/cl.h>
+#endif
+
+#ifdef __APPLE__
 #include <OpenCL/cl_gl.h>
+#else
+#include <CL/cl_gl.h>
+#endif 
+
 #include <string>
 #include <iostream>
 
