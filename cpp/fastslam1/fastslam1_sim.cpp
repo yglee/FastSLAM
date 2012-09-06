@@ -25,7 +25,7 @@ vector<Particle> fastslam1_sim(MatrixXf lm, MatrixXf wp)
         printf("Sampling from predict noise usually OFF for FastSLAM 2.0\n");	
     }
     
-    //normally initialized configfile.h
+    //normally initialized in configfile.h
     Q << pow(sigmaV,2), 0,
       0 , pow(sigmaG,2);
 

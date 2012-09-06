@@ -14,8 +14,7 @@ using namespace std;
 
 const int NUM_SRC_PARAMS = 2;
 const int NUM_RET_PARAMS = 1;
-const int VEC_SIZE = 
-;
+const int VEC_SIZE = 1234567;
 
 size_t shrRoundUp( const size_t group_size, const size_t global_size ) 
 {

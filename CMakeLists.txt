@@ -69,6 +69,7 @@ include_directories(${FSLAM_BINARY_DIR}/cpp)
 add_subdirectory(cpp/core)
 add_subdirectory(cpp/fastslam1)
 add_subdirectory(cpp/fastslam2)
+add_subdirectory(cpp/gtest)
 
 # Adding test directories
 add_subdirectory(testcode)

@@ -20,7 +20,7 @@ endmacro(add_fslam_executable name)
 macro(add_fslam_tool name)
   add_fslam_executable(${name} ${ARGN})
   if( FSLAM_BUILD_TOOLS )
-    message( "Installing: " ${name} )
+    message(STATUS  "Installing: " ${name} )
     install(TARGETS ${name} RUNTIME DESTINATION bin)
   endif()
   set_target_properties(${name} PROPERTIES FOLDER "tools")
@@ -32,7 +32,7 @@ function(fslam_enable_testing)
   include_directories(${GTEST_DIR}/include)
   add_library(gtest SHARED EXCLUDE_FROM_ALL
     ${GTEST_DIR}/src/gtest-all.cc
-    ${CMAKE_SOURCE_DIR}/testcode/test_main.cc
+    ${CMAKE_SOURCE_DIR}/cpp/gtest/test_main.cc
     )
   target_link_libraries(gtest
     ${VISIONWORKBENCH_CORE_LIBRARY}
