@@ -10,13 +10,21 @@ void stratified_random(int N, vector<float> &di)
    
     //deterministic intervals
     float temp = k/2;
-    while (temp < (1-k/2)) {
-        di.push_back(temp);
+    di.push_back(temp);
+    while (temp < 1-k/2) {
         temp = temp+k;
+        di.push_back(temp);
     }
-   
-    assert(di.size() == N); 
-    
+    /* 
+    cout<<"di"<<endl;
+    for (int i=0; i< di.size(); i++) {
+	cout<<di[i]<<" "<<endl;
+    }
+ 
+    cout<<"N "<<N<<endl;
+    cout<<"di size "<<di.size()<<endl; 
+    //assert(di.size() == N); 
+    */
     //dither within interval
     vector<float>::iterator diter; 
     for (diter = di.begin(); diter != di.end(); diter++) {

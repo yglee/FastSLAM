@@ -13,13 +13,13 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
 
     int i;    
     for (i=0; i<N; i++) {
-        w(i) = particles[i].w();
+	w(i) = particles[i].w();
     }
 
     float ws = w.sum();
 
     for (i=0; i<N; i++) {
-        w(i) = w(i)/ws;
+	w(i) = w(i)/ws;
     }
 
     float Neff=0;
@@ -30,14 +30,14 @@ void resample_particles(vector<Particle> &particles, int Nmin, int doresample)
     particles.resize(keep.size());	
 
     if ((Neff < Nmin) && (doresample == 1)) {
-        for(i=0; i< keep.size(); i++) {
-            particles[i] = old_particles[keep[i]]; 	
-        }	
-        for (i=0; i<N; i++) {
-            cout<<"N"<<endl;
-            cout<<N<<endl;
-			float new_w = 1.0f/(float)N;
-            particles[i].setW(new_w);
-        }
+	for(i=0; i< keep.size(); i++) {
+	    particles[i] = old_particles[keep[i]]; 	
+	}	
+	for (i=0; i<N; i++) {
+	    cout<<"N"<<endl;
+	    cout<<N<<endl;
+	    float new_w = 1.0f/(float)N;
+	    particles[i].setW(new_w);
+	}
     }		
 }

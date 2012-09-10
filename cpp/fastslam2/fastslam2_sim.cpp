@@ -67,7 +67,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
 
     int iwp = 0; //index to first waypoint
     float G = 0; //initial steer angle
-    MatrixXf plines; //will later change to list of points
+    //MatrixXf plines; //will later change to list of points
 
     if (SWITCH_SEED_RANDOM !=0) {
         srand(SWITCH_SEED_RANDOM);
@@ -84,7 +84,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     vector<int> ftag_visible;
    	vector<VectorXf> z;
  
-	//Main loop
+    //Main loop
     while (iwp !=-1) {
         compute_steering(xtrue, wp, iwp, AT_WAYPOINT, G, RATEG, MAXG, dt);
         if (iwp ==-1 && NUMBER_LOOPS > 1) {
@@ -117,15 +117,15 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             z = get_observations(xtrue,lm,ftag_visible,MAX_RANGE);
             add_observation_noise(z,R,SWITCH_SENSOR_NOISE);
             
-			if(!z.empty()){
-                plines = make_laser_lines(z,xtrue);
+	    if(!z.empty()){
+                //plines = make_laser_lines(z,xtrue);
             }
 
             //Compute (known) data associations
             int Nf = particles[0].xf().size(); //(particles[0].xf()).cols();
             vector<int> idf;
-           	vector<VectorXf> zf;
-			vector<VectorXf> zn;
+            vector<VectorXf> zf;
+	    vector<VectorXf> zn;
 
             bool testflag= false;
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);
@@ -142,9 +142,9 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             }
 
             //Observe new features, augment map
-            if (!zn.isZero()) {
+            if (!zn.empty()) {//!zn.isZero()) {
                 for (unsigned i=0; i<NPARTICLES; i++) {
-                    if (zf.isZero()) {//sample from proposal distribution if we have not already done so above
+                    if (zf.empty()) {//zf.isZero()) {//sample from proposal distribution if we have not already done so above
                         VectorXf xv = multivariate_gauss(particles[i].xv(),
                                                         particles[i].Pv(),1);
                         particles[i].setXv(xv);
@@ -165,30 +165,3 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     return particles;
 }
 
-MatrixXf make_laser_lines(vector<VectorXf> rb, VectorXf xv) 
-{
-    if (rb.isZero()) {
-        return MatrixXf(0,0);
-    }
-
-    int len = rb.cols();
-    MatrixXf lnes(4,len);
-
-    MatrixXf globalMat(2,rb.cols());
-    int j;
-    for (j=0; j<globalMat.cols();j++) {
-        globalMat(0,j) = rb(0,j)*cos(rb(1,j));
-        globalMat(1,j) = rb(0,j)*sin(rb(1,j));   	
-    }
-
-    TransformToGlobal(globalMat,xv);
-
-    for (int c=0; c<lnes.cols();c++) {
-        lnes(0,c) = xv(0);
-        lnes(1,c) = xv(1);
-        lnes(2,c) = globalMat(0,c);
-        lnes(3,c) = globalMat(1,c);
-    }
-
-    return line_plot_conversion(lnes);
-}

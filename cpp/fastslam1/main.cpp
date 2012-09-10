@@ -18,6 +18,9 @@ int main (int argc, char *argv[])
 	for (int i=0; i<data.size(); i++) {
 		cout<<"particle i="<<i<<endl;
 		cout<<endl;
+		cout<<"weight"<<endl;
+		cout<<data[i].w()<<endl;
+		cout<<endl;
 		cout<<"xv (robot pose)"<<endl;
 		cout<<data[i].xv()<<endl;
 		cout<<endl;
