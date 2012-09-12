@@ -29,7 +29,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
     }
     //normally initialized configfile.h
     Q << pow(sigmaV,2), 0,
-      0 , pow(sigmaG,2);
+      0, pow(sigmaG,2);
 
     R << sigmaR*sigmaR, 0, 
       0, sigmaB*sigmaB;
@@ -130,7 +130,7 @@ vector<Particle> fastslam2_sim(MatrixXf lm, MatrixXf wp)
             bool testflag= false;
             data_associate_known(z,ftag_visible,da_table,Nf,zf,idf,zn);
             
-			//observe map features
+	    //observe map features
             if (!zf.empty()) {
                 //isample from 'optimal' proposal distribution, then update map
                 for (unsigned i=0; i<NPARTICLES; i++) {
