@@ -15,8 +15,11 @@
 #include "core/stratified_resample.h"
 #include "core/stratified_random.h"
 #include "fastslam2/sample_proposal.h"
+#include "core/multivariate_gauss.h"
 
 #include <iostream>
+//#include <boost/random.hpp>
+//#include <boost/random/normal_distribution.hpp>
 
 #define ZERO 1e-10
 #define SMALL 1e-4
@@ -490,7 +493,6 @@ TEST(FASTSLAM_TEST,feature_update_test)
     zf.push_back(e);
     zf.push_back(f);   
 
-
     //idf
     vector<int> idf;
     idf.push_back(0);
@@ -571,7 +573,6 @@ TEST(FASTSLAM_TEST,add_feature_test)
     MatrixXf R(2,2);
     R<< 0.0100, 0,
 	0, 0.0003;
-
 
     //add_feature
     add_feature(particle,zn,R);    
@@ -664,6 +665,7 @@ TEST(FASTSLAM_TEST, stratified_resample_test)
     keep_gt.push_back(9); 
 
     int i;
+    /*
     cout<<"keep"<<endl;
     for (i=0; i<keep.size(); i++) {
 	cout<<keep[i]<<" ";
@@ -675,7 +677,7 @@ TEST(FASTSLAM_TEST, stratified_resample_test)
 	cout<<keep_gt[i]<<" ";
     }
     cout<<endl;
-
+    */
     EXPECT_TRUE(EqualVectors(keep_gt, keep));
     EXPECT_NE(Neff, 8.0764);     
 }
@@ -801,7 +803,7 @@ TEST(FASTSLAM_TEST, likelihood_given_xv_test)
 
     //xv
     VectorXf xv(3);
-    xv << 1.3502, -0.1073, -0.0237;
+    xv << 1.2919, -0.1874,-0.0423;
 
     //Pv
     MatrixXf Pv(3,3);
@@ -810,20 +812,20 @@ TEST(FASTSLAM_TEST, likelihood_given_xv_test)
     //xf
     vector<VectorXf> xf;
     VectorXf a(2);
-    a<<2.2237,-25.8443;
+    a<<2.4261,-25.8041;
     VectorXf b(2);
-    b<<25.6484,3.6701;
+    b<<25.7095,3.2392;
     xf.push_back(a);
     xf.push_back(b);
 
     //Pf
     vector<MatrixXf> Pf;
     MatrixXf c(2,2);
-    c<< 0.2029, 0.0117,
-    0.0117, 0.0107; 
+    c<< 0.2019, 0.0133,
+	0.0133, 0.0109; 
     MatrixXf d(2,2);
-    d<< 0.0140, -0.0268,
-    -0.0268, 0.1904;
+    d<< 0.0131, -0.0239,
+	-0.0239,0.1915;
     Pf.push_back(c);
     Pf.push_back(d);
 
@@ -837,9 +839,9 @@ TEST(FASTSLAM_TEST, likelihood_given_xv_test)
 
     vector<VectorXf> zf;
     VectorXf i(2);
-    i<<25.6029,-1.4864;
+    i<<25.7432,-1.4901;
     VectorXf j(2);
-    j<<24.7119, 0.1680;
+    j<<24.4729, 0.1353;
     zf.push_back(i);
     zf.push_back(j);
      
@@ -853,8 +855,190 @@ TEST(FASTSLAM_TEST, likelihood_given_xv_test)
     R<< 0.0100, 0,
 	0, 0.0003;
    
-
-    likelihood_given_xv(particle, zf,idf, R);
-
-    EXPECT_NE(particle.w(), 0.01);
+    float like = likelihood_given_xv(particle, zf,idf, R);
+    EXPECT_NE(like, 122.7224);
 }
+
+TEST(FASTSLAM_TEST, gauss_evaluate_test)
+{
+   
+    VectorXf v(3);
+    v<<-0.0480,-0.0286,-0.0069;
+
+    MatrixXf Pv0(3,3);
+    Pv0<<0.0004977,-0.0000494, -0.0000091,
+   -0.0000494,0.0001815,0.0000418,
+   -0.0000091,0.0000418,0.0000097;
+
+    float prior_gt = 6378.3;
+
+    float prior = gauss_evaluate(v,Pv0,0);
+    #if 0
+    VectorXf v(3);
+    v <<-0.0306, 0.0077, 0.0017;
+
+    MatrixXf Sf(3,3);
+    Sf << 0.0004983, -0.0000430, -0.0000089, 
+	-0.0000430, 0.0001697, 0.0000393,
+	-0.0000089, 0.0000393, 0.0000091;
+    float prior_gt = 603610;
+    float prior  = gauss_evaluate(v,Sf,0);
+    #endif
+    #if 0
+    VectorXf v(2);
+    v<< -1.18453, 1.62279;
+    
+    MatrixXf Sf(2,2);
+    Sf<<0.020094, -0.000184015,
+    -0.000184015,  0.000607922;
+
+    float prior = gauss_evaluate(v, Sf, 0);
+    float prior_gt = 0; 
+    #endif
+    EXPECT_EQ(prior, prior_gt);
+}
+
+TEST(FASTSLAM_TEST, multivariate_gauss_test)
+{
+    VectorXf x(2);
+    x<< 3.0000, -0.0087;
+
+    MatrixXf P(2,2);
+    P<< 0.09, 0,
+         0, 0.0027;
+
+    int n = 1;
+    VectorXf mg = multivariate_gauss(x,P,n);
+    VectorXf mg_gt(2);
+    mg_gt << 0.1977, 0.2207;
+    EXPECT_EQ(mg, mg_gt);
+}
+
+TEST(FASTSLAM_TEST, delta_xv_test) 
+{
+
+
+}
+
+
+TEST(FASTSLAM_TEST, resample_particles_test)
+{
+    vector<Particle> particles(10);
+    for (int i = 0; i< particles.size(); i++) {
+        particles[i] = Particle();
+    }
+   
+    particles[0].setW(5.9056);
+    particles[1].setW(14.0648);
+    particles[2].setW(9.5197);
+    particles[3].setW(21.3748);
+    particles[4].setW(6.5495);
+    particles[5].setW(4.1826);
+    particles[6].setW(17.4620);
+    particles[7].setW(12.8126);
+    particles[8].setW(7.9298);
+    particles[9].setW(20.8908);
+
+    int Nmin = 7; 
+    int doresample = 1; 
+    resample_particles(particles,Nmin,doresample);
+
+    vector<float> w_gt(10);
+    w_gt[0] = 0.0489;
+    w_gt[1] = 0.1165;
+    w_gt[2] = 0.0789;
+    w_gt[3] = 0.1771;
+    w_gt[4] = 0.0543;
+    w_gt[5] = 0.0347;
+    w_gt[6] = 0.1447;
+    w_gt[7] = 0.1062;
+    w_gt[8] = 0.0657;
+    w_gt[9] = 0.1731;
+
+    for (int i =0; i< 10; i++) {
+        EXPECT_EQ(particles[i].w(), w_gt[i]);
+    }
+}
+
+TEST(FASTSLAM_TEST, misc_test)
+{
+    float like = 4.2596*pow(10.f,3.f);
+    float prior = 5.4764*pow(10.f,5.f);
+    float prop = 6.5415* pow(10.f,5.f);
+    float w_gt = 35.6746;
+
+
+    float a = prior/prop;
+    float b = 0.01 * a;
+    float newW = like * b;
+    EXPECT_EQ(newW, w_gt);
+
+    #if 0
+    //MatrixXf P;
+    float total =0;
+    float particle_w= 1.28907*pow(10.0f,30.0f);
+    float like = 3135.09;
+    float prop = 3.07849*pow(10.0f,6.0f);
+    float prior = 3.1012*pow(10.0f,6.0f);
+    
+    cout<<"particle_w "<<particle_w<<endl;
+    cout<<"like "<<like<<endl;
+    cout<<"prop "<<prop<<endl;
+    cout<<"prior "<<prior<<endl;
+    cout<<"prop/prior "<<prop/prior<<endl;
+    float b = prop/prior;
+    cout<<"particle_w * prop/prior "<<particle_w * b<<endl;
+    float c = particle_w * b;
+    float d = c* like;
+    cout<<"total "<< d<<endl;
+    
+    //P = nRandMat::randn(3,10);
+    //cout<<"normalized random matrix"<<endl;    
+    //cout<<P<<endl;
+    #endif
+    #if 0
+    boost::mt19937 rng; // I don't seed it on purpouse (it's not relevant)
+
+    boost::normal_distribution<> nd(0.0, 1.0);
+
+    boost::variate_generator<boost::mt19937&, 
+                           boost::normal_distribution<> > var_nor(rng, nd);
+
+    int i = 0; for (; i < 10; ++i)
+    {
+        double d = var_nor();
+        std::cout << d << std::endl;
+    }
+
+    #endif
+//    boost::minstd_rand random_gen(42u);
+//    boost::normal_distribution<double> normal(0,20);
+    
+/*
+    EXPECT_EQ(exp(2),7.3891);
+    
+    MatrixXf S(3,3);
+    S<< 0.0004960, -0.0000521, -0.0000098,
+    -0.0000521, 0.0001869, 0.0000430,
+    -0.0000098, 0.0000430, 0.0000099;
+
+    MatrixXf cholMat = S.llt().matrixL();
+
+    MatrixXf Sc(3,3);
+    Sc<< 0.0223, 0, 0,
+    -0.0023, 0.0121, 0,
+    -0.0005, 0.0028, 0.0001;
+    
+    VectorXf v(3);
+    v<< -0.0081,-0.0135,-0.0033;
+    
+    VectorXf nin = Sc.jacobiSvd(ComputeThinU | ComputeThinV).solve(v);
+
+    VectorXf nin_gt(3);
+    nin_gt<<-0.3651,-1.1870,-0.6920;
+    EXPECT_EQ(nin, nin_gt);
+   
+    EXPECT_EQ(cholMat, Sc); 
+*/
+}
+

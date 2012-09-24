@@ -1,8 +1,7 @@
 #include "add_observation_noise.h"
-
+#if 0
 //http://moby.ihme.washington.edu/bradbell/mat2cpp/randn.cpp.xml
-
-MatrixXf nRandMat::randn(int m, int n) 
+MatrixXf randn(int m, int n) 
 {	
 	// use formula 30.3 of Statistical Distributions (3rd ed)
 	// Merran Evans, Nicholas Hastings, and Brian Peacock
@@ -40,7 +39,7 @@ MatrixXf nRandMat::randn(int m, int n)
 	return x;
 }
 
-MatrixXf nRandMat::rand(int m, int n) 
+MatrixXf rand(int m, int n) 
 {	
 	MatrixXf x(m,n);	
 	int i, j;
@@ -52,15 +51,30 @@ MatrixXf nRandMat::rand(int m, int n)
 	} 
 	return x;
 }
-
+#endif
 //add random measurement noise. We assume R is diagnoal matrix
 void add_observation_noise(vector<VectorXf> &z, MatrixXf R, int addnoise)
 {
+    float LO = -1.0f;
+    float HI = 1.0f;
+
 	if (addnoise == 1){
 		int len = z.size();	
 		if (len > 0) {
-			MatrixXf randM1 = nRandMat::randn(1,len);
-			MatrixXf randM2 = nRandMat::randn(1,len);
+			//MatrixXf randM1 = nRandMat::randn(1,len);
+            MatrixXf randM1(1,len);
+            for (int i=0; i< len; i++) {
+                float r3 = LO + (float)rand()/((float)RAND_MAX/(HI-LO));
+                randM1(0,i) = r3; 
+            }
+			//MatrixXf randM2 = nRandMat::randn(1,len);
+			MatrixXf randM2(1,len);
+            for (int j=0; j< len; j++) {
+                float r4 = LO + (float)rand()/((float)RAND_MAX/(HI-LO));
+                randM2(0,j) = r4; 
+            }
+            //cout<<"randM1"<<endl;
+            //cout<<randM1<<endl;
 
 			for (int c=0; c<len; c++) {
 				z[c][0] = z[c][0] + randM1(0,c)*sqrt(R(0,0));

@@ -16,7 +16,7 @@ Particle::Particle()
 	_da = NULL;
 }
 
-Particle::Particle(float &w, VectorXf &xv, MatrixXf &Pv, vector<VectorXf> &xf, vector<MatrixXf> &Pf, float* da)
+Particle::Particle(float w, VectorXf &xv, MatrixXf &Pv, vector<VectorXf> &xf, vector<MatrixXf> &Pf, float* da)
 {
 	_w = w;
 	_xv = xv;
@@ -62,7 +62,7 @@ float* Particle::da() const
 }
 
 //setters
-void Particle::setW(float &w)
+void Particle::setW(float w)
 {
 	_w = w;
 }

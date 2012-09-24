@@ -47,6 +47,28 @@ find_package(Eigen3 REQUIRED)
 find_package(GooglePerfTools)
 find_package(OpenCL REQUIRED)
 
+#Find Boost
+#FIND_PACKAGE(Boost)
+#IF (Boost_FOUND)
+#    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+#    ADD_DEFINITIONS( "-DHAS_BOOST" )
+#ENDIF()
+find_package(Boost 1.44.0)
+
+# uncomment the following line to let the env variable BOOST_DIR set the Boost_DIR path
+# set(Boost_DIR $ENV{BOOST_ROOT})
+
+# just print out the variables to see their values
+message("Boost_DIR : " ${Boost_DIR})
+message("BOOST_ROOT: " $ENV{BOOST_ROOT})
+
+# now see if boost was actually found
+if (Boost_FOUND)
+  message("Boost WAS found!")
+endif (Boost_FOUND)
+
+
+
 # Finish up local custom options based on what was found above
 fslam_enable_testing()
 if (ENABLE_PROFILING AND GOOGLE_PERFTOOLS_FOUND)

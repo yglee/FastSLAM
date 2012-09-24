@@ -10,7 +10,7 @@ using namespace std;
 class Particle{
 public:
 	Particle();
-	Particle(float &w, VectorXf &xv, MatrixXf &Pv, vector<VectorXf> &xf, vector<MatrixXf> &Pf, float* da);
+	Particle(float w, VectorXf &xv, MatrixXf &Pv, vector<VectorXf> &xf, vector<MatrixXf> &Pf, float* da);
 	~Particle();
         
 	//getters	
@@ -22,7 +22,7 @@ public:
 	float* da() const; //
 
 	//setters
-	void setW(float &w);
+	void setW(float w);
 	void setXv(VectorXf &xv);
 	void setPv(MatrixXf &Pv);
 	void setXf(vector<VectorXf> &xf);
